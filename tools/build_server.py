@@ -1,6 +1,6 @@
 """Genera public/index.html (versión Netlify) a partir del archivo de la app local.
 
-Uso:  python3 tools/build_server.py "Plan de personal v2.4.html" public/index.html
+Uso:  python3 tools/build_server.py "Plan de personal v2.5.html" public/index.html
 
 Qué cambia respecto al archivo local:
   - Quita los datos de personal incluidos (base, vacantes y faltas): en Netlify la
