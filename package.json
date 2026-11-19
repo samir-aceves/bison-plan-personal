@@ -1,0 +1,10 @@
+{
+  "name": "bison-plan-personal",
+  "version": "2.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Plan de personal de Bison: planes, asistencia, plantilla y reporte DG con acceso por rol",
+  "dependencies": {
+    "@netlify/blobs": "^11.1.9"
+  }
+}
