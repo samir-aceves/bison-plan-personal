@@ -44,7 +44,7 @@ Desde ese momento Felipe trabaja en el sitio de Netlify, no en el archivo. Si si
 `public/index.html` se genera desde el archivo de la app local:
 
 ```bash
-python3 tools/build_server.py "Plan de personal v2.5.html" public/index.html
+python3 tools/build_server.py "Plan de personal v2.6.html" public/index.html
 ```
 
 El script quita los datos de personal incluidos, agrega la pantalla de acceso y falla si detecta que quedó algún nombre en la página. Después se sube el cambio a GitHub y Netlify despliega solo.

@@ -10,10 +10,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
 <style>
 :root{
-  --bg:#E7EBEE; --panel:#FFFFFF; --ink:#1D2730; --muted:#5B6873; --rule:#C7CFD5; --soft:#F3F5F7;
+  --bg:#EEF1F5; --panel:#FFFFFF; --ink:#152234; --muted:#5B6B82; --rule:#D3DAE4; --soft:#F3F5F8; --radius:6px; --brand:#DA491A; --navy:#111111; --navy2:#1D1D1D; --tabbar:#0B1A2C;
   --te:#E2701A; --te-ink:#FFFFFF; --per:#2C68A8; --per-ink:#FFFFFF; --off:#9AA3AA; --tn:#4E6B5C; --tn-ink:#FFFFFF;
   --aF:#B3261E; --aI:#9A6700; --aV:#1F6F8B; --aP:#6B4FA0; --a-ink:#FFFFFF;
-  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --vgrid:rgba(29,39,48,.10); --vbase:rgba(29,39,48,.28); --tilebd:rgba(29,39,48,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --vgrid:rgba(29,39,48,.10); --vbase:rgba(29,39,48,.28); --tilebd:#E1E6ED;
   --err:#B3261E; --warn:#8A5A00; --warn-bg:#FFF4DC; --ok:#2E7D4F;
   --sans:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
   --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
@@ -35,8 +35,28 @@ button,input,select{font:inherit;color:inherit}
 button{cursor:pointer}
 :focus-visible{outline:2px solid var(--per);outline-offset:2px}
 
-header.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:14px 20px;background:var(--panel);border-bottom:1px solid var(--rule)}
-header.top h1{font-family:var(--cond);font-weight:600;font-size:26px;margin:0;letter-spacing:.2px}
+header.top{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:10px 24px 13px;color:#fff;background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 2px,transparent 2px 9px),linear-gradient(135deg,var(--navy),var(--navy2))}
+header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(90deg,var(--brand) 0,var(--brand) 24%,rgba(218,73,26,0) 72%)}
+.tb-left{display:flex;align-items:center;gap:12px;min-width:0}
+.tb-logo{width:40px;height:40px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.tb-logo img{width:28px;height:28px;object-fit:contain}
+header.top h1{font-family:var(--sans);font-weight:600;font-size:20px;margin:0;letter-spacing:.3px;line-height:1.1}
+header.top h1 span{font-weight:400;color:#c9d4e3;letter-spacing:.1px}
+header.top .sub{font-size:12px;color:#a3b2c6;margin-top:3px}
+header.top .ver{color:#c9d4e3;border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06)}
+header.top .ver:hover{color:#fff;border-color:rgba(255,255,255,.4)}
+header.top .btn,header.top select.btn{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#e6edf6}
+header.top .btn:hover{background:rgba(255,255,255,.12)}
+header.top .datebox input{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#fff;color-scheme:dark;min-height:36px}
+header.top select.btn option{background:#1d1d1d;color:#e6edf6}
+header.top .tlabel{color:#c9d4e3}
+header.top .daytag{border-color:rgba(255,255,255,.14);color:#e6edf6}
+header.top .daytag.extra{background:var(--te);color:var(--te-ink);border-color:var(--te)}
+header.top .daytag.descanso{color:#a3b2c6}
+header.top .sync{color:#c9d4e3}
+header.top .sync.err{color:#f2867e}
+header.top :focus-visible{outline-color:#fff}
+@media (max-width:760px){header.top{padding:10px 16px 13px}header.top .btn,header.top .datebox input{min-height:44px}}
 .datebox{display:flex;align-items:center;gap:10px}
 .datebox input{border:1px solid var(--rule);border-radius:6px;padding:6px 8px;background:var(--soft)}
 .daytag{font-family:var(--cond);font-weight:600;font-size:16px;padding:3px 10px;border-radius:4px;border:1px solid var(--rule)}
@@ -110,7 +130,7 @@ section.line{background:var(--panel);border:1px solid var(--rule);border-radius:
 .chip.hit{outline:2px solid var(--per);outline-offset:1px}
 
 aside{position:sticky;top:64px;display:flex;flex-direction:column;gap:14px}
-.card{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:14px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--radius);padding:14px}
 .card h4{margin:0 0 10px;font-family:var(--cond);font-size:19px;font-weight:600}
 .big{font-family:var(--cond);font-size:40px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
 .kv{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:14px;margin-top:8px}
@@ -123,7 +143,7 @@ aside{position:sticky;top:64px;display:flex;flex-direction:column;gap:14px}
 .checks li button{margin-top:6px}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;font-size:13px;color:var(--muted)}
 .field input,.field select{border:1px solid var(--rule);border-radius:6px;padding:6px 8px;background:var(--soft);color:var(--ink);font-size:14px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .note{font-size:12.5px;color:var(--muted);margin:8px 0 0}
 .preview{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
 .preview th,.preview td{border-bottom:1px solid var(--soft);padding:4px 4px;text-align:left}
@@ -147,10 +167,13 @@ textarea{width:100%;min-height:90px;border:1px solid var(--rule);border-radius:6
 .hint{font-size:12.5px;color:var(--muted)}
 .tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--panel);font-size:13px;padding:5px 9px;border-radius:5px;display:none;max-width:260px}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
-.views{display:inline-flex;border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:var(--panel)}
-.views button{border:0;background:transparent;padding:7px 14px;border-right:1px solid var(--rule);font-weight:500}
-.views button:last-child{border-right:0}
-.views button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.views{display:flex;gap:4px;width:100%;background:var(--tabbar);padding:0 24px;overflow-x:auto;scrollbar-width:none}
+.views::-webkit-scrollbar{display:none}
+.views button{flex:0 0 auto;min-height:44px;white-space:nowrap;border:0;border-bottom:3px solid transparent;background:transparent;color:#a9b8cc;padding:0 16px;font-size:14px;font-weight:500}
+.views button:hover{color:#fff}
+.views button[aria-pressed="true"]{color:#fff;border-bottom-color:var(--brand)}
+.views button:focus-visible{outline:2px solid #fff;outline-offset:-4px}
+@media (max-width:760px){.views{padding:0 8px}}
 body:not(.v-asis) .asisonly{display:none!important}
 body.v-asis .planonly{display:none!important}
 body.v-plantilla .planonly,body.v-plantilla .asisonly,body.v-plantilla .dayonly,body.v-plantilla aside{display:none!important}
@@ -184,6 +207,27 @@ body.v-plantilla .layout{grid-template-columns:minmax(0,1fr)}
 .kpis b{font-family:var(--cond);font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
 .kpis span{font-size:12.5px;color:var(--muted)}
 
+/* ---------- mover de área ---------- */
+.sw.mov{border:1px solid var(--ink);background:transparent}
+.seg button[aria-pressed="true"] .sw.mov{border-color:var(--panel)}
+.chip .mv{position:absolute;bottom:-6px;right:-6px;font-size:12px;line-height:15px;padding:0 4px;border-radius:6px;background:var(--per);color:var(--per-ink);box-shadow:0 0 0 1px var(--panel)}
+.area.drop{outline:2px solid var(--per);outline-offset:-2px}
+.toolbar [hidden]{display:none!important}
+body.movmode .chip{cursor:grab}
+#dlgMov{width:min(480px,94vw)}
+#dlgMov .btn,#dlgMov .field select,#dlgMov .field input{min-height:44px}
+#dlgMov .field{font-size:13px}
+#dlgMov .field select,#dlgMov .field input{font-size:15px}
+#dlgMov .minfo{margin:0 0 14px;font-size:14px;line-height:1.5}
+#dlgMov .minfo b{font-weight:600}
+#dlgMov .mwarn{font-size:13px;color:var(--ink);background:var(--warn-bg);border:1px solid var(--warn);border-radius:6px;padding:8px 10px;margin:0 0 10px}
+#dlgMov .merr{font-size:13px;color:var(--err);margin:0 0 10px}
+#dlgMov .macts{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+#dlgMov .macts .btn.primary{flex:1 1 140px}
+.mvhist{margin:10px 0 0;padding:0;list-style:none;font-size:13px;color:var(--muted)}
+.mvhist li{padding:3px 0;border-bottom:1px solid var(--soft)}
+
+@media (max-width:760px){.toolbar .seg{flex-wrap:wrap;max-width:100%}.toolbar .seg button{border-bottom:1px solid var(--rule);margin-bottom:-1px;min-height:44px}}
 /* ---------- reporte DG (patrón dashboard) ---------- */
 b,strong,th{font-weight:600}
 [hidden]{display:none!important}
@@ -194,10 +238,10 @@ body.v-reporte .layout{grid-template-columns:minmax(0,1fr);padding:24px 20px 48p
 .rep-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px}
 .rep-head h2{font-family:var(--cond);font-size:32px;font-weight:600;line-height:1.15;margin:0;letter-spacing:0}
 .rep-head p{margin:4px 0 0;font-size:16px;line-height:1.5;color:var(--muted);max-width:70ch}
-.rep-cov{display:flex;gap:8px;align-items:flex-start;font-size:14px;line-height:1.5;padding:12px 16px;border-radius:8px;background:var(--warn-bg);border:1px solid var(--tilebd)}
+.rep-cov{display:flex;gap:8px;align-items:flex-start;font-size:14px;line-height:1.5;padding:12px 16px;border-radius:var(--radius);background:var(--warn-bg);border:1px solid var(--tilebd)}
 .rep-cov b{font-weight:600}
 .kpi5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
-.tile{background:var(--panel);border:1px solid var(--tilebd);border-radius:12px;padding:16px 20px;box-shadow:0 1px 3px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:4px;min-width:0}
+.tile{background:var(--panel);border:1px solid var(--tilebd);border-radius:var(--radius);padding:16px 20px;box-shadow:0 1px 3px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:4px;min-width:0}
 .tile .lbl{font-size:14px;font-weight:500;color:var(--muted);line-height:1.4}
 .tile .val{font-family:var(--sans);font-size:36px;font-weight:600;line-height:1.1;letter-spacing:-.01em;margin-top:4px}
 .tile .val small{font-size:20px;font-weight:500;color:var(--muted);margin-left:2px}
@@ -205,7 +249,7 @@ body.v-reporte .layout{grid-template-columns:minmax(0,1fr);padding:24px 20px 48p
 .dl{font-size:14px;line-height:1.45;display:block;margin-top:4px}
 .dl>span[aria-hidden]{margin-right:4px;font-size:12px}
 .dl.good{color:var(--ok)} .dl.bad{color:var(--err)} .dl.flat,.dl.nd{color:var(--muted)}
-.panel{background:var(--panel);border:1px solid var(--tilebd);border-radius:12px;padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,.05);min-width:0}
+.panel{background:var(--panel);border:1px solid var(--tilebd);border-radius:var(--radius);padding:20px 24px;box-shadow:0 1px 3px rgba(0,0,0,.05);min-width:0}
 .panel h3{font-family:var(--sans);font-size:18px;font-weight:600;line-height:1.25;margin:0}
 .panel .ps{font-size:14px;color:var(--muted);margin:4px 0 16px;line-height:1.5}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
@@ -258,8 +302,6 @@ details.vdata td.r,details.vdata th.r{text-align:right;font-variant-numeric:tabu
 .rep-foot h4{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--ink);margin:0 0 4px}
 .rep-foot ul{margin:0;padding-left:20px}
 .btn.lg{min-height:44px;padding:8px 16px;font-weight:500}
-.views{max-width:100%;overflow-x:auto;scrollbar-width:none}
-.views button{min-height:44px;white-space:nowrap}
 @media (max-width:1080px){.kpi5{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:760px){.kpi5{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:minmax(0,1fr)}.panel{padding:16px}.rep-head h2{font-size:28px}.tile .val{font-size:30px}}
 @media (max-width:420px){.kpi5{grid-template-columns:minmax(0,1fr)}body.v-reporte .layout{padding:16px}}
@@ -268,7 +310,7 @@ body.ro .editonly{display:none!important}
 .sync i{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block}
 .sync.busy i{background:var(--warn)} .sync.err i{background:var(--err)} .sync.err{color:var(--err)}
 @media print{
-  header.top,.toolbar,aside,.noprint,.vtip,.toast,.tip{display:none!important}
+  header.top,.views,.toolbar,aside,.noprint,.vtip,.toast,.tip{display:none!important}
   body{background:#fff;color:#000} .layout{display:block;padding:0}
   .rep{max-width:none;gap:16px} .tile,.panel{box-shadow:none;break-inside:avoid}
   details.vdata{display:none}
@@ -292,13 +334,13 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
 </head>
 <body>
 <header class="top">
-  <h1>Plan de personal</h1>
-  <button class="ver" id="verTag" title="Acerca de: versión y novedades"></button>
-  <div class="views" id="views" role="tablist" aria-label="Secciones">
-    <button data-v="plan" role="tab">Plan del día</button>
-    <button data-v="asis" role="tab">Asistencia</button>
-    <button data-v="plantilla" role="tab">Plantilla y vacantes</button>
-    <button data-v="reporte" role="tab">Reporte DG</button>
+  <div class="tb-left">
+    <div class="tb-logo"><img src="data:image/png;base64,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" alt="Bison" width="28" height="28"></div>
+    <div>
+      <h1>BISON <span>Plan de personal</span></h1>
+      <div class="sub">Plantilla, asistencia y tiempo extra</div>
+    </div>
+    <button class="ver" id="verTag" title="Acerca de: versión y novedades"></button>
   </div>
   <div class="datebox dayonly">
     <input type="date" id="fecha" aria-label="Día a trabajar">
@@ -313,6 +355,13 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
   <button class="btn editonly" id="btnCfg">Configuración</button>
   <button class="btn" id="btnLogout" hidden>Salir</button>
 </header>
+<div class="views" id="views" role="tablist" aria-label="Secciones">
+  <button data-v="plan" role="tab">Plan del día</button>
+  <button data-v="asis" role="tab">Asistencia</button>
+  <button data-v="plantilla" role="tab">Plantilla y vacantes</button>
+  <button data-v="reporte" role="tab">Reporte DG</button>
+</div>
+
 
 <div class="toolbar dayonly" role="toolbar" aria-label="Herramientas de marcado">
   <span class="tlabel planonly editonly">Marcar como</span>
@@ -322,6 +371,7 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     <button data-m="PER"><i class="sw per"></i>Permuta</button>
     <button data-m="OFF"><i class="sw off"></i>No disponible</button>
     <button data-m="CLR"><i class="sw clr"></i>Quitar</button>
+    <button data-m="MOV"><i class="sw mov"></i>Mover de área</button>
   </div>
   <span class="tlabel planonly editonly">Horario</span>
   <div class="seg planonly editonly" id="brushHor"></div>
@@ -397,6 +447,11 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     <p class="note" id="pasteMsg"></p>
     <button class="btn primary" id="pasteGo">Marcar nóminas</button>
   </div>
+</dialog>
+
+<dialog id="dlgMov" aria-labelledby="movTtl">
+  <div class="dlg-head"><h3 id="movTtl">Mover de área</h3><div class="spacer"></div><button class="btn" data-close>Cerrar</button></div>
+  <div class="dlg-body" id="movBody"></div>
 </dialog>
 
 <dialog id="dlgCfg">
@@ -504,10 +559,11 @@ const BASE_ROSTER = [];
 // vacantes y faltas del archivo "Detalle de asistencia" (13-nov-2026)
 const BASE_VAC = [];
 const BASE_ASIS = {};
-const APP_VERSION = "2.5";
+const APP_VERSION = "2.6";
 const APP_FECHA = "2026-11-19";
 const HERR_DESDE = "2026-10-14"; // Herramentales entra solo en planes desde esta fecha
 const CAMBIOS = [
+  ["2.6","2026-11-19","Mover operadores de área: botón Mover de área en Plan del día. Con un clic se elige el área destino y desde qué fecha; también se puede arrastrar el operador a otra área. El movimiento dura hasta que lo regreses, y desde esa fecha la persona cuenta en el área donde trabaja: en el tablero, la regla de departamento completo, el folio, la asistencia y las faltas del Reporte DG. Los días anteriores no cambian. El operador movido lleva la marca ↔. La pestaña Plantilla y vacantes lista los movimientos vigentes con botón Regresar y su historial. Al cargar el archivo de RH, si ya trae a la persona en el área nueva, el movimiento se cierra solo. Nuevo estilo igual al Tablero de producción: encabezado oscuro con logo, barra de pestañas y colores de marca. En celular, los botones de marcado ya no quedan cortados."],
   ["2.5","2026-11-19","Reporte DG por periodo: Día, 7, 15 y 30 días (cada quien elige; la app recuerda su elección). En Día, los indicadores son solo de ese día y se comparan contra el día capturado anterior; si hoy aún no hay asistencia, muestra el último día capturado y lo avisa. Faltas por área ahora es siempre de un día, con faltas y programados de cada área (por ejemplo, 3 de 9) y la lista de áreas sin faltas. Al pasar el cursor sobre un área se ven los puestos que faltaron y otras ausencias. En 7, 15 y 30 días se elige el día con clic en la gráfica de ausencias o en la lista de días."],
   ["2.4","2026-11-19","Nueva pestaña Reporte DG: cinco indicadores (faltas injustificadas, ausentismo, cobertura de puestos, tiempo extra y movimientos de plantilla), ausencias por día, faltas por área, cobertura por línea, casos que requieren atención y movimientos recientes, con comparación contra los 30 días previos y opción de imprimir. Lista para la versión en Netlify: acceso con contraseña por rol, datos compartidos con RH y DG en solo lectura. El respaldo ahora incluye la base de personal y las vacantes completas. Letra mínima de 12 puntos y pesos de letra unificados en toda la app."],
   ["2.3.1","2026-11-18","Corregido: al cerrar Configuración el pincel regresaba solo a Tiempo normal en días ordinarios, y lo que se marcaba después no salía en el folio. Ahora el pincel solo cambia cuando cambias de fecha. Cuando el botón del folio está desactivado, la app dice por qué. Nueva regla: avisa si hay personas en Tiempo normal que no van a salir en un folio de tiempo extra o permuta, con botón para pasarlas a Tiempo extra."],
@@ -613,7 +669,7 @@ function buildPeople(){
   const all = roster.map(r=>{
     const [nom,nombre,area,puesto="",sup="",ingreso="",estado="",macro=""]=r;
     const k = norm(area); const map = AREA_MAP[k];
-    return {nom:pad4(nom),nombre,area:k,folio:map?map.folio:k,linea:map?map.linea:"Sin línea asignada",
+    return {nom:pad4(nom),nombre,area:k,areaRH:k,mov:null,folio:map?map.folio:k,linea:map?map.linea:"Sin línea asignada",
       puesto:puesto||"",sup:sup||"",ingreso:ingreso||"",estado:estado||(k==="IPP"?"IPP":""),macro:macro||"",rol:rolDe(puesto)};
   });
   // IPP: siguen en la plantilla, pero no salen en el tablero, el folio ni las reglas
@@ -624,6 +680,37 @@ function buildPeople(){
   altaDe = {}; movs.filter(m=>m.tipo==="alta").forEach(m=>{altaDe[m.nom]=m.fecha});
   people.forEach(p=>{ if(p.ingreso) altaDe[p.nom]=p.ingreso; });   // la fecha real de ingreso manda
   newSet = new Set(people.filter(p=>altaDe[p.nom] && altaDe[p.nom]>=lim && altaDe[p.nom]<=hoy).map(p=>p.nom));
+  AM=store.get("pp.areaMov",{}); aplicarMovs(fecha);
+}
+/* ---------- movimientos de área (duran hasta que se regresen) ---------- */
+let AM={};   // {nom:[{desde,area|null,en}]} ordenado por desde
+function movVig(nom,d){ let r=null; for(const e of (AM[nom]||[])){ if(e.desde<=d) r=e; else break; } return r; }
+function areaEn(nom,d){ const e=movVig(nom,d); return e&&e.area?e.area:null; }
+function areaDe(p,d){ const k=areaEn(p.nom,d)||p.areaRH; const m=AREA_MAP[k];
+  return {area:k,folio:m?m.folio:k,linea:m?m.linea:"Sin línea asignada"}; }
+function aplicarMovs(d){
+  for(const p of people){ const r=areaDe(p,d); p.area=r.area; p.folio=r.folio; p.linea=r.linea;
+    p.mov = r.area!==p.areaRH ? {de:p.areaRH,desde:movVig(p.nom,d).desde} : null; }
+}
+function setMov(nom,desde,area){
+  if(READONLY||!byNom[nom]) return false;
+  const p=byNom[nom]; if(area===p.areaRH) area=null;
+  const list=(AM[nom]||[]).filter(e=>e.desde!==desde);
+  if(area===null && !list.length) return false;
+  list.push({desde,area,en:new Date().toISOString()}); list.sort((a,b)=>a.desde<b.desde?-1:a.desde>b.desde?1:0);
+  AM[nom]=list; store.set("pp.areaMov",AM); aplicarMovs(fecha); render(); return true;
+}
+// al cargar un archivo de RH: movimientos que se cierran o que conviene revisar
+function movCierres(newR){
+  const hoy=hoyISO(), cierra=[], aviso=[];
+  const N=Object.fromEntries(newR.map(r=>[pad4(r[0]),r])), O=Object.fromEntries(roster.map(r=>[pad4(r[0]),r]));
+  for(const nom of Object.keys(AM)){
+    const eff=areaEn(nom,hoy), o=O[nom], n=N[nom]; if(!eff||!o||!n) continue;
+    const oldRH=norm(o[2]), newA=norm(n[2]); if(eff===oldRH||newA==="IPP"||n[6]==="IPP") continue;
+    if(newA===eff) cierra.push({nom,nombre:n[1],area:eff});
+    else if(newA!==oldRH) aviso.push({nom,nombre:n[1],dest:eff,antes:oldRH,nuevo:newA});
+  }
+  return {cierra,aviso};
 }
 let newSet = new Set(), altaDe = {};
 // quien entró después del día del plan no cuenta para ese día
@@ -659,6 +746,9 @@ function applyRoster(newR,diff,meta){
     const p=store.get("pp.plan."+d,null); noms.forEach(n=>{delete p.assign[n];quitadas++}); store.set("pp.plan."+d,p);
   }
   diff.bajas.forEach(r=>{ delete posB[pad4(r[0])]; }); store.set("pp.posBaja",posB);
+  const mc=movCierres(newR);
+  if(mc.cierra.length){ mc.cierra.forEach(c=>{ (AM[c.nom] ||= []).push({desde:f,area:null,en:new Date().toISOString()}); AM[c.nom].sort((a,b)=>a.desde<b.desde?-1:a.desde>b.desde?1:0); }); store.set("pp.areaMov",AM); }
+  applyRoster.cierres=mc.cierra.length;
   roster=newR; store.set("pp.roster",custom?roster:null);
   store.set("pp.rosterMeta",{...meta,aplicada:f,total:newR.length}); store.set("pp.baseVer",BASE_VER);
   buildPeople(); loadPlan();
@@ -800,7 +890,10 @@ function renderToolbar(){
   $("#lblMode").value=lblMode;
   const al=allowedHor();
   $("#brushHor").innerHTML = al.map(id=>`<button data-h="${id}" aria-pressed="${id===brushH}">${esc(horById(id).label)}</button>`).join("");
-  $("#lockNote").textContent = dayCfg().unico? "Horario único este día: cambiarlo mueve a todos." : "";
+  const mov = brushM==="MOV";
+  $("#brushHor").hidden=mov; $("#brushHor").previousElementSibling.hidden=mov;
+  document.body.classList.toggle("movmode",mov&&view!=="asis");
+  $("#lockNote").textContent = mov? "Haz clic en una persona, o arrástrala a otra área." : dayCfg().unico? "Horario único este día: cambiarlo mueve a todos." : "";
 }
 function renderBoard(){
   const q=norm($("#q").value);
@@ -826,7 +919,7 @@ function renderBoard(){
       const bad = !asis && ruleAreaBad(list);
       const ttl = AREA_MAP[ak]?.folio==="PT"?"Almacén PT":titleCase(ak);
       const grp = SIEMPRE.has(ak)&&!asis ? `<span class="hint">Siempre incluido</span>` : (list.length?`<button class="btn small editonly" data-area="${esc(ak)}">Toda el área</button>`:"");
-      html+=`<div class="area${bad?" bad":""}"><div class="ahead"><h3>${esc(ttl)}</h3><span class="count"><b>${s}</b>/${tot}</span><span class="meter"><i style="width:${tot?s/tot*100:0}%"></i></span>${grp}</div>`;
+      html+=`<div class="area${bad?" bad":""}" data-areak="${esc(ak)}"><div class="ahead"><h3>${esc(ttl)}</h3><span class="count"><b>${s}</b>/${tot}</span><span class="meter"><i style="width:${tot?s/tot*100:0}%"></i></span>${grp}</div>`;
       const rl=roleLine(asis?list.filter(p=>prog.set.has(p.nom)):list,isOn);
       const vtx=vl.length?`<b>${vl.length}</b> vacante${vl.length>1?"s":""}`:"";
       html+=(rl? rl.replace('<div class="roles">',`<div class="roles">${vtx?vtx+" · ":""}`) : (vtx?`<div class="roles">${vtx}</div>`:""))+`<div class="chips">`;
@@ -839,10 +932,12 @@ function renderBoard(){
         const hb = asis ? (ac?`<span class="h">${ac}</span>`:"") : (!dayCfg().unico&&a&&a.m!=="OFF"&&a.h!==defH? `<span class="h">${esc(horById(a.h)?.label.slice(8,10)||"?")}</span>`:"");
         const nv = newSet.has(p.nom)? `<span class="nv">NUEVO</span>`:"";
         const pb = posB[p.nom];
-        const det = `${esc(p.nombre)}${p.puesto?" · "+esc(p.puesto):""}${nv?" · alta reciente":""}${pb?" · posible baja: "+esc(pb.motivo):""}`;
+        const mvT = p.mov? ` · viene de ${esc(titleCase(p.mov.de))} desde ${fCorta(p.mov.desde)}` : "";
+        const mvB = p.mov? `<span class="mv" aria-hidden="true">↔</span>` : "";
+        const det = `${esc(p.nombre)}${p.puesto?" · "+esc(p.puesto):""}${nv?" · alta reciente":""}${pb?" · posible baja: "+esc(pb.motivo):""}${mvT}`;
         const estado = asis ? (ac?" · "+ASIS[ac]:(np?" · no programado":"")) : (a?" · "+(a.m==="OFF"?"no disponible":MODS[a.m].label):"");
         const lbl = lblMode==="puesto" ? puestoCorto(p.puesto) : p.nombre.split(" ")[0];
-        html+=`<button class="chip ${cls}${dim?" dim":""}${hit?" hit":""}${pb?" pb":""}${np?" np":""}" data-nom="${p.nom}" data-name="${det}" aria-label="${p.nom} ${det}${estado}"><span class="n">${p.nom}</span><span class="a">${esc(lbl)}</span>${hb}${nv}</button>`;
+        html+=`<button class="chip ${cls}${dim?" dim":""}${hit?" hit":""}${pb?" pb":""}${np?" np":""}" data-nom="${p.nom}" data-name="${det}" aria-label="${p.nom} ${det}${estado}"><span class="n">${p.nom}</span><span class="a">${esc(lbl)}</span>${hb}${nv}${mvB}</button>`;
       }
       for(const v of vl) html+=`<div class="vacbox" title="Vacante · ${esc(v.puesto)}${v.nota?" · "+esc(v.nota):""}" aria-label="Vacante: ${esc(v.puesto)}"><span class="n">VACANTE</span><span class="a">${esc(v.puesto)}</span></div>`;
       html+=`</div></div>`;
@@ -952,8 +1047,8 @@ const AREAS_ORD = ()=>{ const ks=new Set([...people.map(p=>p.area),...(vacs||[])
 const areaTtl = k=> AREA_MAP[k]?.folio==="PT"?"Almacén PT":titleCase(k);
 function renderPlantilla(){
   const f30=faltasRango(30);
-  const occ={}, vac={}, pbc={};
-  people.forEach(p=>{occ[p.area]=(occ[p.area]||0)+1; if(posB[p.nom]) pbc[p.area]=(pbc[p.area]||0)+1;});
+  const occ={}, vac={}, pbc={}, hoy=hoyISO(), ah=p=>areaDe(p,hoy).area;   // la dotación usa el área de hoy
+  people.forEach(p=>{const k=ah(p); occ[k]=(occ[k]||0)+1; if(posB[p.nom]) pbc[k]=(pbc[k]||0)+1;});
   (vacs||[]).forEach(v=>{const k=norm(v.area); vac[k]=(vac[k]||0)+1;});
   const areas=AREAS_ORD().filter(k=>occ[k]||vac[k]);
   let T={o:0,v:0,b:0}, rows="", lastLn="";
@@ -970,22 +1065,30 @@ function renderPlantilla(){
   const vl=(vacs||[]).slice().sort((a,b)=>AREAS_ORD().indexOf(norm(a.area))-AREAS_ORD().indexOf(norm(b.area)));
   const pbl=Object.entries(posB);
   const sug=Object.entries(f30).filter(([n,ds])=>ds.length>=3&&byNom[n]&&!posB[n]).sort((a,b)=>b[1].length-a[1].length);
+  const movd=people.filter(p=>p.areaRH!==ah(p)).sort((a,b)=>a.nom.localeCompare(b.nom));
+  const hist=[]; for(const [nom,l] of Object.entries(AM)){ const rh=(byNom[nom]||ipp.find(x=>x.nom===nom))?.areaRH; l.forEach((e,i)=>{ if(e.en) hist.push({nom,e,de:i?(l[i-1].area||rh):rh,a:e.area||rh}); }); }
+  hist.sort((a,b)=>a.e.en<b.e.en?1:-1); hist.length=Math.min(hist.length,20);
+  const tk=k=>k?areaTtl(k):"su área de RH";
   $("#board").innerHTML=`<div class="page">
    <div class="card"><h4>Dotación por área</h4>
      <div class="kpis"><div><b>${TP}</b><span>puestos</span></div><div><b>${T.o}</b><span>ocupados</span></div><div><b>${T.v}</b><span>vacantes</span></div><div><b>${T.b}</b><span>posibles bajas</span></div><div><b>${ipp.length}</b><span>con IPP (fuera de los puestos)</span></div></div>
      <div class="tblwrap"><table class="tbl"><tr><th>Área</th><th class="r">Puestos</th><th class="r">Ocupados</th><th class="r">Vacantes</th><th class="r">Posibles bajas</th><th class="r">Cobertura</th></tr>${rows}</table></div>
      <p class="note">Puestos = personas activas + vacantes registradas. La cobertura descuenta las posibles bajas: es la gente con la que realmente cuentas.</p></div>
+   <div class="card"><h4>Movimientos de área · ${movd.length}</h4>
+     ${movd.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Puesto</th><th>Área de RH</th><th>Trabaja en</th><th>Desde</th><th></th></tr>${movd.map(p=>`<tr><td>${p.nom}</td><td>${esc(p.nombre)}</td><td>${esc(p.puesto||"")}</td><td>${esc(areaTtl(p.areaRH))}</td><td>${esc(areaTtl(ah(p)))}</td><td>${fCorta(movVig(p.nom,hoy).desde)}</td><td><button class="btn small editonly" data-act="retmov" data-nom="${p.nom}">Regresar</button></td></tr>`).join("")}</table></div>`:`<p class="hint">Nadie está movido de su área de RH.</p>`}
+     ${hist.length?`<h5>Últimos cambios</h5><ul class="mvhist">${hist.map(h=>`<li>${fCorta(h.e.desde)} · ${h.nom} · ${esc(tk(h.de))} → ${esc(tk(h.a))}</li>`).join("")}</ul>`:""}
+     <p class="note">Un movimiento dura hasta que lo regreses. Los folios, las reglas, la asistencia y las faltas del reporte cuentan a la persona en el área donde trabajó. Para mover a alguien, usa Plan del día, modo Mover de área.</p></div>
    <div class="card"><h4>Vacantes · ${vl.length}</h4>
      ${vl.length?`<div class="tblwrap"><table class="tbl"><tr><th>Área</th><th>Puesto</th><th>Origen</th><th>Nota</th><th></th></tr>${vl.map(v=>`<tr><td>${esc(areaTtl(norm(v.area)))}</td><td>${esc(v.puesto)}</td><td><span class="pill">${v.origen==="manual"?"Manual":"Archivo"}</span></td><td class="hint">${[v.origen==="manual"&&v.desde?`Desde ${v.desde.slice(8,10)}/${v.desde.slice(5,7)}`:"",esc(v.nota||"")].filter(Boolean).join(" · ")}</td><td>${v.origen==="manual"?`<button class="btn small editonly" data-act="delvac" data-id="${v.id}">Quitar</button>`:""}</td></tr>`).join("")}</table></div>`:`<p class="hint">Sin vacantes registradas.</p>`}
      <div class="addrow editonly"><label>Área<select id="nvArea">${opts}</select></label><label>Puesto<input id="nvPuesto" list="dlPuestos" placeholder="Soldador"></label><label>Nota<input id="nvNota" placeholder="Opcional"></label><button class="btn" data-act="addvac">Agregar vacante</button></div>
      <datalist id="dlPuestos">${puestos.map(x=>`<option value="${esc(x)}">`).join("")}</datalist>
      <p class="note">Las vacantes del archivo se reemplazan cada vez que cargas uno nuevo. Las que agregas a mano se quedan hasta que las quites.</p></div>
    <div class="card"><h4>Posibles bajas · ${pbl.length}</h4>
-     ${pbl.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Área</th><th>Puesto</th><th class="r">Faltas 30 días</th><th>Motivo</th><th>Desde</th><th></th></tr>${pbl.map(([n,b])=>{const p=byNom[n];return `<tr><td>${n}</td><td>${esc(p?p.nombre:"(ya no activo)")}</td><td>${esc(p?areaTtl(p.area):"")}</td><td>${esc(p?.puesto||"")}</td><td class="r">${(f30[n]||[]).length||""}</td><td>${esc(b.motivo)}${b.nota?`<br><span class="hint">${esc(b.nota)}</span>`:""}</td><td>${b.fecha}</td><td><button class="btn small editonly" data-act="delpb" data-nom="${n}">Quitar marca</button></td></tr>`}).join("")}</table></div>`:`<p class="hint">Nadie marcado como posible baja.</p>`}
+     ${pbl.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Área</th><th>Puesto</th><th class="r">Faltas 30 días</th><th>Motivo</th><th>Desde</th><th></th></tr>${pbl.map(([n,b])=>{const p=byNom[n];return `<tr><td>${n}</td><td>${esc(p?p.nombre:"(ya no activo)")}</td><td>${esc(p?areaTtl(ah(p)):"")}</td><td>${esc(p?.puesto||"")}</td><td class="r">${(f30[n]||[]).length||""}</td><td>${esc(b.motivo)}${b.nota?`<br><span class="hint">${esc(b.nota)}</span>`:""}</td><td>${b.fecha}</td><td><button class="btn small editonly" data-act="delpb" data-nom="${n}">Quitar marca</button></td></tr>`}).join("")}</table></div>`:`<p class="hint">Nadie marcado como posible baja.</p>`}
      <div class="addrow editonly"><label>Nómina<input id="pbNom" inputmode="numeric" size="7" placeholder="5163"></label><label>Motivo<select id="pbMot"><option>Reincidencia en faltas</option><option>Abandono de trabajo</option><option>Avisó que se va</option><option>Desempeño</option><option>Otro</option></select></label><label>Nota<input id="pbNota" placeholder="Opcional"></label><button class="btn" data-act="addpb">Marcar posible baja</button></div>
      <p class="note" id="pbMsg">Siguen en el tablero, con borde rojo, hasta que la baja llegue en el archivo de personal; entonces se quitan solas de esta lista.</p></div>
    <div class="card"><h4>Sugeridas por faltas · 3 o más en 30 días</h4>
-     ${sug.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Área</th><th class="r">Faltas</th><th>Fechas</th><th></th></tr>${sug.map(([n,ds])=>{const p=byNom[n];return `<tr><td>${n}</td><td>${esc(p.nombre)}</td><td>${esc(areaTtl(p.area))}</td><td class="r">${ds.length}</td><td class="hint">${ds.map(d=>d.slice(8,10)+"/"+d.slice(5,7)).join(", ")}</td><td><button class="btn small editonly" data-act="sugpb" data-nom="${n}">Marcar posible baja</button></td></tr>`}).join("")}</table></div>`:`<p class="hint">Nadie con 3 o más faltas en los últimos 30 días.</p>`}
+     ${sug.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Área</th><th class="r">Faltas</th><th>Fechas</th><th></th></tr>${sug.map(([n,ds])=>{const p=byNom[n];return `<tr><td>${n}</td><td>${esc(p.nombre)}</td><td>${esc(areaTtl(ah(p)))}</td><td class="r">${ds.length}</td><td class="hint">${ds.map(d=>d.slice(8,10)+"/"+d.slice(5,7)).join(", ")}</td><td><button class="btn small editonly" data-act="sugpb" data-nom="${n}">Marcar posible baja</button></td></tr>`}).join("")}</table></div>`:`<p class="hint">Nadie con 3 o más faltas en los últimos 30 días.</p>`}
      <p class="note">Es una alerta para revisar, no una decisión: confirma el caso con el supervisor y RH antes de marcarlo.</p></div>
    <div class="card"><h4>Con IPP · ${ipp.length}</h4>
      ${ipp.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Puesto</th></tr>${ipp.map(p=>`<tr><td>${p.nom}</td><td>${esc(p.nombre)}</td><td>${esc(p.puesto)}</td></tr>`).join("")}</table></div>`:`<p class="hint">Nadie con IPP.</p>`}
@@ -1011,7 +1114,7 @@ function render(){
 
 /* ---------- eventos ---------- */
 $("#fecha").value=fecha;
-$("#fecha").addEventListener("change",e=>{if(!e.target.value)return;fecha=e.target.value;defaultBrush();loadPlan();store.set("pp.lastDate",fecha);render()});
+$("#fecha").addEventListener("change",e=>{if(!e.target.value)return;fecha=e.target.value;aplicarMovs(fecha);defaultBrush();loadPlan();store.set("pp.lastDate",fecha);render()});
 $("#brushMod").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;brushM=b.dataset.m;renderToolbar()});
 $("#brushHor").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;brushH=b.dataset.h;enforceUnico(true);commit()});
 $("#q").addEventListener("input",renderBoard);
@@ -1019,12 +1122,14 @@ $("#views").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if
 $("#brushAsis").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;brushA=b.dataset.a;renderToolbar()});
 $("#lblMode").addEventListener("change",e=>{lblMode=e.target.value;store.set("pp.lbl",lblMode);renderBoard()});
 
-// arrastrar para pintar
+// arrastrar para pintar (en modo "Mover de área" el arrastre mueve a la persona)
 let dragging=null;
+const modoMov=()=>brushM==="MOV"&&view!=="asis"&&!READONLY;
 $("#board").addEventListener("pointerdown",e=>{
   const c=e.target.closest(".chip"); if(!c||READONLY) return;
   e.preventDefault();
   const nom=c.dataset.nom;
+  if(modoMov()){ dragging={mov:true,nom,sx:e.clientX,sy:e.clientY,moved:false}; return; }
   if(view==="asis"){ const mode=sameA(nom)?"clear":"set"; dragging={mode,touched:new Set([nom]),asis:true}; paintA(nom,mode); commitA(); return; }
   const mode = sameAsBrush(plan.assign[nom])?"clear":"set";
   dragging={mode,touched:new Set([nom])}; paint(nom,mode); commit();
@@ -1032,15 +1137,33 @@ $("#board").addEventListener("pointerdown",e=>{
 $("#board").addEventListener("pointerover",e=>{
   const c=e.target.closest(".chip");
   if(c&&!dragging) showTip(c,e);
-  if(!dragging||!c||dragging.touched.has(c.dataset.nom)) return;
+  if(!dragging||dragging.mov||!c||dragging.touched.has(c.dataset.nom)) return;
   dragging.touched.add(c.dataset.nom);
   if(dragging.asis){ paintA(c.dataset.nom,dragging.mode); commitA(); } else { paint(c.dataset.nom,dragging.mode); commit(); }
 });
 $("#board").addEventListener("pointerout",e=>{if(e.target.closest(".chip"))$("#tip").style.display="none"});
-window.addEventListener("pointerup",()=>dragging=null);
+const areaBajo=e=>document.elementFromPoint(e.clientX,e.clientY)?.closest?.("#board .area[data-areak]")||null;
+const limpiaDrop=()=>document.querySelectorAll(".area.drop").forEach(a=>a.classList.remove("drop"));
+window.addEventListener("pointermove",e=>{
+  if(!dragging||!dragging.mov) return;
+  if(!dragging.moved && Math.hypot(e.clientX-dragging.sx,e.clientY-dragging.sy)>6){ dragging.moved=true; $("#tip").style.display="none"; }
+  if(!dragging.moved) return;
+  const a=areaBajo(e); limpiaDrop(); if(a) a.classList.add("drop");
+});
+window.addEventListener("pointercancel",()=>{ limpiaDrop(); dragging=null; });
+window.addEventListener("pointerup",e=>{
+  const d=dragging; dragging=null;
+  if(!d||!d.mov) return;
+  limpiaDrop();
+  if(!d.moved){ openMov(d.nom); return; }
+  const a=areaBajo(e), p=byNom[d.nom]; if(!a||!p||a.dataset.areak===p.area) return;
+  const k=a.dataset.areak;
+  if(setMov(d.nom,fecha,k)) toast(`${d.nom} movido a ${areaTtl(k)} desde ${fCorta(fecha)}`);
+});
 $("#board").addEventListener("keydown",e=>{
   const c=e.target.closest(".chip"); if(!c||READONLY||(e.key!=="Enter"&&e.key!==" ")) return;
   e.preventDefault(); const nom=c.dataset.nom;
+  if(modoMov()){ openMov(nom); return; }
   if(view==="asis"){ paintA(nom,sameA(nom)?"clear":"set"); commitA(); } else { paint(nom,sameAsBrush(plan.assign[nom])?"clear":"set"); commit(); }
   requestAnimationFrame(()=>document.querySelector(`.chip[data-nom="${nom}"]`)?.focus());
 });
@@ -1048,15 +1171,53 @@ $("#board").addEventListener("click",e=>{
   if(READONLY) return;
   const bl=e.target.closest("[data-line]"), ba=e.target.closest("[data-area]"), act=e.target.closest("[data-act]");
   const tg = view==="asis" ? toggleGroupA : toggleGroup;
+  if((bl||ba)&&modoMov()) return toast("Cambia a otro modo de marcado para marcar toda un área o línea.");
   if(bl) tg(people.filter(p=>p.linea===bl.dataset.line));
   if(ba) tg(people.filter(p=>p.area===ba.dataset.area));
   if(act) pageAction(act);
 });
+/* diálogo para mover de área */
+let movNom=null;
+function areaOpts(p){
+  let h=`<option value="">Elige un área</option>`;
+  for(const ln of LINE_ORDER){
+    const ks=Object.keys(AREA_MAP).filter(k=>k!=="IPP"&&AREA_MAP[k].linea===ln&&k!==p.area);
+    if(ks.length) h+=`<optgroup label="${esc(ln)}">${ks.map(k=>`<option value="${esc(k)}">${esc(areaTtl(k))}</option>`).join("")}</optgroup>`;
+  }
+  return h;
+}
+function openMov(nom){
+  const p=byNom[nom]; if(!p||READONLY) return;
+  movNom=nom; $("#tip").style.display="none";
+  $("#movBody").innerHTML=`<p class="minfo"><b>${p.nom}</b> · ${esc(p.nombre)}<br>${esc(p.puesto||"Sin puesto registrado")}<br>Área de RH: <b>${esc(areaTtl(p.areaRH))}</b>`
+    +(p.mov?`<br>Trabaja en: <b>${esc(areaTtl(p.area))}</b> desde ${fCorta(p.mov.desde)}`:"")+`</p>
+    <label class="field">Mover a<select id="movTo">${areaOpts(p)}</select></label>
+    <label class="field">A partir de<input id="movDesde" type="date" value="${fecha}"></label>
+    <p class="mwarn" id="movAviso" role="status" hidden>Los folios y las faltas desde esa fecha se van a contar en el área nueva.</p>
+    <p class="merr" id="movErr" role="alert" hidden></p>
+    <div class="macts"><button class="btn primary" id="movGo">Mover</button>${p.mov?`<button class="btn" id="movBack">Regresar a ${esc(areaTtl(p.areaRH))}</button>`:""}</div>`;
+  avisoMov(); $("#dlgMov").showModal(); $("#movTo").focus();
+}
+function avisoMov(){ const v=$("#movDesde").value; $("#movAviso").hidden=!(v&&v<hoyISO()); }
+$("#movBody").addEventListener("change",e=>{ if(e.target.id==="movDesde") avisoMov(); if(e.target.id==="movTo") $("#movErr").hidden=true; });
+$("#movBody").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b||!movNom) return;
+  const d=$("#movDesde").value;
+  if(!d){ $("#movErr").textContent="Elige la fecha desde la que aplica."; $("#movErr").hidden=false; $("#movDesde").focus(); return; }
+  if(b.id==="movGo"){
+    const k=$("#movTo").value;
+    if(!k){ $("#movErr").textContent="Elige el área a la que va."; $("#movErr").hidden=false; $("#movTo").focus(); return; }
+    const nom=movNom, rh=byNom[nom].areaRH; if(setMov(nom,d,k)){ $("#dlgMov").close(); toast(k===rh?`${nom} regresó a ${areaTtl(k)} desde ${fCorta(d)}`:`${nom} movido a ${areaTtl(k)} desde ${fCorta(d)}`); }
+  }
+  if(b.id==="movBack"){ const nom=movNom, rh=byNom[nom].areaRH; if(setMov(nom,d,null)){ $("#dlgMov").close(); toast(`${nom} regresó a ${areaTtl(rh)} desde ${fCorta(d)}`); } }
+});
+$("#dlgMov").addEventListener("close",()=>{ const n=movNom; movNom=null; requestAnimationFrame(()=>document.querySelector(`.chip[data-nom="${n}"]`)?.focus()); });
 function pageAction(b){
   const a=b.dataset.act;
   if(a==="delvac"){ vacs=vacs.filter(v=>v.id!==b.dataset.id); store.set("pp.vac",vacs); toast("Vacante quitada"); }
   if(a==="addvac"){ const puesto=$("#nvPuesto").value.trim(); if(!puesto){ $("#nvPuesto").focus(); return toast("Escribe el puesto de la vacante"); }
     vacs=(vacs||[]).concat({id:"m"+Date.now().toString(36),area:$("#nvArea").value,puesto,origen:"manual",desde:hoyISO(),nota:$("#nvNota").value.trim()}); store.set("pp.vac",vacs); toast("Vacante agregada"); }
+  if(a==="retmov"){ if(setMov(b.dataset.nom,hoyISO(),null)) toast(`${b.dataset.nom} regresó a su área de RH desde ${fCorta(hoyISO())}`); }
   if(a==="delpb"){ delete posB[b.dataset.nom]; store.set("pp.posBaja",posB); toast("Marca quitada"); }
   if(a==="addpb"||a==="sugpb"){
     const n = a==="sugpb" ? b.dataset.nom : pad4($("#pbNom").value);
@@ -1094,6 +1255,7 @@ $("#pasteGo").addEventListener("click",()=>{
   const toks=($("#pasteTxt").value.match(/\d{1,5}/g)||[]).map(pad4);
   const ok=[],bad=[];
   const asis=view==="asis";
+  if(!asis&&brushM==="MOV"){ $("#pasteMsg").textContent="Elige otro modo de marcado (por ejemplo Tiempo extra) para pegar nóminas."; return; }
   toks.forEach(n=>{if(byNom[n]){ if(asis) paintA(n,brushA==="CLR"?"clear":"set"); else paint(n,brushM==="CLR"?"clear":"set"); ok.push(n)}else bad.push(n)});
   if(asis) commitA(); else commit();
   $("#pasteMsg").innerHTML = `${ok.length} marcadas.` + (bad.length?` <strong style="color:var(--err)">No están en la base: ${bad.join(", ")}</strong>`:"");
@@ -1292,6 +1454,7 @@ function showDiff(newR,meta,q){
   const hits=futureHits([...diff.bajas.map(r=>r[0]),...diff.cambios.filter(r=>norm(r[3])==="IPP").map(r=>r[0])]);
   const li=(arr,fn)=>arr.length?`<ul>${arr.map(fn).join("")}</ul>`:`<p class="hint">Ninguna.</p>`;
   const nada=!diff.altas.length&&!diff.bajas.length&&!diff.cambios.length;
+  const mc=movCierres(newR);
   $("#rosterDiff").innerHTML=`<div class="diff">
     <h6>${esc(meta.archivo)} · ${newR.filter(r=>r[6]!=="IPP").length} activas${newR.some(r=>r[6]==="IPP")?` · ${newR.filter(r=>r[6]==="IPP").length} con IPP`:""}${q.vac?` · ${q.vac.length} vacantes`:""} (antes ${people.length} activas)</h6>
     ${q.asis?`<p class="hint">Asistencia: ${Object.values(q.asis).reduce((s,m)=>s+Object.keys(m).length,0)} marcas en ${Object.keys(q.asis).length} días con datos (${q.fechas} columnas de fecha). Solo llenan días o personas sin captura; lo que ya capturaste en la app no se toca.</p>`:""}
@@ -1301,6 +1464,8 @@ function showDiff(newR,meta,q){
     ${aIPP.length?`<h6><span class="tag cambio">Pasan a IPP</span>${aIPP.length}</h6>${li(aIPP,r=>`<li>${r[0]} · ${esc(r[1])} · venía de ${esc(titleCase(norm(r[2])))}</li>`)}`:""}
     <h6><span class="tag cambio">Cambios de área</span>${diff.cambiosArea.length}</h6>${li(diff.cambiosArea,r=>`<li>${r[0]} · ${esc(r[1])} · ${esc(titleCase(norm(r[2])))} → ${esc(titleCase(norm(r[3])))}</li>`)}`}
     ${hits.length?`<div class="warnbox">Bajas o IPP marcados en planes próximos: ${hits.map(h=>`${h.d} (${h.noms.join(", ")})`).join("; ")}. Al aplicar se quitan de esos planes; los días pasados no se tocan.</div>`:""}
+    ${mc.cierra.length?`<div class="warnbox"><strong>Movimientos de área que se cierran:</strong><br>${mc.cierra.map(c=>`${c.nom} · ${esc(c.nombre)}: ya está en ${esc(titleCase(c.area))} en el archivo de RH; el movimiento manual se cierra.`).join("<br>")}</div>`:""}
+    ${mc.aviso.length?`<div class="warnbox"><strong>Movimientos de área que se conservan, conviene revisarlos:</strong><br>${mc.aviso.map(c=>`${c.nom} · ${esc(c.nombre)}: trabaja en ${esc(titleCase(c.dest))} por movimiento manual, y el archivo lo trae en ${esc(titleCase(c.nuevo))} (antes ${esc(titleCase(c.antes))}).`).join("<br>")}</div>`:""}
     ${q.dup.length?`<div class="warnbox"><strong>Nóminas repetidas en el archivo:</strong> ${q.dup.join(", ")}. Solo se usará la primera aparición.</div>`:""}
     ${q.sinLinea.length?`<div class="warnbox"><strong>Áreas nuevas sin línea asignada:</strong> ${q.sinLinea.map(k=>esc(titleCase(k))).join(", ")}. Saldrán en "Sin línea asignada" y en el folio con ese nombre.</div>`:""}
     ${q.avTabla&&q.avTabla.length?`<div class="warnbox"><strong>Revisar con quien arma el archivo:</strong><br>${q.avTabla.map(esc).join("<br>")}</div>`:""}
@@ -1317,7 +1482,7 @@ $("#rosterDiff").addEventListener("click",e=>{
   if(extra.vac){ setVacantes(extra.vac); txt+=` ${extra.vac.length} vacantes del archivo.`; }
   if(extra.asis){ const m=mergeAsis(extra.asis); loadAsis(); txt+=` Asistencia: ${m.add} marcas nuevas`+(m.dif?`, ${m.dif} distintas a lo capturado (se conservó lo capturado)`:"")+"."; }
   $("#rosterDiff").innerHTML=""; renderCfg();
-  $("#rosterMsg").textContent=`Base aplicada: ${diff.altas.length} altas, ${diff.bajas.length} bajas, ${diff.cambios.length} cambios de área o a IPP.`+(q?` Se quitaron ${q} marcas de bajas en planes próximos.`:"")+txt;
+  $("#rosterMsg").textContent=`Base aplicada: ${diff.altas.length} altas, ${diff.bajas.length} bajas, ${diff.cambios.length} cambios de área o a IPP.`+(q?` Se quitaron ${q} marcas de bajas en planes próximos.`:"")+(applyRoster.cierres?` Se cerraron ${applyRoster.cierres} movimientos de área porque RH ya los tiene ahí.`:"")+txt;
 });
 $("#rosterReset").addEventListener("click",()=>{showDiff(BASE_ROSTER,{archivo:"Base incluida ("+BASE_VER+")",incluida:true},{dup:[],sinLinea:[],avisos:[],vac:BASE_VAC,asis:asisFromBase(),fechas:Object.keys(BASE_ASIS).length})});
 
@@ -1468,7 +1633,7 @@ let repPer=(()=>{ try{ const v=localStorage.getItem("ppx.repPer"); return ["1","
 let repDia=null;
 function diaRep(d){
   const A=store.get("pp.asis."+d,{}); const {set,conPlan}=progDe(d); const c={F:0,I:0,V:0,P:0}; const porArea={}; const conFalta=[];
-  set.forEach(n=>{ const p=byNom[n]; const k=A[n]; const a=p?p.area:"?";
+  set.forEach(n=>{ const p=byNom[n]; const k=A[n]; const a=p?areaDe(p,d).area:"?";
     const x=(porArea[a] ||= {N:0,F:0,fal:[],otr:[]}); x.N++;
     if(k){ c[k]++; if(k==="F"){ x.F++; x.fal.push(puestoDe(p)); conFalta.push(n); } else x.otr.push(`${puestoDe(p)} · ${MOTIVO[k]}`); } });
   return {d,N:set.size,...c,aus:c.F+c.I+c.P,conPlan,porArea,conFalta};
@@ -1507,7 +1672,7 @@ function datosReporte(){
   const A=agg(cur), B=agg(prev);
   const conF=new Set(cur.flatMap(x=>x.conFalta));
   const D=repDia?cur.find(x=>x.d===repDia)||null:null;
-  const lin={}; people.forEach(p=>{(lin[p.linea] ||= {o:0,v:0}).o++;});
+  const lin={}; people.forEach(p=>{(lin[areaDe(p,hoy).linea] ||= {o:0,v:0}).o++;});
   (vacs||[]).forEach(v=>{const ln=AREA_MAP[norm(v.area)]?.linea||"Sin línea asignada"; (lin[ln] ||= {o:0,v:0}).v++;});
   const occ=people.length, nv=(vacs||[]).length, P=occ+nv, pb=Object.keys(posB).filter(k=>byNom[k]).length;
   const te=horasTE(ini,fin), teP=pIni?horasTE(pIni,pFin):null;
@@ -1647,7 +1812,7 @@ function renderReporte(){
     </div>
     <div class="grid2">
       <section class="panel"><h3>Requiere atención</h3><p class="ps">Personas con 3 o más faltas en los últimos 30 días o marcadas como posible baja.</p>
-        ${atn.length?`<div class="tblwrap"><table class="rtable"><tr><th>Persona</th><th>Área</th><th>Motivo</th></tr>${atn.map(a=>`<tr><td><span class="nm">${esc(a.p.nombre)}</span><br><span class="mt">${a.nom} · ${esc(a.p.puesto||"")}</span></td><td>${esc(areaTtl(a.p.area))}</td><td>${esc(a.motivo)}${a.pb?`<br><span class="mt">Posible baja: ${esc(a.pb.motivo)}</span>`:""}</td></tr>`).join("")}</table></div>${R.aten.length>8?`<p class="empty">Y ${R.aten.length-8} más en la pestaña Plantilla y vacantes.</p>`:""}`
+        ${atn.length?`<div class="tblwrap"><table class="rtable"><tr><th>Persona</th><th>Área</th><th>Motivo</th></tr>${atn.map(a=>`<tr><td><span class="nm">${esc(a.p.nombre)}</span><br><span class="mt">${a.nom} · ${esc(a.p.puesto||"")}</span></td><td>${esc(areaTtl(areaDe(a.p,R.hoy).area))}</td><td>${esc(a.motivo)}${a.pb?`<br><span class="mt">Posible baja: ${esc(a.pb.motivo)}</span>`:""}</td></tr>`).join("")}</table></div>${R.aten.length>8?`<p class="empty">Y ${R.aten.length-8} más en la pestaña Plantilla y vacantes.</p>`:""}`
           :`<p class="empty">Nadie con 3 o más faltas en los últimos 30 días ni marcado como posible baja.</p>`}</section>
       <section class="panel"><h3>Movimientos recientes</h3><p class="ps">Últimos 30 días. Altas por fecha de ingreso y bajas por fecha en que se registraron.</p>
         ${movs.length?`<div class="tblwrap"><table class="rtable"><tr><th>Fecha</th><th>Movimiento</th><th>Persona</th><th>Área</th></tr>${movs.map(m=>`<tr><td class="tk">${fCorta(m.f)}</td><td><span class="tagx ${m.tipo}">${m.tipo==="alta"?"Alta":"Baja"}</span></td><td><span class="nm">${esc(m.nombre)}</span><br><span class="mt">${m.nom}</span></td><td>${esc(areaTtl(m.area))}</td></tr>`).join("")}</table></div>`
@@ -1753,7 +1918,7 @@ function aplicarEstado(st){
   SYNC.v=st.v; SYNC.at=st.at;
   cfg=Object.assign(structuredClone(DEFAULT_CFG),store.get("pp.cfg",{}));
   roster=store.get("pp.roster",null)||BASE_ROSTER; vacs=store.get("pp.vac",null); posB=store.get("pp.posBaja",{});
-  buildPeople(); loadPlan(); render();
+  buildPeople(); aplicarMovs(fecha); loadPlan(); render();
 }
 async function syncPoll(){
   if(document.hidden||SYNC.busy||Object.keys(SYNC.pending).length) return;
