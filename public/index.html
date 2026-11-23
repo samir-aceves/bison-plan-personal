@@ -559,10 +559,11 @@ const BASE_ROSTER = [];
 // vacantes y faltas del archivo "Detalle de asistencia" (13-nov-2026)
 const BASE_VAC = [];
 const BASE_ASIS = {};
-const APP_VERSION = "2.6";
+const APP_VERSION = "2.7";
 const APP_FECHA = "2026-11-19";
 const HERR_DESDE = "2026-10-14"; // Herramentales entra solo en planes desde esta fecha
 const CAMBIOS = [
+  ["2.7","2026-11-23","Carga del Detalle de asistencia de RH, más segura. Si el archivo trae varias hojas, la app usa sola la que tiene la asistencia y dice cuál leyó. Los días que ya venían en el archivo anterior no se vuelven a importar; si RH los cambió, lo avisa por persona y fecha para revisarlo (por ejemplo, faltas de un puesto vacante que ahora aparecen a nombre de quien lo ocupa). Un día que ya se capturó en la app no se toca: se muestran las diferencias entre RH y la app. Avisa los días hábiles que el archivo no trae y si el archivo solo trae faltas."],
   ["2.6","2026-11-19","Mover operadores de área: botón Mover de área en Plan del día. Con un clic se elige el área destino y desde qué fecha; también se puede arrastrar el operador a otra área. El movimiento dura hasta que lo regreses, y desde esa fecha la persona cuenta en el área donde trabaja: en el tablero, la regla de departamento completo, el folio, la asistencia y las faltas del Reporte DG. Los días anteriores no cambian. El operador movido lleva la marca ↔. La pestaña Plantilla y vacantes lista los movimientos vigentes con botón Regresar y su historial. Al cargar el archivo de RH, si ya trae a la persona en el área nueva, el movimiento se cierra solo. Nuevo estilo igual al Tablero de producción: encabezado oscuro con logo, barra de pestañas y colores de marca. En celular, los botones de marcado ya no quedan cortados."],
   ["2.5","2026-11-19","Reporte DG por periodo: Día, 7, 15 y 30 días (cada quien elige; la app recuerda su elección). En Día, los indicadores son solo de ese día y se comparan contra el día capturado anterior; si hoy aún no hay asistencia, muestra el último día capturado y lo avisa. Faltas por área ahora es siempre de un día, con faltas y programados de cada área (por ejemplo, 3 de 9) y la lista de áreas sin faltas. Al pasar el cursor sobre un área se ven los puestos que faltaron y otras ausencias. En 7, 15 y 30 días se elige el día con clic en la gráfica de ausencias o en la lista de días."],
   ["2.4","2026-11-19","Nueva pestaña Reporte DG: cinco indicadores (faltas injustificadas, ausentismo, cobertura de puestos, tiempo extra y movimientos de plantilla), ausencias por día, faltas por área, cobertura por línea, casos que requieren atención y movimientos recientes, con comparación contra los 30 días previos y opción de imprimir. Lista para la versión en Netlify: acceso con contraseña por rol, datos compartidos con RH y DG en solo lectura. El respaldo ahora incluye la base de personal y las vacantes completas. Letra mínima de 12 puntos y pesos de letra unificados en toda la app."],
@@ -1365,14 +1366,41 @@ function findHeader(rows){
   }
   return -1;
 }
-function parseTabular(rows,hi){
-  const raw=rows[hi]||[]; const H=raw.map(v=>v instanceof Date?"":norm(v));
+function colsHdr(raw){
+  const H=raw.map(v=>v instanceof Date?"":norm(v));
   const find=re=>H.findIndex(h=>re.test(h));
   const iName=find(/^(OPERADOR|NOMBRE|NOMBRE COMPLETO|NOMBRE DEL EMPLEADO|EMPLEADO|COLABORADOR|TRABAJADOR)$/);
   const noms=H.map((h,i)=>/^(NOMINA|NO\.? ?NOMINA|NO\.? ?EMPLEADO|NUM(ERO)?\.? ?(DE )?EMPLEADO|CLAVE)$/.test(h)?i:-1).filter(i=>i>=0);
-  const iNom=noms.filter(i=>i<iName).pop() ?? noms[0];
-  const iArea=find(/^AREA$/), iDep=find(/^(DEPARTAMENTO|DEPTO\.?|LINEA)$/), iPue=find(/^(PUESTO|CATEGORIA|POSICION)$/), iSup=find(/^(SUPERVISOR|JEFE|JEFE INMEDIATO)$/), iIng=find(/INGRESO|FECHA DE ALTA/);
+  const iNom=noms.filter(i=>i<iName).pop() ?? noms[0], iIng=find(/INGRESO|FECHA DE ALTA/);
   const dcols=raw.map((v,i)=>{ if(i===iIng||i===iNom) return null; const d=(v instanceof Date||typeof v==="number")?fechaDe(v):(/^\d{1,2}[\/-]\d{1,2}[\/-]\d{4}$/.test(String(v??"").trim())?fechaDe(v):""); return d?{i,d}:null; }).filter(Boolean);
+  return {find,iName,iNom,iIng,dcols};
+}
+// día de corte: lo que ya cubría el archivo anterior de RH
+function hastaPrevDe(){ const ok=v=>/^\d{4}-\d{2}-\d{2}$/.test(String(v||""));
+  const h=(store.get("pp.rosterMeta",{})||{}).hasta; return ok(h)?h:(ok(BASE_VER)?BASE_VER:"2026-11-13"); }
+// hoja del libro con encabezado reconocido y más columnas de fecha (empate: más renglones)
+function elegirHoja(wb){
+  let best=null, first=null;
+  wb.SheetNames.forEach((n,i)=>{
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[n],{header:1,raw:true,defval:null}); if(i===0) first={n,rows,hi:-1,nf:0};
+    const hi=findHeader(rows); if(hi<0) return;
+    const nf=colsHdr(rows[hi]).dcols.length;
+    if(!best||nf>best.nf||(nf===best.nf&&rows.length>best.rows.length)) best={n,rows,hi,nf};
+  });
+  return best||first;
+}
+const mesesC=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"], diasC=["dom","lun","mar","mié","jue","vie","sáb"];
+const fC=d=>`${+d.slice(8,10)} ${mesesC[+d.slice(5,7)-1]}`;
+const fDow=d=>`${diasC[new Date(d+"T12:00:00Z").getUTCDay()]} ${fC(d)}`;
+function fListaC(ds){ // 23 oct, 9, 10 y 11 nov
+  const g=[]; for(const d of [...ds].sort()){ const m=d.slice(5,7); if(g.length&&g[g.length-1].m===m) g[g.length-1].dd.push(+d.slice(8,10)); else g.push({m,dd:[+d.slice(8,10)]}); }
+  return g.map(x=>(x.dd.length>1?x.dd.slice(0,-1).join(", ")+" y "+x.dd[x.dd.length-1]:x.dd[0])+" "+mesesC[+x.m-1]).join(", ");
+}
+function parseTabular(rows,hi){
+  const raw=rows[hi]||[]; const H=raw.map(v=>v instanceof Date?"":norm(v));
+  const {find,iName,iNom,iIng,dcols}=colsHdr(raw);
+  const iArea=find(/^AREA$/), iDep=find(/^(DEPARTAMENTO|DEPTO\.?|LINEA)$/), iPue=find(/^(PUESTO|CATEGORIA|POSICION)$/), iSup=find(/^(SUPERVISOR|JEFE|JEFE INMEDIATO)$/);
+  const hastaPrev=hastaPrevDe(), todas={}, codes=new Set(), presentes=new Set();
   const out=[], vac=[], asis={}, avisos=[], raros=new Set(); let heredadas=0, sinNom=0, malIng=[];
   const cur=Object.fromEntries(roster.map(r=>[pad4(r[0]),r]));
   for(let k=hi+1;k<rows.length;k++){
@@ -1394,33 +1422,60 @@ function parseTabular(rows,hi){
     const ingRaw=iIng>=0?r[iIng]:""; const ingreso=fechaDe(ingRaw);
     if(ingRaw!==""&&ingRaw!=null&&!ingreso) malIng.push(`${nom} ("${String(ingRaw)}")`);
     const sup=iSup>=0?cleanName(r[iSup]):"";
-    out.push([nom,cleanName(name),area,puesto,/^\d+$/.test(sup)?"":sup,ingreso,estado,norm(mac)]);
+    out.push([nom,cleanName(name),area,puesto,/^\d+$/.test(sup)?"":sup,ingreso,estado,norm(mac)]); presentes.add(nom);
     for(const c of dcols){ const v=r[c.i]; if(v==null||String(v).trim()==="") continue;
       const cd=CODIGO(v); if(cd==="A") continue; if(cd==="?"){ raros.add(String(v).trim()); continue; }
       if(ingreso && c.d<ingreso){ heredadas++; continue; }
-      (asis[c.d] ||= {})[nom]=cd; }
+      codes.add(cd); (todas[c.d] ||= {})[nom]=cd; }
   }
+  // RH lleva la asistencia por puesto: lo que ya cubría el archivo anterior no se importa; se compara y se avisa
+  const marcas={}, vistas=new Set(store.get("pp.marcasVistas",[])), nuevo=Object.fromEntries(out.map(r=>[r[0],r]));
+  const fechasCol=[...new Set(dcols.map(c=>c.d))].sort(), hasta=fechasCol.length?fechasCol[fechasCol.length-1]:"";
+  for(const d of fechasCol){
+    if(d>hastaPrev){ if(todas[d]) asis[d]=todas[d]; continue; }
+    const app=store.get("pp.asis."+d,{})||{}, arc=todas[d]||{};
+    for(const nom of presentes){ if(!cur[nom]) continue;
+      const hay=arc[nom]==="F", tiene=app[nom]==="F"; if(hay===tiene) continue;
+      const k=`${nom}|${d}|${hay?"n":"q"}`; if(vistas.has(k)) continue;
+      const m=(marcas[nom] ||= {nom,nuevas:[],quitadas:[],keys:[]}); (hay?m.nuevas:m.quitadas).push(d); m.keys.push(k); }
+  }
+  const cambMarcas=Object.values(marcas).map(m=>{ const n=nuevo[m.nom], c=cur[m.nom];
+    return {...m,nombre:n[1],area:n[2],cambio:norm(n[2])!==norm(c[2])||norm(n[3])!==norm(c[3])}; }).sort((a,b)=>a.nom<b.nom?-1:1);
+  // días hábiles sin columna entre el corte y la última fecha del archivo
+  const sinCol=[]; if(hasta) for(let t=Date.parse(hastaPrev+"T12:00:00Z")+864e5, fin=Date.parse(hasta+"T12:00:00Z"); t<=fin; t+=864e5){
+    const d=new Date(t).toISOString().slice(0,10), w=new Date(t).getUTCDay(); if(w>0&&w<6&&!fechasCol.includes(d)) sinCol.push(d); }
+  // diferencias con lo capturado en la app (días posteriores al corte con captura o plan)
+  const difs=[], info=n=>{ const r=nuevo[n]||cur[n]; return {nom:n,nombre:r?r[1]:"",area:r?r[2]:""}; };
+  const lbl={I:"incapacidad",V:"vacación",P:"permiso",F:"falta"};
+  for(const d of fechasCol){ if(d<=hastaPrev) continue;
+    const app=store.get("pp.asis."+d,{})||{}, cap=Object.keys(app).length>0; if(!cap&&!store.get("pp.plan."+d,null)) continue;
+    const arc=todas[d]||{};
+    const a=Object.keys(arc).filter(n=>arc[n]==="F"&&app[n]!=="F").sort().map(n=>({...info(n),app:cap?(app[n]?lbl[app[n]]||app[n]:"asistió"):"sin captura de asistencia"}));
+    const b=Object.keys(app).filter(n=>app[n]==="F"&&arc[n]!=="F").sort().map(info);
+    if(a.length||b.length) difs.push({d,a,b}); }
   if(heredadas) avisos.push(`${heredadas} falta(s) con fecha anterior al ingreso de la persona: casi seguro son de quien ocupaba antes el puesto. Se descartaron.`);
   if(malIng.length) avisos.push(`Fecha de ingreso que no se pudo leer: ${malIng.join(", ")}.`);
   if(sinNom) avisos.push(`${sinNom} renglón(es) con nombre pero sin nómina; se ignoraron.`);
   if(raros.size) avisos.push(`Marcas de asistencia que no reconocí y se ignoraron: ${[...raros].join(", ")}. Reconozco F, I, V y P.`);
   if(iPue<0) avisos.push("El archivo no trae columna de puesto.");
   if(!dcols.length) avisos.push("El archivo no trae columnas de fechas: no se importa asistencia.");
-  return {out,vac,asis,avisos,fechas:dcols.length,tabla:true};
+  return {out,vac,asis,avisos,fechas:dcols.length,tabla:true,hasta:hasta&&hasta>hastaPrev?hasta:(hasta?hastaPrev:""),hastaPrev,cambMarcas,sinCol,difs,soloF:codes.size===1&&codes.has("F")};
 }
 $("#rosterFile").addEventListener("change",async e=>{
   const f=e.target.files[0]; if(!f) return; const msg=$("#rosterMsg");
   try{
     await loadSheetJS();
     const wb=XLSX.read(await f.arrayBuffer(),{type:"array",cellDates:true});
-    const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:true,defval:null});
-    const hi=findHeader(rows);
+    const {n:hoja,rows,hi}=elegirHoja(wb), hojaMeta=wb.SheetNames.length>1?hoja:"";
     if(hi>=0){
       const t=parseTabular(rows,hi);
       if(t.out.length<10) throw new Error("formato");
       const dup=[...new Set(t.out.map(r=>r[0]).filter((n,i,arr)=>arr.indexOf(n)!==i))];
       const sinLinea=[...new Set(t.out.filter(r=>r[6]!=="IPP").map(r=>norm(r[2])).filter(k=>!AREA_MAP[k]))];
-      showDiff(t.out,{archivo:f.name},{dup,sinLinea,avisos:[],avTabla:t.avisos,vac:t.vac,asis:t.asis,fechas:t.fechas});
+      // un día que ya se capturó en la app está completo (sin marca = asistió): el archivo no lo toca, solo se comparan
+      const capt=new Set(store.get("pp.asisDates",[]).filter(d=>Object.keys(store.get("pp.asis."+d,{})).length));
+      const omit=Object.keys(t.asis).filter(d=>capt.has(d)); omit.forEach(d=>delete t.asis[d]); t.omitidos=omit;
+      showDiff(t.out,{archivo:f.name,hoja:hojaMeta,...(t.hasta?{hasta:t.hasta}:{})},{dup,sinLinea,avisos:[],avTabla:t.avisos,vac:t.vac,asis:t.asis,fechas:t.fechas,hastaPrev:t.hastaPrev,cambMarcas:t.cambMarcas,sinCol:t.sinCol,difs:t.difs,soloF:t.soloF,omitidos:t.omitidos});
       msg.textContent=""; e.target.value=""; return;
     }
     const out=[]; const avisos=[]; let area=null, cnt=0;
@@ -1442,7 +1497,7 @@ $("#rosterFile").addEventListener("change",async e=>{
     if(out.length<10) throw new Error("formato");
     const dup=[...new Set(out.map(r=>r[0]).filter((n,i,arr)=>arr.indexOf(n)!==i))];
     const sinLinea=[...new Set(out.map(r=>norm(r[2])).filter(k=>!AREA_MAP[k]))];
-    showDiff(out,{archivo:f.name},{dup,sinLinea,avisos});
+    showDiff(out,{archivo:f.name,hoja:hojaMeta},{dup,sinLinea,avisos});
     msg.textContent="";
   }catch(err){msg.textContent="No reconocí el formato. Necesito una tabla con columnas de nómina y nombre (como el Detalle de asistencia) o la base de planta de RH (nombre de área en una fila y debajo nómina y nombre)."}
   e.target.value="";
@@ -1457,7 +1512,15 @@ function showDiff(newR,meta,q){
   const mc=movCierres(newR);
   $("#rosterDiff").innerHTML=`<div class="diff">
     <h6>${esc(meta.archivo)} · ${newR.filter(r=>r[6]!=="IPP").length} activas${newR.some(r=>r[6]==="IPP")?` · ${newR.filter(r=>r[6]==="IPP").length} con IPP`:""}${q.vac?` · ${q.vac.length} vacantes`:""} (antes ${people.length} activas)</h6>
-    ${q.asis?`<p class="hint">Asistencia: ${Object.values(q.asis).reduce((s,m)=>s+Object.keys(m).length,0)} marcas en ${Object.keys(q.asis).length} días con datos (${q.fechas} columnas de fecha). Solo llenan días o personas sin captura; lo que ya capturaste en la app no se toca.</p>`:""}
+    ${meta.hoja?`<p class="hint">Hoja leída: "${esc(meta.hoja)}"</p>`:""}
+    ${q.asis?`<p class="hint">Asistencia: ${Object.values(q.asis).reduce((s,m)=>s+Object.keys(m).length,0)} marcas en ${Object.keys(q.asis).length} días con datos (${q.fechas} columnas de fecha). Se importan solo los días posteriores al ${q.hastaPrev?fC(q.hastaPrev):"corte anterior"}. ${q.omitidos&&q.omitidos.length?`Días que ya están capturados en la app no se importan (${q.omitidos.map(fC).join(", ")}): solo se comparan abajo. `:""}Solo se llenan días sin captura.${q.soloF?" El archivo solo trae faltas (F); no trae incapacidades, vacaciones ni permisos.":""}</p>`:""}
+    ${q.cambMarcas&&q.cambMarcas.length?`<div class="warnbox"><strong>RH cambió marcas de días que ya estaban cargados (no se importaron):</strong><br>${q.cambMarcas.map(m=>{ const p=[];
+      if(m.nuevas.length) p.push(`falta el ${fListaC(m.nuevas)} que antes no tenía`+(m.cambio?" (ese puesto estaba vacante; probablemente son de quien lo ocupaba)":""));
+      if(m.quitadas.length) p.push(`${m.nuevas.length?"y ":""}ya no trae la falta del ${fListaC(m.quitadas)} que antes tenía`);
+      return `${m.nom} · ${esc(m.nombre)}: ${p.join("; ")}`; }).join("<br>")}</div>`:""}
+    ${q.sinCol&&q.sinCol.length?`<div class="warnbox">El archivo no trae asistencia de: ${q.sinCol.map(fDow).join(", ")}. Pregunta a RH si fueron días sin labores o si les falta capturarlos.</div>`:""}
+    ${q.difs&&q.difs.length?`<div class="warnbox"><strong>Diferencias con la captura de la app</strong><br>Lo capturado en la app no se cambia; revisa estas diferencias con RH.${q.difs.map(x=>{ const l=a=>a.map(r=>`${r.nom} · ${esc(r.nombre)} · ${esc(titleCase(norm(r.area)))}`).join("; ");
+      return `<br><strong>${fDow(x.d)}</strong>`+(x.a.length?`<br>RH marca falta y en la app no (${x.a.length}): ${x.a.map(r=>`${r.nom} · ${esc(r.nombre)} · ${esc(titleCase(norm(r.area)))} (app: ${esc(r.app)})`).join("; ")}`:"")+(x.b.length?`<br>En la app hay falta y RH no la tiene (${x.b.length}): ${l(x.b)}`:""); }).join("")}</div>`:""}
     ${nada?`<p class="hint">Sin altas, bajas ni cambios de área contra la base actual.</p>`:`
     <h6><span class="tag alta">Altas</span>${diff.altas.length}</h6>${li(diff.altas,r=>`<li>${r[0]} · ${esc(r[1])} · ${esc(titleCase(norm(r[2])))}</li>`)}
     <h6><span class="tag baja">Bajas</span>${diff.bajas.length}</h6>${li(diff.bajas,r=>`<li>${pad4(r[0])} · ${esc(r[1])} · ${esc(titleCase(norm(r[2])))}</li>`)}
@@ -1477,7 +1540,11 @@ $("#rosterDiff").addEventListener("click",e=>{
   if(e.target.id==="diffCancel"){pending=null;$("#rosterDiff").innerHTML="";return}
   if(e.target.id!=="diffApply"||!pending) return;
   const seen=new Set(); const newR=pending.newR.filter(r=>!seen.has(r[0])&&seen.add(r[0]));
-  const {diff,meta}=pending; const extra=pending.q||{}; const q=applyRoster(newR,diff,meta); pending=null;
+  const {diff,meta}=pending; const extra=pending.q||{};
+  if(!meta.incluida&&!meta.hasta){ const h=(store.get("pp.rosterMeta",{})||{}).hasta; if(h) meta.hasta=h; } // sin columnas de fecha: se conserva el corte
+  { const ks=[...(extra.cambMarcas||[]).flatMap(m=>m.keys),...(extra.difs||[]).flatMap(x=>[...x.b.map(r=>`${pad4(r.nom)}|${x.d}|q`),...((extra.omitidos||[]).includes(x.d)?(x.a||[]).map(r=>`${pad4(r.nom)}|${x.d}|n`):[])])]; // ya avisadas: no se repiten en la próxima carga
+    if(ks.length) store.set("pp.marcasVistas",[...new Set([...store.get("pp.marcasVistas",[]),...ks])]); }
+  const q=applyRoster(newR,diff,meta); pending=null;
   let txt="";
   if(extra.vac){ setVacantes(extra.vac); txt+=` ${extra.vac.length} vacantes del archivo.`; }
   if(extra.asis){ const m=mergeAsis(extra.asis); loadAsis(); txt+=` Asistencia: ${m.add} marcas nuevas`+(m.dif?`, ${m.dif} distintas a lo capturado (se conservó lo capturado)`:"")+"."; }
