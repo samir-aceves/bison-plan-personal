@@ -118,7 +118,20 @@ section.line{background:var(--panel);border:1px solid var(--rule);border-radius:
 .chip.OFF .n{text-decoration:line-through}
 .chip .h{position:absolute;top:-6px;right:-6px;font-family:var(--cond);font-size:12px;font-weight:600;background:var(--ink);color:var(--panel);border-radius:8px;padding:0 5px;line-height:15px}
 .chip .nv{position:absolute;top:-8px;left:-6px;font-size:12px;font-weight:600;letter-spacing:0;line-height:15px;background:var(--ok);color:var(--panel);border-radius:6px;padding:0 4px;line-height:13px}
+.chip .nr{position:absolute;top:-8px;left:-6px;font-size:12px;font-weight:600;line-height:15px;background:var(--muted);color:var(--panel);border-radius:6px;padding:0 4px;white-space:nowrap;box-shadow:0 0 0 1px var(--panel)}
+.chip .nv~.nr{top:auto;bottom:-8px}
 .chip.dim{opacity:.25}
+@media (min-width:981px){aside{align-self:start;max-height:calc(100vh - 78px);overflow-y:auto}}
+.rjlab{position:relative;display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-top:10px;cursor:pointer;font-weight:600}
+.rjlab input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.rjlab:focus-within{outline:2px solid var(--per);outline-offset:2px}
+.rjh{font-size:13.5px;font-weight:600;margin:16px 0 2px}
+.rjl{list-style:none;margin:4px 0 0;padding:0;font-size:13px;max-height:440px;overflow-y:auto}
+.rjl li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:2px 0;border-top:1px solid var(--soft);min-height:44px}
+.rjl .tx{min-width:0;overflow-wrap:anywhere}
+.rjb{min-height:44px;min-width:44px;flex:none}
+.rjall{width:100%;margin-top:8px}
+.rjok{font-size:13.5px;margin:8px 0 0}
 .diff{margin-top:10px;border:1px solid var(--rule);border-radius:8px;padding:12px;background:var(--soft)}
 .diff h6{font-size:13.5px;margin:10px 0 4px}
 .diff h6:first-child{margin-top:0}
@@ -402,6 +415,16 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
       <button class="btn primary" id="btnAsisXls" style="width:100%;margin-top:12px">Descargar asistencia (Excel)</button>
       <p class="note">Incluye los últimos 31 días hasta la fecha elegida.</p>
     </div>
+    <div class="card asisonly" id="rjCard">
+      <h4>Reloj checador</h4>
+      <p class="hint" id="rjSum">Aún no hay checadas cargadas.</p>
+      <label class="btn rjlab editonly">Cargar checadas del reloj<input type="file" id="relojFile" accept=".csv,.txt"></label>
+      <p class="note" id="rjMsg" role="status"></p>
+    </div>
+    <div class="card asisonly" id="rjContrast" hidden>
+      <h4>Contraste con el reloj</h4>
+      <div id="rjBody"></div>
+    </div>
     <div class="card asisonly">
       <h4>Reincidentes · últimos 30 días</h4>
       <div id="reinc"></div>
@@ -411,6 +434,10 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
       <div class="big" id="sumPeople">0</div>
       <div class="hint">personas programadas</div>
       <div class="kv" id="sumKv"></div>
+    </div>
+    <div class="card planonly" id="rjTE" hidden>
+      <h4>Tiempo extra contra el reloj</h4>
+      <div id="rjTEBody"></div>
     </div>
     <div class="card planonly">
       <h4>Reglas</h4>
@@ -467,6 +494,8 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     <table class="tbl">
       <tr><td>Tiempo extra por departamento completo</td>
         <td><select id="cfgCompleto"><option value="off">No aplicar</option><option value="warn">Advertir</option><option value="block">Bloquear descarga</option></select></td></tr>
+      <tr><td>Tolerancia de retardo (minutos)</td>
+        <td><input type="number" min="0" max="60" step="1" id="cfgTol" aria-label="Tolerancia de retardo en minutos"></td></tr>
     </table>
     <p class="hint">"No disponible" (vacaciones, incapacidad, permiso) cuenta como cubierto para esta regla.</p>
     <h5>Personal sindicalizado</h5>
@@ -559,10 +588,11 @@ const BASE_ROSTER = [];
 // vacantes y faltas del archivo "Detalle de asistencia" (13-nov-2026)
 const BASE_VAC = [];
 const BASE_ASIS = {};
-const APP_VERSION = "2.7";
+const APP_VERSION = "2.8";
 const APP_FECHA = "2026-11-19";
 const HERR_DESDE = "2026-10-14"; // Herramentales entra solo en planes desde esta fecha
 const CAMBIOS = [
+  ["2.8","2026-11-25","Reloj checador. En Asistencia se carga el archivo del reloj (CSV). La app toma solo a la plantilla y reconoce el tercer turno de 19:00 a 07:00 (cuenta el día de entrada). Contraste con el reloj por día: quién no checó y no tiene marca (con botón para marcar falta; marcar a varios pide confirmar), quién tiene ausencia pero sí checó, retardos, salidas tempranas y días con una sola checada. Las fichas sin checada muestran la marca sin reloj. En Plan del día, el tiempo extra contra el reloj: quién está en el folio y no checó, horas por debajo del folio y quién checó sin estar en el plan. En Plantilla, quién no tiene ninguna checada en el periodo, con botón para marcar posible baja. La tolerancia de retardo se ajusta en Configuración (10 minutos por omisión). El reloj solo sugiere: no cambia la captura."],
   ["2.7","2026-11-23","Carga del Detalle de asistencia de RH, más segura. Si el archivo trae varias hojas, la app usa sola la que tiene la asistencia y dice cuál leyó. Los días que ya venían en el archivo anterior no se vuelven a importar; si RH los cambió, lo avisa por persona y fecha para revisarlo (por ejemplo, faltas de un puesto vacante que ahora aparecen a nombre de quien lo ocupa). Un día que ya se capturó en la app no se toca: se muestran las diferencias entre RH y la app. Avisa los días hábiles que el archivo no trae y si el archivo solo trae faltas."],
   ["2.6","2026-11-19","Mover operadores de área: botón Mover de área en Plan del día. Con un clic se elige el área destino y desde qué fecha; también se puede arrastrar el operador a otra área. El movimiento dura hasta que lo regreses, y desde esa fecha la persona cuenta en el área donde trabaja: en el tablero, la regla de departamento completo, el folio, la asistencia y las faltas del Reporte DG. Los días anteriores no cambian. El operador movido lleva la marca ↔. La pestaña Plantilla y vacantes lista los movimientos vigentes con botón Regresar y su historial. Al cargar el archivo de RH, si ya trae a la persona en el área nueva, el movimiento se cierra solo. Nuevo estilo igual al Tablero de producción: encabezado oscuro con logo, barra de pestañas y colores de marca. En celular, los botones de marcado ya no quedan cortados."],
   ["2.5","2026-11-19","Reporte DG por periodo: Día, 7, 15 y 30 días (cada quien elige; la app recuerda su elección). En Día, los indicadores son solo de ese día y se comparan contra el día capturado anterior; si hoy aún no hay asistencia, muestra el último día capturado y lo avisa. Faltas por área ahora es siempre de un día, con faltas y programados de cada área (por ejemplo, 3 de 9) y la lista de áreas sin faltas. Al pasar el cursor sobre un área se ven los puestos que faltaron y otras ausencias. En 7, 15 y 30 días se elige el día con clic en la gráfica de ausencias o en la lista de días."],
@@ -620,7 +650,7 @@ const DEFAULT_CFG = {
     3:{tipo:"extra",hor:["h1"],unico:false},4:{tipo:"ordinario",hor:["h1"],unico:false},
     5:{tipo:"ordinario",hor:["h1"],unico:false},6:{tipo:"extra",hor:["h2","h1"],unico:true},
     0:{tipo:"descanso",hor:["h1","h2"],unico:true}},
-  completo:"warn", costoRuta:650, comedor:0, folio:216
+  completo:"warn", costoRuta:650, comedor:0, folio:216, tolRetardo:10
 };
 
 /* ---------- utilidades ---------- */
@@ -661,6 +691,7 @@ let vacs = store.get("pp.vac",null);
 let posB = store.get("pp.posBaja",{});
 let ipp = [];
 let asisDay = {};
+let relojDay = {}, relojMeta = null;   // checadas del reloj del día elegido y datos de la última carga
 const ASIS = {F:"Falta",I:"Incapacidad",V:"Vacación",P:"Permiso"};
 const puestoCorto = s=>{ s=String(s||""); if(!s) return "—"; const c=s.match(/\b([A-Z]{2,4}\d+|CNC\d*|CO2)\b/); if(c) return c[1];
   const t=s.replace(/\(.*?\)/g,"").replace(/^operador( de)? /i,"").trim(); return t[0].toUpperCase()+t.slice(1); };
@@ -799,7 +830,7 @@ function defaultSemana(){
 function fechaLarga(){const d=new Date(fecha+"T12:00");return `${DIAS_UP[d.getDay()]} ${d.getDate()} DE ${MESES[d.getMonth()]} DE ${d.getFullYear()}`}
 
 function defaultBrush(){ if(brushM==="TE"||brushM==="TN") brushM = dayCfg().tipo==="ordinario"?"TN":"TE"; }
-function loadAsis(){ asisDay = store.get("pp.asis."+fecha,{}); }
+function loadAsis(){ asisDay = store.get("pp.asis."+fecha,{}); relojDay = store.get("pp.reloj."+fecha,{}); relojMeta = store.get("pp.relojMeta",null); }
 function saveAsis(){
   store.set("pp.asis."+fecha,asisDay); store.set("pp.lastDate",fecha);
   const idx=new Set(store.get("pp.asisDates",[])); if(Object.keys(asisDay).length) idx.add(fecha); else idx.delete(fecha);
@@ -904,6 +935,7 @@ function renderBoard(){
     const ln=AREA_MAP[k]?.linea||"Sin línea asignada"; (lines[ln] ||= {}); (lines[ln][k] ||= []);});
   const asis = view==="asis";
   const prog = asis? programados() : null;
+  const rjOn = asis && relojValido(), rjAus = rjOn && relojAusOk(prog);
   const isOn = p=> asis ? (prog.set.has(p.nom)&&!asisDay[p.nom]) : (()=>{const a=plan.assign[p.nom];return a&&a.m!=="OFF"})();
   const defH = allowedHor()[0];
   let html="";
@@ -932,13 +964,17 @@ function renderBoard(){
         const dim = q && !hit;
         const hb = asis ? (ac?`<span class="h">${ac}</span>`:"") : (!dayCfg().unico&&a&&a.m!=="OFF"&&a.h!==defH? `<span class="h">${esc(horById(a.h)?.label.slice(8,10)||"?")}</span>`:"");
         const nv = newSet.has(p.nom)? `<span class="nv">NUEVO</span>`:"";
+        let rjT="", nr="";
+        if(rjOn){ const r=relojDay[p.nom];
+          if(r) rjT = r[1] ? ` · entró ${r[0]}, salió ${r[1]}` : ` · entró ${r[0]}, sin checada de salida`;
+          else if(!ac && prog.set.has(p.nom) && rjAus){ rjT=" · sin checada en el reloj"; nr=`<span class="nr" aria-hidden="true">sin reloj</span>`; } }
         const pb = posB[p.nom];
         const mvT = p.mov? ` · viene de ${esc(titleCase(p.mov.de))} desde ${fCorta(p.mov.desde)}` : "";
         const mvB = p.mov? `<span class="mv" aria-hidden="true">↔</span>` : "";
-        const det = `${esc(p.nombre)}${p.puesto?" · "+esc(p.puesto):""}${nv?" · alta reciente":""}${pb?" · posible baja: "+esc(pb.motivo):""}${mvT}`;
+        const det = `${esc(p.nombre)}${p.puesto?" · "+esc(p.puesto):""}${nv?" · alta reciente":""}${pb?" · posible baja: "+esc(pb.motivo):""}${mvT}${rjT}`;
         const estado = asis ? (ac?" · "+ASIS[ac]:(np?" · no programado":"")) : (a?" · "+(a.m==="OFF"?"no disponible":MODS[a.m].label):"");
         const lbl = lblMode==="puesto" ? puestoCorto(p.puesto) : p.nombre.split(" ")[0];
-        html+=`<button class="chip ${cls}${dim?" dim":""}${hit?" hit":""}${pb?" pb":""}${np?" np":""}" data-nom="${p.nom}" data-name="${det}" aria-label="${p.nom} ${det}${estado}"><span class="n">${p.nom}</span><span class="a">${esc(lbl)}</span>${hb}${nv}${mvB}</button>`;
+        html+=`<button class="chip ${cls}${dim?" dim":""}${hit?" hit":""}${pb?" pb":""}${np?" np":""}" data-nom="${p.nom}" data-name="${det}" aria-label="${p.nom} ${det}${estado}"><span class="n">${p.nom}</span><span class="a">${esc(lbl)}</span>${hb}${nv}${nr}${mvB}</button>`;
       }
       for(const v of vl) html+=`<div class="vacbox" title="Vacante · ${esc(v.puesto)}${v.nota?" · "+esc(v.nota):""}" aria-label="Vacante: ${esc(v.puesto)}"><span class="n">VACANTE</span><span class="a">${esc(v.puesto)}</span></div>`;
       html+=`</div></div>`;
@@ -1023,6 +1059,7 @@ function renderSide(){
   else if(!rows.length) why = nTN ? `No hay nada para el folio: las ${nTN} persona(s) marcadas están en Tiempo normal, y el folio solo lleva tiempo extra y permuta. Si son tiempo extra, usa "Pasar a Tiempo extra" o márcalas con el botón Tiempo extra.` : "Marca personal en tiempo extra o permuta para armar el folio.";
   else if(blocked) why="No se puede descargar hasta corregir lo que está en rojo en Reglas: "+rules.filter(r=>r.lvl==="err").map(r=>r.html.replace(/<[^>]+>/g,"").split(".")[0]).join("; ")+".";
   $("#exportNote").textContent = why;
+  renderRelojPlan();
 }
 const ExcelJSready=()=>typeof ExcelJS!=="undefined";
 const pct = x=> (x*100).toLocaleString("es-MX",{maximumFractionDigits:1})+"%";
@@ -1041,6 +1078,7 @@ function renderSideAsis(){
     r.slice(0,15).map(([n,ds])=>{const p=byNom[n]; return `<tr><td>${n}${posB[n]?' <span class="pill err">¿baja?</span>':""}</td><td>${esc(p?p.nombre:"(ya no activo)")}<br><span class="hint">${esc(p?titleCase(p.area):"")}</span></td><td class="r">${ds.length}</td></tr>`}).join("")+`</table>`
     : `<p class="hint">Nadie con 3 o más faltas en los últimos 30 días.</p>`;
   $("#btnAsisXls").disabled=!ExcelJSready();
+  renderRelojAsis();
 }
 const AREAS_ORD = ()=>{ const ks=new Set([...people.map(p=>p.area),...(vacs||[]).map(v=>norm(v.area)),...Object.keys(AREA_MAP)]);
   return [...ks].sort((a,b)=>{const la=LINE_ORDER.indexOf(AREA_MAP[a]?.linea||"Sin línea asignada"),lb=LINE_ORDER.indexOf(AREA_MAP[b]?.linea||"Sin línea asignada");
@@ -1091,6 +1129,7 @@ function renderPlantilla(){
    <div class="card"><h4>Sugeridas por faltas · 3 o más en 30 días</h4>
      ${sug.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Área</th><th class="r">Faltas</th><th>Fechas</th><th></th></tr>${sug.map(([n,ds])=>{const p=byNom[n];return `<tr><td>${n}</td><td>${esc(p.nombre)}</td><td>${esc(areaTtl(ah(p)))}</td><td class="r">${ds.length}</td><td class="hint">${ds.map(d=>d.slice(8,10)+"/"+d.slice(5,7)).join(", ")}</td><td><button class="btn small editonly" data-act="sugpb" data-nom="${n}">Marcar posible baja</button></td></tr>`}).join("")}</table></div>`:`<p class="hint">Nadie con 3 o más faltas en los últimos 30 días.</p>`}
      <p class="note">Es una alerta para revisar, no una decisión: confirma el caso con el supervisor y RH antes de marcarlo.</p></div>
+   ${relojSinChecadas()}
    <div class="card"><h4>Con IPP · ${ipp.length}</h4>
      ${ipp.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Puesto</th></tr>${ipp.map(p=>`<tr><td>${p.nom}</td><td>${esc(p.nombre)}</td><td>${esc(p.puesto)}</td></tr>`).join("")}</table></div>`:`<p class="hint">Nadie con IPP.</p>`}
      <p class="note">No salen en el tablero, el folio ni la regla de departamento completo, pero siguen en la plantilla.</p></div>
@@ -1220,6 +1259,9 @@ function pageAction(b){
     vacs=(vacs||[]).concat({id:"m"+Date.now().toString(36),area:$("#nvArea").value,puesto,origen:"manual",desde:hoyISO(),nota:$("#nvNota").value.trim()}); store.set("pp.vac",vacs); toast("Vacante agregada"); }
   if(a==="retmov"){ if(setMov(b.dataset.nom,hoyISO(),null)) toast(`${b.dataset.nom} regresó a su área de RH desde ${fCorta(hoyISO())}`); }
   if(a==="delpb"){ delete posB[b.dataset.nom]; store.set("pp.posBaja",posB); toast("Marca quitada"); }
+  if(a==="rjpb"){ const n=b.dataset.nom; if(READONLY||!byNom[n]) return;
+    const m=store.get("pp.relojMeta",null); posB[n]={motivo:"Sin checadas en el reloj",nota:m&&m.cubre?`Del ${diaMes(m.cubre[0])} al ${diaMes(m.cubre[1])} sin checadas`:"",fecha:hoyISO()};
+    store.set("pp.posBaja",posB); toast(`${n} marcado como posible baja`); }
   if(a==="addpb"||a==="sugpb"){
     const n = a==="sugpb" ? b.dataset.nom : pad4($("#pbNom").value);
     if(!byNom[n]){ $("#pbMsg").innerHTML=`<strong style="color:var(--err)">La nómina ${esc(n)} no está entre las personas activas.</strong>`; return; }
@@ -1263,6 +1305,230 @@ $("#pasteGo").addEventListener("click",()=>{
   if(!bad.length){$("#dlgPaste").close();$("#pasteTxt").value="";toast(`${ok.length} nóminas marcadas`)}
 });
 
+/* ---------- reloj checador ---------- */
+const MES_C=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+const tolRet=()=>{const v=Number(cfg.tolRetardo);return Number.isFinite(v)&&v>=0?v:10};
+const hmMin=s=>{const m=String(s||"").match(/^(\d{1,2}):(\d{2})/);return m?+m[1]*60+ +m[2]:null};
+const minHM=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+const diaMes=iso=>`${+iso.slice(8,10)} ${MES_C[+iso.slice(5,7)-1]}`;
+const relojValido=()=>!!relojMeta && Object.keys(relojDay).length>0;
+// ausencias de checada solo se concluyen en días completos y, sin plan, en días ordinarios
+function relojAusOk(prog){ const pr=prog||programados(); return relojMeta.incompleto!==fecha && !(!pr.conPlan && dayCfg().tipo!=="ordinario"); }
+function csvRows(txt){
+  if(txt.charCodeAt(0)===0xFEFF) txt=txt.slice(1);
+  const l1=txt.split(/\r?\n/,1)[0]||"";
+  const sep=(l1.match(/;/g)||[]).length>(l1.match(/,/g)||[]).length?";":(l1.includes("\t")&&!l1.includes(",")?"\t":",");
+  const rows=[]; let row=[], f="", qc="";
+  for(let i=0;i<txt.length;i++){
+    const c=txt[i];
+    if(qc){ if(c===qc){ if(txt[i+1]===qc){f+=c;i++} else qc=""; } else f+=c; }
+    else if((c==='"'||c==="'")&&f===""){ qc=c; }
+    else if(c===sep){ row.push(f); f=""; }
+    else if(c==="\n"||c==="\r"){ if(c==="\r"&&txt[i+1]==="\n") i++; row.push(f); f=""; rows.push(row); row=[]; }
+    else f+=c;
+  }
+  if(f!==""||row.length){ row.push(f); rows.push(row); }
+  return rows.filter(r=>!(r.length===1&&r[0].trim()===""));
+}
+// "dd/mm/aaaa HH:MM" (día primero) o "aaaa-mm-dd HH:MM" → minutos absolutos; null si no se entiende
+function relojFecha(s){
+  s=String(s||"").trim(); let m, y, mo, d, h, mi;
+  if((m=s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})[ T]+(\d{1,2}):(\d{2})/))){ d=+m[1]; mo=+m[2]; y=+m[3]; h=+m[4]; mi=+m[5]; }
+  else if((m=s.match(/^(\d{4})-(\d{2})-(\d{2})[ T]+(\d{1,2}):(\d{2})/))){ y=+m[1]; mo=+m[2]; d=+m[3]; h=+m[4]; mi=+m[5]; }
+  else return null;
+  if(mo<1||mo>12||d<1||d>31||h>23||mi>59) return null;
+  return Date.UTC(y,mo-1,d,h,mi)/6e4;
+}
+const absDia=a=>new Date(a*6e4).toISOString().slice(0,10);
+const absMin=a=>a-Math.floor(a/1440)*1440;
+const absTxt=a=>absDia(a)+" "+minHM(absMin(a));
+const diaSig=d=>new Date(Date.parse(d+"T12:00:00Z")+864e5).toISOString().slice(0,10);
+// lee el CSV del reloj: {porNom: Map nómina → minutos absolutos, fuera: Set, desde, hasta, filas}
+function relojLeer(txt){
+  const rows=csvRows(txt); let hi=-1, iD=-1, iU=-1;
+  for(let i=0;i<Math.min(rows.length,10)&&hi<0;i++){
+    const H=rows[i].map(x=>String(x).trim().toLowerCase());
+    const a=H.indexOf("date"), b=H.indexOf("user id");
+    if(a>=0&&b>=0){ hi=i; iD=a; iU=b; }
+  }
+  if(hi<0) return {err:"No reconocí el archivo del reloj. Necesito las columnas Date y User ID."};
+  const porNom=new Map(), fuera=new Set(); let desde=null, hasta=null, filas=0;
+  for(const r of rows.slice(hi+1)){
+    const a=relojFecha(r[iD]); const dig=String(r[iU]||"").replace(/\D/g,"");
+    if(a===null||!dig) continue;
+    const nom=pad4(String(+dig)); filas++;
+    if(desde===null||a<desde) desde=a;
+    if(hasta===null||a>hasta) hasta=a;
+    if(!byNom[nom]){ fuera.add(nom); continue; }
+    (porNom.get(nom)||porNom.set(nom,[]).get(nom)).push(a);
+  }
+  if(!filas) return {err:"No reconocí el archivo del reloj. Necesito las columnas Date y User ID."};
+  return {porNom,fuera,desde,hasta,filas};
+}
+// turnos por día: {día:{nómina:[entrada,salida|"",noc]}} y total de checadas usadas
+function relojTurnos(porNom,desde){
+  const out={}; let usadas=0;
+  const primerDia=absDia(desde);
+  for(const [nom,arr] of porNom){
+    arr.sort((x,y)=>x-y);
+    const lim=[]; for(const a of arr){ if(!lim.length||a-lim[lim.length-1]>=2) lim.push(a); }
+    usadas+=lim.length;
+    const byDay=new Map(); for(const a of lim){ const d=absDia(a); (byDay.get(d)||byDay.set(d,[]).get(d)).push(absMin(a)); }
+    const res=[];
+    for(const d of [...byDay.keys()].sort()){
+      const ts=byDay.get(d); if(!ts||!ts.length) continue;
+      const ev=ts.find(t=>t>=1050&&t<=1379);   // 17:30 a 22:59
+      if(!ts.some(t=>t<720) && ev!==undefined){
+        const sig=diaSig(d), nx=byDay.get(sig)||[], am=nx.filter(t=>t<600);
+        if(am.length){ res.push({d,ent:ev,sal:am[0],noc:true}); byDay.set(d,[]); byDay.set(sig,nx.filter(t=>t>=600)); continue; }
+      }
+      res.push({d,ent:ts[0],sal:ts.length>1?ts[ts.length-1]:null,noc:false});
+    }
+    // la salida de un turno nocturno que empezó antes del archivo no es una entrada de día
+    if(res.some(x=>x.noc) && res.length && res[0].d===primerDia && !res[0].noc && res[0].sal===null && res[0].ent<600) res.shift();
+    for(const x of res) (out[x.d] ||= {})[nom]=[minHM(x.ent),x.sal===null?"":minHM(x.sal),x.noc?1:0];
+  }
+  return {out,usadas};
+}
+function relojGuardar(L,archivo){
+  const {out,usadas}=relojTurnos(L.porNom,L.desde);
+  const prev=store.get("pp.relojMeta",null), fechas=new Set(store.get("pp.relojDates",[]));
+  const ultimo=absDia(L.hasta), incompleto=absMin(L.hasta)<1200;
+  // un día completo ya cargado no se sustituye por el mismo día a medias
+  const conserva = incompleto && fechas.has(ultimo) && !!prev && prev.incompleto!==ultimo;
+  for(const d of Object.keys(out)){
+    if(conserva&&d===ultimo) continue;
+    store.set("pp.reloj."+d,out[d]); fechas.add(d);
+  }
+  let inc=null;
+  if(incompleto&&!conserva) inc=ultimo;
+  else if(prev&&prev.incompleto&&(prev.incompleto<absDia(L.desde)||prev.incompleto>ultimo)) inc=prev.incompleto;
+  const ini=absDia(L.desde), fin=absTxt(L.hasta);
+  const cubre=[prev&&prev.cubre&&prev.cubre[0]<ini?prev.cubre[0]:ini, prev&&prev.cubre&&prev.cubre[1]>fin?prev.cubre[1]:fin];
+  const meta={archivo,cargado:new Date().toISOString(),desde:absTxt(L.desde),hasta:fin,fuera:L.fuera.size,checadas:usadas,personas:L.porNom.size,incompleto:inc,cubre};
+  store.set("pp.relojDates",[...fechas].sort()); store.set("pp.relojMeta",meta);
+  return meta;
+}
+function relojResumenTxt(m){
+  const a=m.desde, b=m.hasta, da=+a.slice(8,10), db=+b.slice(8,10), ma=+a.slice(5,7)-1, mb=+b.slice(5,7)-1;
+  const rango = a.slice(0,10)===b.slice(0,10)? `el ${da} ${MES_C[mb]}` : ma===mb? `del ${da} al ${db} ${MES_C[mb]}` : `del ${da} ${MES_C[ma]} al ${db} ${MES_C[mb]}`;
+  let t=`Reloj: ${m.checadas.toLocaleString("es-MX")} checadas de ${m.personas.toLocaleString("es-MX")} personas de la plantilla, ${rango}.`;
+  if(m.fuera) t+=` ${m.fuera.toLocaleString("es-MX")} ${m.fuera===1?"nómina del archivo no es de la plantilla y se ignoró":"nóminas del archivo no son de la plantilla y se ignoraron"}.`;
+  if(m.incompleto) t+=` El ${diaMes(m.incompleto)} está incompleto: el reloj trae checadas hasta las ${m.hasta.slice(11)}.`;
+  return t;
+}
+$("#relojFile").addEventListener("change",async e=>{
+  const f=e.target.files[0]; if(!f||READONLY) return; const msg=$("#rjMsg");
+  try{
+    const L=relojLeer(await f.text());
+    if(L.err){ msg.textContent=L.err; return; }
+    relojGuardar(L,f.name);
+    loadAsis(); render(); $("#rjMsg").textContent=""; toast("Checadas del reloj cargadas");
+  }catch(err){ $("#rjMsg").textContent="No pude leer el archivo del reloj. Exporta el CSV de nuevo y vuelve a cargarlo."; }
+  finally{ e.target.value=""; }
+});
+// horario de referencia: el del plan del día; sin plan, 07:00 de día y 19:00 nocturno
+function horRef(nom,noc,ent){
+  const night = !!noc || ent>=1050;
+  const def = night? {ini:1140,fin:420} : {ini:420,fin:1140};
+  const a=plan.assign[nom], h=a&&a.m!=="OFF"?horById(a.h):null;
+  const m=h&&h.label.match(/(\d{1,2}):(\d{2})\D+(\d{1,2}):(\d{2})/);
+  if(!m) return def;
+  const ini=+m[1]*60+ +m[2], fin=+m[3]*60+ +m[4];
+  if((ini>=1020)!==night) return def;
+  return {ini,fin};
+}
+function relojContraste(){
+  const pr=programados(), {set}=pr, inc=relojMeta.incompleto===fecha, ausOk=relojAusOk(pr), tol=tolRet();
+  const R={inc,ausOk,sin:[],ausCheco:[],ret:[],temp:[],solo:[]};
+  for(const n of [...set].sort()){
+    const ac=asisDay[n], r=relojDay[n];
+    if(!r){ if(!ac&&ausOk) R.sin.push(n); continue; }
+    const e=hmMin(r[0]);
+    if(ac){ R.ausCheco.push({n,ac,ent:r[0]}); continue; }
+    const hr=horRef(n,r[2],e), dif=e-hr.ini;
+    if(dif>tol&&dif<=360) R.ret.push({n,ent:r[0],min:dif});
+    if(!r[1]){ if(!inc) R.solo.push({n,ent:r[0]}); continue; }
+    if(ausOk&&hmMin(r[1])<hr.fin-30) R.temp.push({n,sal:r[1]});
+  }
+  return R;
+}
+const nomCorto=p=>titleCase(p.nombre.split(" ")[0]);
+function rjSec(titulo,n,filas,extra){
+  if(!n) return "";
+  return `<h5 class="rjh">${titulo} · ${n}</h5>${extra||""}<ul class="rjl">${filas}</ul>`;
+}
+const rjFila=(n,txt,btn)=>`<li><span class="tx"><b>${n}</b> · ${txt}</span>${btn||""}</li>`;
+function renderRelojAsis(){
+  const card=$("#rjContrast"), sum=$("#rjSum"), m=relojMeta;
+  sum.textContent = m? relojResumenTxt(m)+` Archivo: ${m.archivo}.` : "Aún no hay checadas cargadas.";
+  if(!relojValido()){ card.hidden=true; $("#rjBody").innerHTML=""; return; }
+  const R=relojContraste(); let h="";
+  if(R.inc) h+=`<p class="warnbox" style="margin-top:0">Día incompleto: el reloj trae checadas hasta las ${esc(relojMeta.hasta.slice(11))}. Por ahora solo se muestran retardos.</p>`;
+  else if(!R.ausOk) h+=`<p class="hint" style="margin-top:0">Este día no tiene plan y no es ordinario: no se compara quién no checó.</p>`;
+  const edit=!READONLY;
+  h+=rjSec("Sin checada y sin marca",R.sin.length,R.sin.map(n=>{const p=byNom[n]; return rjFila(n,`${esc(nomCorto(p))} · ${esc(titleCase(p.area))}`, edit?`<button class="btn small rjb editonly" data-rjf="${n}">Marcar falta</button>`:"")}).join(""),
+    `<p class="hint">Puede ser falta, vacación, incapacidad u olvido de checar. Confirma antes de marcar.</p>`+(edit?`<button class="btn rjb rjall editonly" data-rjall="${R.sin.join(",")}">Marcar falta a los ${R.sin.length}</button>`:""));
+  h+=rjSec("Con ausencia pero checó",R.ausCheco.length,R.ausCheco.map(x=>rjFila(x.n,`${ASIS[x.ac].toLowerCase()} · entrada ${x.ent}`)).join(""));
+  h+=rjSec("Retardos",R.ret.length,R.ret.map(x=>rjFila(x.n,`entrada ${x.ent} · ${x.min} min`)).join(""));
+  h+=rjSec("Salida temprana",R.temp.length,R.temp.map(x=>rjFila(x.n,`salida ${x.sal}`)).join(""));
+  h+=rjSec("Una sola checada",R.solo.length,R.solo.map(x=>rjFila(x.n,`solo ${x.ent}`)).join(""));
+  if(!R.sin.length&&!R.ausCheco.length&&!R.ret.length&&!R.temp.length&&!R.solo.length) h+=R.inc?`<p class="rjok">Sin retardos hasta las ${esc(relojMeta.hasta.slice(11))}.</p>`:`<p class="rjok">El reloj coincide con la captura del día.</p>`;
+  $("#rjBody").innerHTML=h; card.hidden=false;
+}
+function marcarFaltasReloj(noms){
+  if(READONLY) return; let k=0;
+  for(const n of noms){ if(byNom[n]&&!asisDay[n]){ asisDay[n]="F"; k++; } }
+  if(!k) return; commitA(); toast(k===1?"Falta marcada":`${k} faltas marcadas`);
+}
+$("#rjContrast").addEventListener("click",e=>{
+  const b=e.target.closest("[data-rjf],[data-rjall]"); if(!b) return;
+  // marcar a varios afecta bonos: pide un segundo clic para confirmar
+  if(b.dataset.rjall && b.dataset.ok!=="1"){ const t=b.textContent; b.dataset.ok="1"; b.classList.add("primary");
+    b.textContent=`Confirmar: poner falta a ${b.dataset.rjall.split(",").length} personas`;
+    setTimeout(()=>{ if(b.isConnected){ b.dataset.ok=""; b.classList.remove("primary"); b.textContent=t; } },5000); return; }
+  marcarFaltasReloj(b.dataset.rjf?[b.dataset.rjf]:b.dataset.rjall.split(","));
+});
+function renderRelojPlan(){
+  const card=$("#rjTE"); card.hidden=true;
+  const ents=Object.entries(plan.assign).filter(([n,a])=>(a.m==="TE"||a.m==="PER")&&byNom[n]);
+  if(!relojValido()||!ents.length) return;
+  let h="";
+  if(relojMeta.incompleto===fecha){
+    h=`<p class="warnbox" style="margin-top:0">Día incompleto: el reloj trae checadas hasta las ${esc(relojMeta.hasta.slice(11))}. Todavía no se puede comparar con el folio.</p>`;
+  } else {
+    const sin=[], bajo=[];
+    for(const [n,a] of ents.sort((x,y)=>x[0]<y[0]?-1:1)){
+      const hor=horById(a.h), r=relojDay[n], hl=hor?hor.label:"sin horario";
+      if(!r){ sin.push(rjFila(n,`${MODS[a.m].label.toLowerCase()} · ${esc(hl)}`)); continue; }
+      if(!r[1]||!hor) continue;
+      let d=hmMin(r[1])-hmMin(r[0]); if(d<0) d+=1440;
+      if(hor.horas*60-d>60) bajo.push(rjFila(n,`folio ${hor.horas.toLocaleString("es-MX")} h · reloj ${Math.floor(d/60)} h ${String(d%60).padStart(2,"0")} min`));
+    }
+    h+=rjSec("En el folio y sin checada",sin.length,sin.join(""));
+    h+=rjSec("Horas por debajo del folio",bajo.length,bajo.join(""));
+    if(dayCfg().tipo!=="ordinario"){
+      const extra=Object.entries(relojDay).filter(([n])=>byNom[n]&&(!plan.assign[n]||plan.assign[n].m==="OFF")).sort((x,y)=>x[0]<y[0]?-1:1)
+        .map(([n,r])=>rjFila(n,`${r[0]}–${r[1]||"sin salida"}${plan.assign[n]?" · no disponible en el plan":""}`));
+      h+=rjSec("Checaron sin estar en el plan",extra.length,extra.join(""));
+    }
+    if(!sin.length&&!bajo.length) h+=`<p class="rjok">Todos los del folio checaron.</p>`;
+    h+=`<p class="note">Revísalo antes de mandar el folio: el reloj no cuenta a quien no checó.</p>`;
+  }
+  $("#rjTEBody").innerHTML=h; card.hidden=false;
+}
+// Plantilla: personas activas sin una sola checada en los días cargados
+function relojSinChecadas(){
+  const m=store.get("pp.relojMeta",null); if(!m||!m.cubre) return "";
+  const vistos=new Set(); for(const d of store.get("pp.relojDates",[])) for(const n of Object.keys(store.get("pp.reloj."+d,{}))) vistos.add(n);
+  const ini=m.cubre[0], hasta=m.cubre[1].slice(0,10);
+  const l=people.filter(p=>!vistos.has(p.nom)&&!((p.ingreso||altaDe[p.nom]||"")>=ini)).sort((a,b)=>a.nom<b.nom?-1:1);
+  const fila=p=>`<tr><td>${p.nom}</td><td>${esc(p.nombre)}</td><td>${esc(areaTtl(p.area))}</td><td>${esc(p.puesto||"")}</td><td>${posB[p.nom]?`<span class="pill">Posible baja</span>`:`<button class="btn small rjb editonly" data-act="rjpb" data-nom="${p.nom}">Marcar posible baja</button>`}</td></tr>`;
+  return `<div class="card" id="rjPlantilla"><h4>Sin ninguna checada en el reloj · ${l.length}</h4>
+     ${l.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Área</th><th>Puesto</th><th></th></tr>${l.map(fila).join("")}</table></div>`:`<p class="hint">Todas las personas activas aparecen al menos una vez en el reloj.</p>`}
+     <p class="note">Del ${diaMes(ini)} al ${diaMes(hasta)} no aparecen en el reloj. Revisa con RH si siguen viniendo o si checan con otra nómina.</p></div>`;
+}
+
 /* ---------- configuración ---------- */
 function renderCfg(){
   const order=[1,2,3,4,5,6,0];
@@ -1273,7 +1539,7 @@ function renderCfg(){
       <td><input type="checkbox" data-wd="${d}" data-k="unico"${s.unico?" checked":""} aria-label="Horario único ${DIAS[d]}"></td></tr>`}).join("");
   $("#cfgHor").innerHTML=`<tr><th>Horario</th><th>Horas por persona</th><th></th></tr>`+cfg.horarios.map(h=>
     `<tr><td><input type="text" data-hid="${h.id}" data-k="label" value="${esc(h.label)}"></td><td><input type="number" step="0.5" data-hid="${h.id}" data-k="horas" value="${h.horas}"></td><td><button class="btn small" data-delh="${h.id}">Eliminar</button></td></tr>`).join("");
-  $("#cfgCompleto").value=cfg.completo;
+  $("#cfgCompleto").value=cfg.completo; $("#cfgTol").value=tolRet();
   const areas=new Set(people.map(p=>p.area));
   const sin=people.filter(p=>p.linea==="Sin línea asignada").map(p=>p.area);
   const meta=store.get("pp.rosterMeta",null);
@@ -1328,6 +1594,7 @@ $("#dlgCfg").addEventListener("change",e=>{
   }
   if(t.dataset.hid){const h=horById(t.dataset.hid); if(t.dataset.k==="horas") h.horas=Number(t.value)||0; else h.label=t.value; renderCfg()}
   if(t.id==="cfgCompleto") cfg.completo=t.value;
+  if(t.id==="cfgTol"){ let v=Math.round(Number(t.value)); if(!Number.isFinite(v)) v=10; cfg.tolRetardo=Math.min(60,Math.max(0,v)); t.value=cfg.tolRetardo; }
   saveCfg();
 });
 $("#dlgCfg").addEventListener("click",e=>{
