@@ -1,9 +1,13 @@
 // Estado compartido: un solo documento { v, at, data } donde data guarda las claves pp.* de la app.
 // GET  /api/state?v=N  -> 204 si no hay cambios desde la versión N; si no, el documento completo.
-// POST /api/state      -> { set:{clave:valor}, del:[clave], replace:{...} }  (solo rol de captura)
+// POST /api/state      -> { set:{clave:valor}, del:[clave], replace:{...}, v:N }  (solo rol de captura)
+//   v = versión que el cliente tenía al armar el cambio. Si no es la inmediata anterior, la respuesta trae
+//   stale:true y el cliente descarga el estado completo. La respuesta siempre trae { v, at, idx } con los
+//   índices de días recalculados aquí (idx.pp.dates, idx.pp.asisDates, idx.pp.relojDates).
 // Antes del primer cambio de cada día se guarda una copia en snap/AAAA-MM-DD.
 import { verify, json, configured, noConfig, LOCAL_KEYS } from "../lib/auth.mjs";
 import { store, EMPTY } from "../lib/store.mjs";
+import { recalcIdx } from "../lib/indices.mjs";
 
 const MAX = 8 * 1024 * 1024;
 const valida = (k, v) => typeof k === "string" && k.startsWith("pp.") && !LOCAL_KEYS.has(k) && typeof v === "string" && k.length < 200;
@@ -36,10 +40,13 @@ export default async (req) => {
     }
     if (body.set && typeof body.set === "object") for (const [k, v] of Object.entries(body.set)) if (valida(k, v)) st.data[k] = v;
     if (Array.isArray(body.del)) for (const k of body.del) if (typeof k === "string") delete st.data[k];
+    const idx = recalcIdx(st.data);
+    Object.assign(st.data, idx);
+    const stale = Number.isInteger(body.v) && body.v !== (st.v || 0);   // el cliente no tenía la versión inmediata anterior
     st.v = (st.v || 0) + 1;
     st.at = new Date().toISOString();
     await s.setJSON("state", st);
-    return json({ v: st.v, at: st.at });
+    return json({ v: st.v, at: st.at, idx, ...(stale ? { stale: true } : {}) });
   }
   return json({ error: "Método no permitido" }, 405);
 };

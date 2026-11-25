@@ -37,7 +37,9 @@ Desde ese momento Felipe trabaja en el sitio de Netlify, no en el archivo. Si si
 - **Cambiar una contraseña:** cambia la variable en Netlify y vuelve a desplegar. Las sesiones de ese rol se cierran solas. Úsalo cuando alguien deja de necesitar acceso.
 - **Respaldos automáticos:** antes del primer cambio de cada día el servidor guarda una copia. Felipe los ve en **Configuración → Respaldo de datos** y los puede descargar; para volver a uno, se descarga y se carga con **Restaurar respaldo**.
 - **Duración de la sesión:** 14 días para captura y 30 para consulta.
-- **Dos personas capturando a la vez:** cada cambio se guarda por clave (un día de plan, un día de asistencia, la configuración). Si dos personas editan el mismo día al mismo tiempo, se queda el último en guardar. Por eso solo Felipe debe capturar.
+- **Dos personas capturando a la vez:** cada cambio se guarda por clave (un día de plan, un día de asistencia, la configuración). Si dos capturas tocan el mismo día y a la misma persona, gana la última en guardar. Lo que ya no se pierde son los días: el servidor recalcula las listas de días (`pp.dates`, `pp.asisDates`, `pp.relojDates`) a partir de los datos guardados después de cada cambio, de modo que un día capturado por una persona nunca desaparece de la lista porque otra guardó al mismo tiempo. Cada guardado lleva la versión que la página tenía; si no era la inmediata anterior, el servidor responde `stale:true` y la página descarga el estado completo sin perder lo que aún no sube. Aun así, lo recomendable es que solo Felipe capture.
+- **Salir:** el botón Salir sube primero los cambios pendientes; si no se pueden subir pide confirmar, y después borra de este navegador la base y los planes, los pendientes y la sesión. Lo mismo ocurre al mostrar la pantalla de acceso por una sesión vencida o no válida (los pendientes por subir se conservan hasta volver a entrar).
+- **Límite de tamaño:** el servidor rechaza cargas de más de 8 MB (error 413). La página envía por separado las claves de un guardado rechazado por tamaño para que una sola no bloquee las demás, y avisa cuál no se guardó.
 
 ## Actualizar la app
 
@@ -56,6 +58,6 @@ public/index.html            app (sin datos) + pantalla de acceso
 netlify/functions/login.mjs  POST /api/login     → token por rol
 netlify/functions/state.mjs  GET/POST /api/state → datos compartidos (POST solo captura)
 netlify/functions/snapshots.mjs  GET /api/snapshots → respaldos diarios (solo captura)
-netlify/lib/                 firma de sesiones y acceso al almacén
+netlify/lib/                 firma de sesiones, acceso al almacén y recálculo de índices de días
 tools/build_server.py        genera public/index.html desde el archivo local
 ```

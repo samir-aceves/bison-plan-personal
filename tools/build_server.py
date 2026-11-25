@@ -75,7 +75,13 @@ AUTH_HTML = r"""
   const $=s=>document.querySelector(s);
   const LOCAL=new Set(["pp.lastDate","pp.view","pp.lbl","pp.seenVer","pp.lastBackup"]);
   document.body.classList.add("booting");
-  const leerAuth=()=>{ try{ const a=JSON.parse(localStorage.getItem("pp-auth")||"null"); return a&&a.exp>Date.now()?a:null; }catch(e){ return null; } };
+  // datos compartidos que no deben quedarse en el navegador sin una sesión válida (los pendientes por subir se conservan)
+  const limpiar=()=>{ try{ Object.keys(localStorage).filter(k=>k.startsWith("pp.")&&!LOCAL.has(k)).forEach(k=>localStorage.removeItem(k)); }catch(e){} };
+  let expirada=false;
+  const leerAuth=()=>{ let raw=null; try{ raw=localStorage.getItem("pp-auth"); }catch(e){}
+    if(!raw) return null;
+    try{ const a=JSON.parse(raw); if(a&&a.token&&a.exp>Date.now()) return a; }catch(e){}
+    expirada=true; return null; };
   async function subirPendientes(a){
     let p=null; try{ p=JSON.parse(localStorage.getItem("pp-pending")||"null"); }catch(e){}
     if(!p||!Object.keys(p).length) return;
@@ -93,7 +99,7 @@ AUTH_HTML = r"""
   async function entrar(a){
     if(a.role==="edit") await subirPendientes(a).catch(()=>{});
     const r=await fetch("/api/state",{headers:{authorization:"Bearer "+a.token}});
-    if(r.status===401){ localStorage.removeItem("pp-auth"); return mostrar("Tu sesión terminó. Vuelve a escribir la contraseña."); }
+    if(r.status===401){ localStorage.removeItem("pp-auth"); limpiar(); return mostrar("Tu sesión terminó. Vuelve a escribir la contraseña."); }
     if(!r.ok) throw new Error("estado "+r.status);
     iniciar(a,await r.json());
   }
@@ -116,7 +122,9 @@ AUTH_HTML = r"""
     finally{ b.disabled=false; b.textContent="Entrar"; }
   });
   const a=leerAuth();
-  if(a) entrar(a).catch(()=>mostrar("No hay conexión con el servidor. Revisa tu internet e intenta de nuevo.")); else mostrar();
+  if(a) entrar(a).catch(()=>mostrar("No hay conexión con el servidor. Revisa tu internet e intenta de nuevo."));
+  else{ if(expirada){ try{ localStorage.removeItem("pp-auth"); }catch(e){} } limpiar();
+    mostrar(expirada?"Tu sesión terminó. Vuelve a escribir la contraseña.":""); }
 })();
 </script>
 """
