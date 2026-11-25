@@ -62,6 +62,15 @@ header.top :focus-visible{outline-color:#fff}
 .daytag{font-family:var(--cond);font-weight:600;font-size:16px;padding:3px 10px;border-radius:4px;border:1px solid var(--rule)}
 .daytag.extra{background:var(--te);color:var(--te-ink);border-color:var(--te)}
 .daytag.descanso{color:var(--muted)}
+.datebox{flex-wrap:wrap}
+.datebox{gap:6px}
+.datebox .dnav,.datebox .dhoy{min-height:36px;min-width:36px;font-size:14px;padding:0 10px}
+.datebox .dnav{font-size:20px;line-height:1;padding:0 8px}
+@media (min-width:761px) and (max-width:1500px){header.top{gap:10px 8px;padding-left:16px;padding-right:16px}header.top .tb-left{gap:8px}header.top .datebox{gap:4px}header.top .sub{display:none}header.top h1{font-size:18px}header.top .tlabel{font-size:13px}header.top .datebox .daytag{font-size:14px;padding:3px 8px}header.top .btn{padding-left:10px;padding-right:10px}}
+@media (max-width:760px){.datebox .dnav,.datebox .dhoy{min-height:44px;min-width:44px}.datebox .dhoy{font-size:16px}}
+header.top .datebox .dhoy.on{background:#fff;border-color:#fff;color:#111;font-weight:600}
+header.top .datebox .dhoy:disabled{opacity:.5;cursor:default}
+header.top .datebox .dhoy.on:hover{background:#e6edf6}
 .spacer{flex:1}
 .ver{font-size:12px;color:var(--muted);border:1px solid var(--rule);border-radius:4px;padding:1px 7px;font-variant-numeric:tabular-nums;background:transparent}
 .ver:hover{color:var(--ink);border-color:var(--ink)}
@@ -118,8 +127,11 @@ section.line{background:var(--panel);border:1px solid var(--rule);border-radius:
 .chip.OFF .n{text-decoration:line-through}
 .chip .h{position:absolute;top:-6px;right:-6px;font-family:var(--cond);font-size:12px;font-weight:600;background:var(--ink);color:var(--panel);border-radius:8px;padding:0 5px;line-height:15px}
 .chip .nv{position:absolute;top:-8px;left:-6px;font-size:12px;font-weight:600;letter-spacing:0;line-height:15px;background:var(--ok);color:var(--panel);border-radius:6px;padding:0 4px;line-height:13px}
-.chip .nr{position:absolute;top:-8px;left:-6px;font-size:12px;font-weight:600;line-height:15px;background:var(--muted);color:var(--panel);border-radius:6px;padding:0 4px;white-space:nowrap;box-shadow:0 0 0 1px var(--panel)}
-.chip .nv~.nr{top:auto;bottom:-8px}
+.chip .nr{position:absolute;top:2px;left:2px;font-size:12px;font-weight:600;line-height:14px;background:var(--muted);color:var(--panel);border-radius:6px;padding:0 4px;white-space:nowrap}
+.chip.rj0{padding-top:17px}
+.chip.rj0 .a{margin-top:1px}
+.chip.rj0.nvx{height:68px;padding-bottom:16px}
+.chip.rj0 .nv{top:auto;bottom:2px;left:2px;padding:0 3px}
 .chip.dim{opacity:.25}
 @media (min-width:981px){aside{align-self:start;max-height:calc(100vh - 78px);overflow-y:auto}}
 .rjlab{position:relative;display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin-top:10px;cursor:pointer;font-weight:600}
@@ -140,6 +152,12 @@ section.line{background:var(--panel);border:1px solid var(--rule);border-radius:
 .tag.alta{background:var(--ok);color:var(--panel)} .tag.baja{background:var(--err);color:var(--panel)} .tag.cambio{background:var(--per);color:var(--per-ink)}
 .diff .acts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
 .warnbox{background:var(--warn-bg);border-left:3px solid var(--warn);padding:8px 10px;border-radius:6px;font-size:13px;margin-top:8px}
+.warnbox.rojo{background:color-mix(in srgb,var(--err) 14%,var(--panel));border:2px solid var(--err);border-left-width:6px;color:var(--ink);font-size:14px;margin:0 0 10px}
+.warnbox.rojo strong{color:var(--err)}
+.okold{display:flex;align-items:center;gap:10px;min-height:44px;margin-top:6px;font-size:14px;cursor:pointer}
+.okold input{width:22px;height:22px;flex:none}
+.diff .acts .btn{min-height:44px}
+.diff button:disabled{opacity:.5;cursor:not-allowed}
 .chip.hit{outline:2px solid var(--per);outline-offset:1px}
 
 aside{position:sticky;top:64px;display:flex;flex-direction:column;gap:14px}
@@ -223,7 +241,12 @@ body.v-plantilla .layout{grid-template-columns:minmax(0,1fr)}
 /* ---------- mover de área ---------- */
 .sw.mov{border:1px solid var(--ink);background:transparent}
 .seg button[aria-pressed="true"] .sw.mov{border-color:var(--panel)}
-.chip .mv{position:absolute;bottom:-6px;right:-6px;font-size:12px;line-height:15px;padding:0 4px;border-radius:6px;background:var(--per);color:var(--per-ink);box-shadow:0 0 0 1px var(--panel)}
+.chip .mv{position:absolute;bottom:2px;right:2px;font-size:12px;line-height:15px;padding:0 4px;border-radius:6px;background:var(--muted);color:var(--panel);box-shadow:0 0 0 1px var(--panel)}
+.chip.fut{opacity:.55;border-style:dashed}
+.b44{min-height:44px}
+#dlgMov .mprog p{margin:0 0 12px;font-size:14px;line-height:1.5;background:var(--warn-bg);border:1px solid var(--warn);border-radius:6px;padding:8px 10px}
+#dlgMov .mok{font-size:14px;line-height:1.5;margin:0 0 12px}
+#cfgHorMsg{font-size:13px;color:var(--err);margin:8px 0}
 .area.drop{outline:2px solid var(--per);outline-offset:-2px}
 .toolbar [hidden]{display:none!important}
 body.movmode .chip{cursor:grab}
@@ -327,6 +350,12 @@ body.ro .editonly{display:none!important}
   body{background:#fff;color:#000} .layout{display:block;padding:0}
   .rep{max-width:none;gap:16px} .tile,.panel{box-shadow:none;break-inside:avoid}
   details.vdata{display:none}
+  :root:root:root{--bg:#EEF1F5;--panel:#FFFFFF;--ink:#152234;--muted:#5B6B82;--rule:#D3DAE4;--soft:#F3F5F8;--te:#E2701A;--te-ink:#FFFFFF;--per:#2C68A8;--per-ink:#FFFFFF;--off:#9AA3AA;--tn:#4E6B5C;--tn-ink:#FFFFFF;
+    --aF:#B3261E;--aI:#9A6700;--aV:#1F6F8B;--aP:#6B4FA0;--a-ink:#FFFFFF;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#eda100;--vgrid:rgba(29,39,48,.10);--vbase:rgba(29,39,48,.28);--tilebd:#E1E6ED;
+    --err:#B3261E;--warn:#8A5A00;--warn-bg:#FFF4DC;--ok:#2E7D4F;color-scheme:light}
+  .legend i,.vz rect,.vz path,.tile,.panel{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .vz .selc{display:none}
+  .vz .selt{fill:var(--muted);font-weight:400}
 }
 
 /* ---------- acceso (patrón formulario de acceso) ---------- */
@@ -356,7 +385,10 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     <button class="ver" id="verTag" title="Acerca de: versión y novedades"></button>
   </div>
   <div class="datebox dayonly">
+    <button class="btn dnav" id="dPrev" aria-label="Día anterior" title="Día anterior">‹</button>
     <input type="date" id="fecha" aria-label="Día a trabajar">
+    <button class="btn dnav" id="dNext" aria-label="Día siguiente" title="Día siguiente">›</button>
+    <button class="btn dhoy" id="dHoy" aria-label="Ir a hoy" title="Ir a hoy (t)">Hoy</button>
     <span class="daytag" id="daytag"></span>
   </div>
   <div class="spacer"></div>
@@ -489,6 +521,7 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     <table class="tbl" id="cfgWeek"></table>
     <h5>Horarios</h5>
     <table class="tbl" id="cfgHor"></table>
+    <p id="cfgHorMsg" role="alert" hidden></p>
     <button class="btn small" id="addHor" style="margin-top:8px">Agregar horario</button>
     <h5>Reglas de recursos humanos</h5>
     <table class="tbl">
@@ -506,7 +539,7 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     <p class="note" id="rosterMsg"></p>
     <div id="rosterDiff"></div>
     <h5>Respaldo de datos</h5>
-    <p class="hint">Los planes, la configuración y la base viven solo en este navegador. Si se borra el historial o cambias de computadora, se pierden. Descarga un respaldo cada semana.</p>
+    <p class="hint" id="bkHint">Los planes, la configuración y la base viven solo en este navegador. Si se borra el historial o cambias de computadora, se pierden. Descarga un respaldo cada semana.</p>
     <button class="btn small" id="bkSave">Descargar respaldo</button>
     <label class="btn small" style="display:inline-block;margin-left:8px">Restaurar respaldo<input type="file" id="bkFile" accept=".json" style="display:none"></label>
     <p class="note" id="bkMsg"></p>
@@ -539,7 +572,13 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
   const $=s=>document.querySelector(s);
   const LOCAL=new Set(["pp.lastDate","pp.view","pp.lbl","pp.seenVer","pp.lastBackup"]);
   document.body.classList.add("booting");
-  const leerAuth=()=>{ try{ const a=JSON.parse(localStorage.getItem("pp-auth")||"null"); return a&&a.exp>Date.now()?a:null; }catch(e){ return null; } };
+  // datos compartidos que no deben quedarse en el navegador sin una sesión válida (los pendientes por subir se conservan)
+  const limpiar=()=>{ try{ Object.keys(localStorage).filter(k=>k.startsWith("pp.")&&!LOCAL.has(k)).forEach(k=>localStorage.removeItem(k)); }catch(e){} };
+  let expirada=false;
+  const leerAuth=()=>{ let raw=null; try{ raw=localStorage.getItem("pp-auth"); }catch(e){}
+    if(!raw) return null;
+    try{ const a=JSON.parse(raw); if(a&&a.token&&a.exp>Date.now()) return a; }catch(e){}
+    expirada=true; return null; };
   async function subirPendientes(a){
     let p=null; try{ p=JSON.parse(localStorage.getItem("pp-pending")||"null"); }catch(e){}
     if(!p||!Object.keys(p).length) return;
@@ -557,7 +596,7 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
   async function entrar(a){
     if(a.role==="edit") await subirPendientes(a).catch(()=>{});
     const r=await fetch("/api/state",{headers:{authorization:"Bearer "+a.token}});
-    if(r.status===401){ localStorage.removeItem("pp-auth"); return mostrar("Tu sesión terminó. Vuelve a escribir la contraseña."); }
+    if(r.status===401){ localStorage.removeItem("pp-auth"); limpiar(); return mostrar("Tu sesión terminó. Vuelve a escribir la contraseña."); }
     if(!r.ok) throw new Error("estado "+r.status);
     iniciar(a,await r.json());
   }
@@ -580,7 +619,9 @@ body.booting>header.top,body.booting>.toolbar,body.booting>.layout{display:none!
     finally{ b.disabled=false; b.textContent="Entrar"; }
   });
   const a=leerAuth();
-  if(a) entrar(a).catch(()=>mostrar("No hay conexión con el servidor. Revisa tu internet e intenta de nuevo.")); else mostrar();
+  if(a) entrar(a).catch(()=>mostrar("No hay conexión con el servidor. Revisa tu internet e intenta de nuevo."));
+  else{ if(expirada){ try{ localStorage.removeItem("pp-auth"); }catch(e){} } limpiar();
+    mostrar(expirada?"Tu sesión terminó. Vuelve a escribir la contraseña.":""); }
 })();
 </script>
 <script type="text/plain" id="app-main">
@@ -588,10 +629,11 @@ const BASE_ROSTER = [];
 // vacantes y faltas del archivo "Detalle de asistencia" (13-nov-2026)
 const BASE_VAC = [];
 const BASE_ASIS = {};
-const APP_VERSION = "2.8";
-const APP_FECHA = "2026-11-19";
+const APP_VERSION = "2.9";
+const APP_FECHA = "2026-11-25";
 const HERR_DESDE = "2026-10-14"; // Herramentales entra solo en planes desde esta fecha
 const CAMBIOS = [
+  ["2.9","2026-11-25","Correcciones de la auditoría completa. Plan del día: botones ‹ Hoy › para cambiar de día y regresar a hoy, con aviso de día pasado o futuro; abrir un día ya no cambia su horario; copiar un plan pide confirmar; Completar con tiempo extra no toca Permuta; quien aún no ingresa no se puede marcar ni entra al folio; un horario en uso no se puede quitar y editar sus horas no cambia folios pasados; folio sin número no se descarga; el total de personas del folio ya no repite áreas; la app ya no abre en el día de mañana después de las 6 de la tarde. Mover de área: Regresar funciona con cualquier fecha; los movimientos con fecha futura se ven en el diálogo y en Plantilla y se pueden cancelar; un movimiento nuevo reemplaza a los posteriores; la marca ↔ tiene color propio. Asistencia: Toda el área solo marca a programados; las faltas de bajas se siguen contando en días pasados; el Excel incluye todos los días con columna Captura; pegar nóminas ignora fechas y horas. Reloj: el orden de carga con RH ya no importa; días con pocas checadas no sugieren faltas; textos más claros. Archivo de RH más viejo que la base: aviso y confirmación. Reporte DG: una sola definición de ausentismo (sin vacaciones). Netlify: dos capturas a la vez ya no borran días; Salir borra los datos del navegador; mensajes de error y sesión más claros; consulta no puede editar el folio."],
   ["2.8","2026-11-25","Reloj checador. En Asistencia se carga el archivo del reloj (CSV). La app toma solo a la plantilla y reconoce el tercer turno de 19:00 a 07:00 (cuenta el día de entrada). Contraste con el reloj por día: quién no checó y no tiene marca (con botón para marcar falta; marcar a varios pide confirmar), quién tiene ausencia pero sí checó, retardos, salidas tempranas y días con una sola checada. Las fichas sin checada muestran la marca sin reloj. En Plan del día, el tiempo extra contra el reloj: quién está en el folio y no checó, horas por debajo del folio y quién checó sin estar en el plan. En Plantilla, quién no tiene ninguna checada en el periodo, con botón para marcar posible baja. La tolerancia de retardo se ajusta en Configuración (10 minutos por omisión). El reloj solo sugiere: no cambia la captura."],
   ["2.7","2026-11-23","Carga del Detalle de asistencia de RH, más segura. Si el archivo trae varias hojas, la app usa sola la que tiene la asistencia y dice cuál leyó. Los días que ya venían en el archivo anterior no se vuelven a importar; si RH los cambió, lo avisa por persona y fecha para revisarlo (por ejemplo, faltas de un puesto vacante que ahora aparecen a nombre de quien lo ocupa). Un día que ya se capturó en la app no se toca: se muestran las diferencias entre RH y la app. Avisa los días hábiles que el archivo no trae y si el archivo solo trae faltas."],
   ["2.6","2026-11-19","Mover operadores de área: botón Mover de área en Plan del día. Con un clic se elige el área destino y desde qué fecha; también se puede arrastrar el operador a otra área. El movimiento dura hasta que lo regreses, y desde esa fecha la persona cuenta en el área donde trabaja: en el tablero, la regla de departamento completo, el folio, la asistencia y las faltas del Reporte DG. Los días anteriores no cambian. El operador movido lleva la marca ↔. La pestaña Plantilla y vacantes lista los movimientos vigentes con botón Regresar y su historial. Al cargar el archivo de RH, si ya trae a la persona en el área nueva, el movimiento se cierra solo. Nuevo estilo igual al Tablero de producción: encabezado oscuro con logo, barra de pestañas y colores de marca. En celular, los botones de marcado ya no quedan cortados."],
@@ -660,6 +702,7 @@ const pad4 = n=>String(n).replace(/\D/g,"").padStart(4,"0");
 // Nombres como los maneja RH en folio: mayúsculas, sin acentos, conservando la Ñ
 const cleanName = s=>String(s||"").toUpperCase().replace(/Ñ/g,"\u0000").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\u0000/g,"Ñ").replace(/\s+/g," ").trim();
 const hoyISO = ()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const isoLocal = t=>{const d=new Date(t);return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};   // fecha local (no UTC) de un instante
 // claves propias de cada navegador: no se comparten en la versión de servidor
 const LOCAL_KEYS = new Set(["pp.lastDate","pp.view","pp.lbl","pp.seenVer","pp.lastBackup"]);
 const SRV = window.PP_SERVER || null;            // lo define el arranque de la versión Netlify
@@ -681,7 +724,7 @@ let cfg = Object.assign(structuredClone(DEFAULT_CFG), store.get("pp.cfg",{}));
 let roster = store.get("pp.roster",null) || BASE_ROSTER;
 let people = [];      // {nom,nombre,area,folio,linea}
 let byNom = {};
-let fecha = store.get("pp.lastDate", new Date().toISOString().slice(0,10));
+let fecha = store.get("pp.lastDate", hoyISO());
 let plan;             // {assign:{nom:{m,h}}, folio, semana, rutas, costoRuta, comedor}
 let brushM = "TE", brushH = null;
 let view = store.get("pp.view", READONLY?"reporte":"plan"); if(!["plan","asis","plantilla","reporte"].includes(view)) view="plan";
@@ -707,7 +750,7 @@ function buildPeople(){
   // IPP: siguen en la plantilla, pero no salen en el tablero, el folio ni las reglas
   people = all.filter(p=>p.estado!=="IPP"); ipp = all.filter(p=>p.estado==="IPP");
   byNom = Object.fromEntries(people.map(p=>[p.nom,p]));
-  const hoy=hoyISO(), lim = new Date(Date.now()-DIAS_NUEVO*864e5).toISOString().slice(0,10);
+  const hoy=hoyISO(), lim = isoLocal(Date.now()-DIAS_NUEVO*864e5);
   const movs=store.get("pp.movs",[]);
   altaDe = {}; movs.filter(m=>m.tipo==="alta").forEach(m=>{altaDe[m.nom]=m.fecha});
   people.forEach(p=>{ if(p.ingreso) altaDe[p.nom]=p.ingreso; });   // la fecha real de ingreso manda
@@ -724,13 +767,36 @@ function aplicarMovs(d){
   for(const p of people){ const r=areaDe(p,d); p.area=r.area; p.folio=r.folio; p.linea=r.linea;
     p.mov = r.area!==p.areaRH ? {de:p.areaRH,desde:movVig(p.nom,d).desde} : null; }
 }
+// historial sin entradas redundantes: una entrada que deja el área igual a la vigente justo antes no aporta nada
+function limpiaMov(list,rh){
+  list=list.slice().sort((a,b)=>a.desde<b.desde?-1:a.desde>b.desde?1:0);
+  const out=[]; let prev=null;
+  for(const e of list){ const a=(e.area&&e.area!==rh)?e.area:null; if(a===prev) continue; out.push(e); prev=a; }
+  return out;
+}
+// lista resultante de mover (area) o regresar (null) desde "desde": el movimiento nuevo manda, así que quita los posteriores
+function listaMov(nom,desde,area){
+  const p=byNom[nom], rh=p.areaRH; if(area===rh) area=null;
+  const orig=AM[nom]||[], post=orig.filter(e=>e.desde>desde).length;
+  const list=limpiaMov(orig.filter(e=>e.desde<desde).concat({desde,area,en:new Date().toISOString()}),rh);
+  return {list,post,igual:JSON.stringify(list.map(e=>[e.desde,e.area]))===JSON.stringify(orig.map(e=>[e.desde,e.area]))};
+}
+const areaEnLista=(list,d)=>{ let r=null; for(const e of list){ if(e.desde<=d) r=e; else break; } return r&&r.area?r.area:null; };
 function setMov(nom,desde,area){
   if(READONLY||!byNom[nom]) return false;
-  const p=byNom[nom]; if(area===p.areaRH) area=null;
-  const list=(AM[nom]||[]).filter(e=>e.desde!==desde);
-  if(area===null && !list.length) return false;
-  list.push({desde,area,en:new Date().toISOString()}); list.sort((a,b)=>a.desde<b.desde?-1:a.desde>b.desde?1:0);
-  AM[nom]=list; store.set("pp.areaMov",AM); aplicarMovs(fecha); render(); return true;
+  const r=listaMov(nom,desde,area);
+  if(r.list.length) AM[nom]=r.list; else delete AM[nom];
+  store.set("pp.areaMov",AM); aplicarMovs(fecha);
+  autoInclude(); savePlan(); render(); return {quitados:r.post};
+}
+// movimientos con fecha posterior a "d" de una persona
+const movProg=(nom,d)=>(AM[nom]||[]).filter(e=>e.desde>d);
+// cancela un movimiento programado y los que dependen de él
+function cancelaProg(nom,desde){
+  if(READONLY||!AM[nom]) return false;
+  const list=limpiaMov(AM[nom].filter(e=>e.desde<desde),byNom[nom]?byNom[nom].areaRH:null);
+  if(list.length) AM[nom]=list; else delete AM[nom];
+  store.set("pp.areaMov",AM); aplicarMovs(fecha); return true;
 }
 // al cargar un archivo de RH: movimientos que se cierran o que conviene revisar
 function movCierres(newR){
@@ -830,18 +896,14 @@ function defaultSemana(){
 function fechaLarga(){const d=new Date(fecha+"T12:00");return `${DIAS_UP[d.getDay()]} ${d.getDate()} DE ${MESES[d.getMonth()]} DE ${d.getFullYear()}`}
 
 function defaultBrush(){ if(brushM==="TE"||brushM==="TN") brushM = dayCfg().tipo==="ordinario"?"TN":"TE"; }
-function loadAsis(){ asisDay = store.get("pp.asis."+fecha,{}); relojDay = store.get("pp.reloj."+fecha,{}); relojMeta = store.get("pp.relojMeta",null); }
+function loadAsis(){ asisDay = store.get("pp.asis."+fecha,{}); relojDay = store.get("pp.reloj."+fecha,{}); relojMeta = relojRefrescar(store.get("pp.relojMeta",null)); }
 function saveAsis(){
   store.set("pp.asis."+fecha,asisDay); store.set("pp.lastDate",fecha);
   const idx=new Set(store.get("pp.asisDates",[])); if(Object.keys(asisDay).length) idx.add(fecha); else idx.delete(fecha);
   store.set("pp.asisDates",[...idx].sort());
 }
 // programados del día: los del plan; si no hay plan, toda la plantilla activa que ya había ingresado
-function programados(){
-  const m=Object.entries(plan.assign).filter(([n,a])=>a.m!=="OFF"&&byNom[n]).map(([n])=>n);
-  if(m.length) return {set:new Set(m),conPlan:true};
-  return {set:new Set(people.filter(vigente).map(p=>p.nom)),conPlan:false};
-}
+function programados(){ return progDe(fecha,plan); }
 function paintA(nom,mode){ if(mode==="clear"||brushA==="CLR") delete asisDay[nom]; else asisDay[nom]=brushA; }
 const sameA = nom=> brushA==="CLR" ? !asisDay[nom] : asisDay[nom]===brushA;
 function commitA(){ saveAsis(); render(); }
@@ -851,8 +913,8 @@ function toggleGroupA(list){
   list.forEach(p=>paintA(p.nom,all?"clear":"set")); commitA();
 }
 function faltasRango(dias){
-  const hoy=hoyISO(), ini=new Date(Date.now()-dias*864e5).toISOString().slice(0,10), c={};
-  for(const d of store.get("pp.asisDates",[])){ if(d<ini||d>hoy) continue;
+  const hoy=hoyISO(), ini=isoMinus(hoy,dias-1), c={};
+  for(const d of store.get("pp.asisDates",[])){ if(!(d>=ini&&d<=hoy)) continue;
     for(const [n,k] of Object.entries(store.get("pp.asis."+d,{}))) if(k==="F") (c[n] ||= []).push(d); }
   return c;
 }
@@ -860,9 +922,24 @@ function loadPlan(){
   loadAsis();
   plan = store.get("pp.plan."+fecha,null) || {assign:{},folio:cfg.folio,semana:defaultSemana(),rutas:1,costoRuta:cfg.costoRuta,comedor:cfg.comedor};
   const al=allowedHor(); if(!al.includes(brushH)) brushH=al[0];
-  enforceUnico(false); autoInclude();
+  // día de horario único: el pincel toma el horario que ya tiene el plan; abrir un día nunca reescribe sus marcas
+  if(dayCfg().unico){ const m=Object.values(plan.assign).find(a=>a.m!=="OFF"&&a.h&&horPlan(a.h)); if(m) brushH=m.h; }
+  if(fecha>=hoyISO()) snapHor(false);   // hoy y días futuros siguen los horarios vigentes (en memoria; se guarda al editar)
+  autoInclude();
 }
+// copia de los horarios usados por el plan: un horario editado después no cambia folios de días pasados
+function snapHor(keepOld){
+  const old=plan.hor||{}, hor={};
+  new Set(Object.values(plan.assign).filter(a=>a.m!=="OFF"&&a.h).map(a=>a.h)).forEach(id=>{
+    const h=horById(id);
+    if(keepOld&&old[id]) hor[id]=old[id]; else if(h) hor[id]={label:h.label,horas:h.horas}; else if(old[id]) hor[id]=old[id];
+  });
+  plan.hor=hor;
+}
+// horario de un id para este plan: la copia guardada en el plan y, si no hay, el de Configuración
+function horPlan(id){ return (plan&&plan.hor&&plan.hor[id])||horById(id); }
 function savePlan(){
+  snapHor(fecha<hoyISO());
   store.set("pp.plan."+fecha,plan); store.set("pp.lastDate",fecha);
   const idx=new Set(store.get("pp.dates",[])); if(Object.keys(plan.assign).length) idx.add(fecha); else idx.delete(fecha);
   store.set("pp.dates",[...idx].sort().reverse());
@@ -879,12 +956,16 @@ function enforceUnico(announce){
 
 /* ---------- marcado ---------- */
 function paint(nom, mode){ // mode: "set" | "clear"
-  if(mode==="clear"||brushM==="CLR"){delete plan.assign[nom];return}
+  if(mode==="clear"||brushM==="CLR"){delete plan.assign[nom];return true}
+  if(byNom[nom]&&!vigente(byNom[nom])) return false;   // aún no ingresa ese día
   plan.assign[nom] = brushM==="OFF"? {m:"OFF"} : {m:brushM,h:brushH};
+  return true;
 }
+const avisoAlta=p=>`${p.nom} ingresa el ${fCorta(altaDe[p.nom])}: no se marca antes.`;
 function sameAsBrush(a){return a && a.m===brushM && (brushM==="OFF"||a.h===brushH)}
 function toggleGroup(list){
   if(brushM==="CLR"){list.forEach(p=>delete plan.assign[p.nom]);return commit()}
+  list=list.filter(vigente);   // quien aún no ingresa ese día no se marca
   const targets = brushM==="OFF"? list : list.filter(p=>!plan.assign[p.nom]||plan.assign[p.nom].m!=="OFF");
   const all = targets.length && targets.every(p=>sameAsBrush(plan.assign[p.nom]));
   targets.forEach(p=>paint(p.nom, all?"clear":"set"));
@@ -895,8 +976,10 @@ function toggleGroup(list){
 function autoInclude(){
   if(fecha<HERR_DESDE) return; // no se modifican planes anteriores a esa fecha
   const act=Object.entries(plan.assign).filter(([n,a])=>a.m!=="OFF"&&byNom[n]&&!SIEMPRE.has(byNom[n].area)).map(([n,a])=>a);
-  const fijos=people.filter(p=>SIEMPRE.has(p.area));
-  if(!act.length){ fijos.forEach(p=>{if(plan.assign[p.nom]?.auto) delete plan.assign[p.nom]}); return; }
+  const fijos=people.filter(p=>SIEMPRE.has(p.area)&&vigente(p));
+  // una marca automática de quien ya no está en un área "siempre" (lo movieron) ya no corresponde
+  for(const [n,a] of Object.entries(plan.assign)) if(a.auto&&!(byNom[n]&&SIEMPRE.has(byNom[n].area)&&vigente(byNom[n]))) delete plan.assign[n];
+  if(!act.length){ for(const [n,a] of Object.entries(plan.assign)) if(a.auto) delete plan.assign[n]; return; }
   const cm={}; act.forEach(a=>cm[a.m]=(cm[a.m]||0)+1);
   const m=["TE","PER","TN"].sort((x,y)=>(cm[y]||0)-(cm[x]||0))[0];
   const cuenta={}; act.filter(a=>a.m===m).forEach(a=>cuenta[a.h]=(cuenta[a.h]||0)+1);
@@ -962,19 +1045,21 @@ function renderBoard(){
         const np = asis && prog.conPlan && !prog.set.has(p.nom);
         const hit = q && (p.nom.includes(q)||norm(p.nombre).includes(q)||norm(p.puesto).includes(q));
         const dim = q && !hit;
-        const hb = asis ? (ac?`<span class="h">${ac}</span>`:"") : (!dayCfg().unico&&a&&a.m!=="OFF"&&a.h!==defH? `<span class="h">${esc(horById(a.h)?.label.slice(8,10)||"?")}</span>`:"");
+        const hb = asis ? (ac?`<span class="h">${ac}</span>`:"") : (!dayCfg().unico&&a&&a.m!=="OFF"&&a.h!==defH? `<span class="h">${esc(horPlan(a.h)?.label.slice(8,10)||"?")}</span>`:"");
         const nv = newSet.has(p.nom)? `<span class="nv">NUEVO</span>`:"";
         let rjT="", nr="";
         if(rjOn){ const r=relojDay[p.nom];
           if(r) rjT = r[1] ? ` · entró ${r[0]}, salió ${r[1]}` : ` · entró ${r[0]}, sin checada de salida`;
           else if(!ac && prog.set.has(p.nom) && rjAus){ rjT=" · sin checada en el reloj"; nr=`<span class="nr" aria-hidden="true">sin reloj</span>`; } }
         const pb = posB[p.nom];
-        const mvT = p.mov? ` · viene de ${esc(titleCase(p.mov.de))} desde ${fCorta(p.mov.desde)}` : "";
+        const mvT = p.mov? ` · movido, viene de ${esc(titleCase(p.mov.de))} desde ${fCorta(p.mov.desde)}` : "";
+        const fut = !vigente(p);
+        const futT = fut? ` · Ingresa el ${fCorta(altaDe[p.nom])}` : "";
         const mvB = p.mov? `<span class="mv" aria-hidden="true">↔</span>` : "";
-        const det = `${esc(p.nombre)}${p.puesto?" · "+esc(p.puesto):""}${nv?" · alta reciente":""}${pb?" · posible baja: "+esc(pb.motivo):""}${mvT}${rjT}`;
+        const det = `${esc(p.nombre)}${p.puesto?" · "+esc(p.puesto):""}${nv?" · alta reciente":""}${pb?" · posible baja: "+esc(pb.motivo):""}${mvT}${futT}${rjT}`;
         const estado = asis ? (ac?" · "+ASIS[ac]:(np?" · no programado":"")) : (a?" · "+(a.m==="OFF"?"no disponible":MODS[a.m].label):"");
         const lbl = lblMode==="puesto" ? puestoCorto(p.puesto) : p.nombre.split(" ")[0];
-        html+=`<button class="chip ${cls}${dim?" dim":""}${hit?" hit":""}${pb?" pb":""}${np?" np":""}" data-nom="${p.nom}" data-name="${det}" aria-label="${p.nom} ${det}${estado}"><span class="n">${p.nom}</span><span class="a">${esc(lbl)}</span>${hb}${nv}${nr}${mvB}</button>`;
+        html+=`<button class="chip ${cls}${nr?" rj0":""}${nr&&nv?" nvx":""}${dim?" dim":""}${hit?" hit":""}${pb?" pb":""}${np?" np":""}${fut&&!asis?" fut":""}" data-nom="${p.nom}" data-name="${det}" aria-label="${p.nom} ${det}${estado}"><span class="n">${p.nom}</span><span class="a">${esc(lbl)}</span>${hb}${nv}${nr}${mvB}</button>`;
       }
       for(const v of vl) html+=`<div class="vacbox" title="Vacante · ${esc(v.puesto)}${v.nota?" · "+esc(v.nota):""}" aria-label="Vacante: ${esc(v.puesto)}"><span class="n">VACANTE</span><span class="a">${esc(v.puesto)}</span></div>`;
       html+=`</div></div>`;
@@ -991,6 +1076,7 @@ function ruleAreaBad(list){
   if(!hasTE) return false;
   return !list.filter(vigente).every(p=>{const m=plan.assign[p.nom]?.m;return m==="TE"||m==="OFF"});
 }
+const folioValido=()=>Number.isInteger(plan.folio)&&plan.folio>=1;
 function evalRules(){
   const out=[];
   const huerf=Object.keys(plan.assign).filter(n=>!byNom[n]&&plan.assign[n].m!=="OFF");
@@ -1002,7 +1088,8 @@ function evalRules(){
       const lvl = cfg.completo==="block"?"err":"warn";
       incompletas.forEach(([k,l])=>{
         const falt=l.filter(vigente).filter(p=>{const m=plan.assign[p.nom]?.m;return m!=="TE"&&m!=="OFF"});
-        out.push({lvl,html:`<strong>${esc(titleCase(k))}</strong> va incompleta en tiempo extra: faltan ${falt.length} (${falt.map(p=>p.nom+(newSet.has(p.nom)?" nuevo":"")).join(", ")}). Márcalos o ponlos como no disponibles.`,fix:k});
+        const nper=falt.filter(p=>plan.assign[p.nom]?.m==="PER").length;
+        out.push({lvl,html:`<strong>${esc(titleCase(k))}</strong> va incompleta en tiempo extra: faltan ${falt.length} (${falt.map(p=>p.nom+(newSet.has(p.nom)?" nuevo":"")).join(", ")}). Márcalos o ponlos como no disponibles.`+(nper?` El botón no cambia a ${nper} en permuta: ${nper>1?"cámbialas":"cámbiala"} a mano si deben ir en tiempo extra.`:""),fix:k});
       });
     } else out.push({lvl:"ok",html:"Departamentos completos en tiempo extra."});
   }
@@ -1019,27 +1106,33 @@ function evalRules(){
   else if(tnNoms.length&&nf) out.push({lvl:"warn",html:`<strong>${tnNoms.length} persona(s) en Tiempo normal no van a salir en el folio</strong> (${tnNoms.slice(0,12).join(", ")}${tnNoms.length>12?"…":""}). Si también son tiempo extra, pásalas.`,toTE:tnNoms.join(",")});
   else if(tnNoms.length) out.push({lvl:"ok",html:"Tiempo normal no va en el folio ni en las hojas de firma."});
   if(tipo==="descanso"&&n) out.push({lvl:"warn",html:"Este día está configurado como descanso."});
+  const aun=Object.keys(plan.assign).filter(k=>byNom[k]&&!vigente(byNom[k]));
+  if(aun.length) out.push({lvl:"warn",html:`<strong>${aun.length} persona(s) marcadas aún no ingresaban en esta fecha</strong> (${aun.map(k=>k+", ingresa el "+fCorta(altaDe[k])).join("; ")}). No salen en el folio ni en las hojas de firma.`,drop:aun.join(",")});
   // un día pasado nunca bloquea: el folio ya se entregó y debe poder volver a descargarse
   if(fecha<hoyISO()) out.forEach(r=>{if(r.lvl==="err") r.lvl="warn"});
+  // estos dos errores dejarían el folio mal armado, también en días pasados
+  const sinH=Object.entries(plan.assign).filter(([k,a])=>a.m!=="OFF"&&byNom[k]&&!horPlan(a.h)).map(([k])=>k);
+  if(sinH.length) out.push({lvl:"err",html:`<strong>${sinH.length} marca(s) usan un horario que ya no existe</strong> (${sinH.slice(0,8).join(", ")}${sinH.length>8?"…":""}). Elige un horario en la barra de herramientas para volver a marcarlas.`});
+  if(!folioValido()) out.push({lvl:"err",html:"<strong>Falta el número de folio.</strong> Escribe un folio de 1 o más."});
   return out;
 }
 
 function folioRows(){
   const groups={};
   for(const [nom,a] of Object.entries(plan.assign)){
-    if(a.m==="OFF"||a.m==="TN"||!byNom[nom]) continue;
+    if(a.m==="OFF"||a.m==="TN"||!byNom[nom]||!vigente(byNom[nom])) continue;
     const p=byNom[nom]; const k=p.folio+"|"+a.m+"|"+a.h;
     (groups[k] ||= {folio:p.folio,m:a.m,h:a.h,noms:[]}).noms.push(nom);
   }
-  const head={}; for(const p of people) head[p.folio]=(head[p.folio]||0)+1;
-  return Object.values(groups).map(g=>({...g,total:head[g.folio]||0,reales:g.noms.length,horas:horById(g.h)?.horas||0,horario:horById(g.h)?.label||""}))
+  const head={}; for(const p of people.filter(vigente)) head[p.folio]=(head[p.folio]||0)+1;
+  return Object.values(groups).map(g=>({...g,total:head[g.folio]||0,reales:g.noms.length,horas:horPlan(g.h)?.horas||0,horario:horPlan(g.h)?.label||""}))
     .sort((a,b)=>(FOLIO_ORDER.indexOf(a.folio)+100*(FOLIO_ORDER.indexOf(a.folio)<0))-(FOLIO_ORDER.indexOf(b.folio)+100*(FOLIO_ORDER.indexOf(b.folio)<0))||a.m.localeCompare(b.m));
 }
 
 function renderSide(){
   const act=Object.values(plan.assign).filter(a=>a.m!=="OFF");
   const off=Object.values(plan.assign).filter(a=>a.m==="OFF").length;
-  const hrs=act.reduce((s,a)=>s+(horById(a.h)?.horas||0),0);
+  const hrs=act.reduce((s,a)=>s+(horPlan(a.h)?.horas||0),0);
   $("#sumPeople").textContent=act.length;
   const te=act.filter(a=>a.m==="TE").length, per=act.filter(a=>a.m==="PER").length, tn=act.filter(a=>a.m==="TN").length;
   $("#sumKv").innerHTML=`<span>Tiempo normal</span><span>${tn}</span><span>Tiempo extra</span><span>${te}</span><span>Permuta</span><span>${per}</span><span>No disponibles</span><span>${off}</span><span>Horas totales</span><span>${hrs.toLocaleString("es-MX")}</span>`;
@@ -1047,6 +1140,7 @@ function renderSide(){
   $("#checks").innerHTML=rules.map(r=>`<li class="${r.lvl}">${r.html}${r.fix&&!READONLY?`<br><button class="btn small" data-fix="${esc(r.fix)}">Completar con tiempo extra</button>`:""}${r.drop&&!READONLY?`<br><button class="btn small" data-drop="${esc(r.drop)}">Quitar del plan</button>`:""}${r.toTE&&!READONLY?`<br><button class="btn small" data-tote="${esc(r.toTE)}">Pasar a Tiempo extra</button>`:""}</li>`).join("")||`<li>Sin reglas activas.</li>`;
   $("#fFolio").value=plan.folio; $("#fSemana").value=plan.semana; $("#fRutas").value=plan.rutas;
   $("#fCostoRuta").value=plan.costoRuta; $("#fComedor").value=plan.comedor;
+  ["#fFolio","#fRutas","#fSemana","#fCostoRuta","#fComedor"].forEach(q=>{ $(q).disabled=READONLY; });
   const rows=folioRows();
   $("#prev").innerHTML = rows.length? `<tr><th>Área</th><th>Just.</th><th class="r">Tot.</th><th class="r">Reales</th><th class="r">Hrs</th></tr>`+
     rows.map(r=>`<tr><td>${esc(r.folio)}</td><td>${r.m==="TE"?"T. extra":"Permuta"}</td><td class="r">${r.total}</td><td class="r">${r.reales}</td><td class="r">${r.reales*r.horas}</td></tr>`).join("")
@@ -1057,6 +1151,7 @@ function renderSide(){
   let why="";
   if(!ExcelJSready()) why="No se pudo cargar el generador de Excel. Revisa tu conexión a internet y recarga la página.";
   else if(!rows.length) why = nTN ? `No hay nada para el folio: las ${nTN} persona(s) marcadas están en Tiempo normal, y el folio solo lleva tiempo extra y permuta. Si son tiempo extra, usa "Pasar a Tiempo extra" o márcalas con el botón Tiempo extra.` : "Marca personal en tiempo extra o permuta para armar el folio.";
+  else if(!folioValido()) why="Escribe un número de folio de 1 o más para poder descargar el folio.";
   else if(blocked) why="No se puede descargar hasta corregir lo que está en rojo en Reglas: "+rules.filter(r=>r.lvl==="err").map(r=>r.html.replace(/<[^>]+>/g,"").split(".")[0]).join("; ")+".";
   $("#exportNote").textContent = why;
   renderRelojPlan();
@@ -1069,7 +1164,7 @@ function renderSideAsis(){
   const aus=c.F+c.I+c.V+c.P;
   const fuera=Object.keys(asisDay).filter(n=>!set.has(n));
   $("#asBig").textContent = N? pct(aus/N) : "—";
-  $("#asSub").textContent = `de ausencia · ${conPlan?`${N} programados en el plan del día`:`sin plan: ${N} de la plantilla activa`}`;
+  $("#asSub").textContent = `de ausencia · ${conPlan?`${N} programados en el plan del día`:`sin plan: ${N} de la plantilla de ese día`}`;
   $("#asKv").innerHTML = `<span>Asistieron</span><span>${N-aus}</span><span>Faltas</span><span>${c.F}</span><span>Incapacidad</span><span>${c.I}</span><span>Vacación</span><span>${c.V}</span><span>Permiso</span><span>${c.P}</span><span>% faltas</span><span>${N?pct(c.F/N):"—"}</span>`;
   $("#asNote").innerHTML = fuera.length ? `<strong>${fuera.length} marcados que no estaban programados:</strong> ${fuera.join(", ")}. No cuentan en el porcentaje.`
     : (Object.keys(asisDay).length? "" : "Sin asistencia capturada para este día. Todos cuentan como asistencia hasta que marques.");
@@ -1107,6 +1202,8 @@ function renderPlantilla(){
   const movd=people.filter(p=>p.areaRH!==ah(p)).sort((a,b)=>a.nom.localeCompare(b.nom));
   const hist=[]; for(const [nom,l] of Object.entries(AM)){ const rh=(byNom[nom]||ipp.find(x=>x.nom===nom))?.areaRH; l.forEach((e,i)=>{ if(e.en) hist.push({nom,e,de:i?(l[i-1].area||rh):rh,a:e.area||rh}); }); }
   hist.sort((a,b)=>a.e.en<b.e.en?1:-1); hist.length=Math.min(hist.length,20);
+  const progs=[]; for(const [nom,l] of Object.entries(AM)){ const q=byNom[nom]; if(!q) continue; l.forEach((e,i)=>{ if(e.desde>hoy) progs.push({q,e,de:i?(l[i-1].area||q.areaRH):q.areaRH,a:e.area||q.areaRH}); }); }
+  progs.sort((a,b)=>a.e.desde<b.e.desde?-1:a.e.desde>b.e.desde?1:a.q.nom.localeCompare(b.q.nom));
   const tk=k=>k?areaTtl(k):"su área de RH";
   $("#board").innerHTML=`<div class="page">
    <div class="card"><h4>Dotación por área</h4>
@@ -1115,6 +1212,7 @@ function renderPlantilla(){
      <p class="note">Puestos = personas activas + vacantes registradas. La cobertura descuenta las posibles bajas: es la gente con la que realmente cuentas.</p></div>
    <div class="card"><h4>Movimientos de área · ${movd.length}</h4>
      ${movd.length?`<div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>Puesto</th><th>Área de RH</th><th>Trabaja en</th><th>Desde</th><th></th></tr>${movd.map(p=>`<tr><td>${p.nom}</td><td>${esc(p.nombre)}</td><td>${esc(p.puesto||"")}</td><td>${esc(areaTtl(p.areaRH))}</td><td>${esc(areaTtl(ah(p)))}</td><td>${fCorta(movVig(p.nom,hoy).desde)}</td><td><button class="btn small editonly" data-act="retmov" data-nom="${p.nom}">Regresar</button></td></tr>`).join("")}</table></div>`:`<p class="hint">Nadie está movido de su área de RH.</p>`}
+     ${progs.length?`<h5>Programados · ${progs.length}</h5><div class="tblwrap"><table class="tbl"><tr><th>Nómina</th><th>Nombre</th><th>De</th><th>A</th><th>Desde</th><th></th></tr>${progs.map(x=>`<tr><td>${x.q.nom}</td><td>${esc(x.q.nombre)}</td><td>${esc(areaTtl(x.de))}</td><td>${esc(areaTtl(x.a))}</td><td>${fCorta(x.e.desde)}</td><td><button class="btn b44 editonly" data-act="cancprog" data-nom="${x.q.nom}" data-desde="${x.e.desde}" aria-label="Cancelar movimiento programado de ${x.q.nom}">Cancelar</button></td></tr>`).join("")}</table></div>`:""}
      ${hist.length?`<h5>Últimos cambios</h5><ul class="mvhist">${hist.map(h=>`<li>${fCorta(h.e.desde)} · ${h.nom} · ${esc(tk(h.de))} → ${esc(tk(h.a))}</li>`).join("")}</ul>`:""}
      <p class="note">Un movimiento dura hasta que lo regreses. Los folios, las reglas, la asistencia y las faltas del reporte cuentan a la persona en el área donde trabajó. Para mover a alguien, usa Plan del día, modo Mover de área.</p></div>
    <div class="card"><h4>Vacantes · ${vl.length}</h4>
@@ -1139,9 +1237,11 @@ function renderHeader(){
   $("#btnClear").textContent = view==="asis"?"Vaciar asistencia":"Vaciar día";
   const d=new Date(fecha+"T12:00"); const dc=dayCfg();
   const t=$("#daytag"); t.className="daytag "+dc.tipo;
-  t.textContent=`${DIAS[d.getDay()]} · ${dc.tipo==="extra"?"Tiempo extra":dc.tipo==="descanso"?"Descanso":"Ordinario"}`;
+  const hoy=hoyISO();
+  t.textContent=`${DIAS[d.getDay()]} · ${dc.tipo==="extra"?"Tiempo extra":dc.tipo==="descanso"?"Descanso":"Ordinario"}`+(fecha<hoy?" · Pasado":fecha>hoy?" · Futuro":"");
+  const bh=$("#dHoy"); bh.disabled=fecha===hoy; bh.classList.toggle("on",fecha!==hoy);
   const dates=store.get("pp.dates",[]).filter(x=>x!==fecha);
-  $("#copyFrom").innerHTML=`<option value="">otro día…</option>`+dates.map(x=>`<option>${x}</option>`).join("");
+  $("#copyFrom").innerHTML=`<option value="">otro día…</option>`+dates.map(x=>`<option value="${x}">${DIAS[new Date(x+"T12:00").getDay()].slice(0,3).toLowerCase()} ${fCorta(x)}</option>`).join("");
 }
 function render(){
   renderViews(); $("#vtip").style.display="none";
@@ -1155,6 +1255,15 @@ function render(){
 /* ---------- eventos ---------- */
 $("#fecha").value=fecha;
 $("#fecha").addEventListener("change",e=>{if(!e.target.value)return;fecha=e.target.value;aplicarMovs(fecha);defaultBrush();loadPlan();store.set("pp.lastDate",fecha);render()});
+const irFecha=d=>{ $("#fecha").value=d; $("#fecha").dispatchEvent(new Event("change")); };   // mismo manejador que el campo de fecha
+$("#dPrev").addEventListener("click",()=>irFecha(isoMinus(fecha,1)));
+$("#dNext").addEventListener("click",()=>irFecha(isoMinus(fecha,-1)));
+$("#dHoy").addEventListener("click",()=>{ if(fecha!==hoyISO()) irFecha(hoyISO()); });
+document.addEventListener("keydown",e=>{
+  if(e.key!=="t"||e.ctrlKey||e.metaKey||e.altKey||document.querySelector("dialog[open]")) return;
+  const t=e.target; if(t&&(/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.isContentEditable)) return;
+  const b=$("#dHoy"); if(b.offsetParent&&!b.disabled) b.click();
+});
 $("#brushMod").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;brushM=b.dataset.m;renderToolbar()});
 $("#brushHor").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;brushH=b.dataset.h;enforceUnico(true);commit()});
 $("#q").addEventListener("input",renderBoard);
@@ -1172,7 +1281,9 @@ $("#board").addEventListener("pointerdown",e=>{
   if(modoMov()){ dragging={mov:true,nom,sx:e.clientX,sy:e.clientY,moved:false}; return; }
   if(view==="asis"){ const mode=sameA(nom)?"clear":"set"; dragging={mode,touched:new Set([nom]),asis:true}; paintA(nom,mode); commitA(); return; }
   const mode = sameAsBrush(plan.assign[nom])?"clear":"set";
-  dragging={mode,touched:new Set([nom])}; paint(nom,mode); commit();
+  dragging={mode,touched:new Set([nom])};
+  if(paint(nom,mode)===false) return toast(avisoAlta(byNom[nom]));
+  commit();
 });
 $("#board").addEventListener("pointerover",e=>{
   const c=e.target.closest(".chip");
@@ -1198,13 +1309,13 @@ window.addEventListener("pointerup",e=>{
   if(!d.moved){ openMov(d.nom); return; }
   const a=areaBajo(e), p=byNom[d.nom]; if(!a||!p||a.dataset.areak===p.area) return;
   const k=a.dataset.areak;
-  if(setMov(d.nom,fecha,k)) toast(`${d.nom} movido a ${areaTtl(k)} desde ${fCorta(fecha)}`);
+  const r=setMov(d.nom,fecha,k); if(r) toast(`${d.nom} movido a ${areaTtl(k)} desde ${fCorta(fecha)}.`+notaQuit(r));
 });
 $("#board").addEventListener("keydown",e=>{
   const c=e.target.closest(".chip"); if(!c||READONLY||(e.key!=="Enter"&&e.key!==" ")) return;
   e.preventDefault(); const nom=c.dataset.nom;
   if(modoMov()){ openMov(nom); return; }
-  if(view==="asis"){ paintA(nom,sameA(nom)?"clear":"set"); commitA(); } else { paint(nom,sameAsBrush(plan.assign[nom])?"clear":"set"); commit(); }
+  if(view==="asis"){ paintA(nom,sameA(nom)?"clear":"set"); commitA(); } else { if(paint(nom,sameAsBrush(plan.assign[nom])?"clear":"set")===false) toast(avisoAlta(byNom[nom])); commit(); }
   requestAnimationFrame(()=>document.querySelector(`.chip[data-nom="${nom}"]`)?.focus());
 });
 $("#board").addEventListener("click",e=>{
@@ -1212,8 +1323,13 @@ $("#board").addEventListener("click",e=>{
   const bl=e.target.closest("[data-line]"), ba=e.target.closest("[data-area]"), act=e.target.closest("[data-act]");
   const tg = view==="asis" ? toggleGroupA : toggleGroup;
   if((bl||ba)&&modoMov()) return toast("Cambia a otro modo de marcado para marcar toda un área o línea.");
-  if(bl) tg(people.filter(p=>p.linea===bl.dataset.line));
-  if(ba) tg(people.filter(p=>p.area===ba.dataset.area));
+  // en Asistencia solo se marca a los programados del día
+  const grp=(list,lugar)=>{ if(view!=="asis") return tg(list);
+    const pr=programados().set, g=list.filter(p=>pr.has(p.nom));
+    if(!g.length) return toast(`Nadie está programado en ${lugar} este día.`);
+    tg(g); };
+  if(bl) grp(people.filter(p=>p.linea===bl.dataset.line),"esta línea");
+  if(ba) grp(people.filter(p=>p.area===ba.dataset.area),"esta área");
   if(act) pageAction(act);
 });
 /* diálogo para mover de área */
@@ -1226,30 +1342,59 @@ function areaOpts(p){
   }
   return h;
 }
+function pintaMov(nom){
+  const p=byNom[nom], prog=movProg(nom,fecha);
+  const progH=prog.length?`<div class="mprog">`+prog.map(e=>`<p><b>Movimiento programado:</b> ${e.area&&e.area!==p.areaRH?esc(areaTtl(e.area)):"regreso a "+esc(areaTtl(p.areaRH))} desde ${fCorta(e.desde)}<br><button class="btn" data-cprog="${e.desde}">Cancelar movimiento programado</button></p>`).join("")+`</div>`:"";
+  $("#movBody").innerHTML=`<p class="minfo"><b>${p.nom}</b> · ${esc(p.nombre)}<br>${esc(p.puesto||"Sin puesto registrado")}<br>Área de RH: <b>${esc(areaTtl(p.areaRH))}</b>`
+    +(p.mov?`<br>Trabaja en: <b>${esc(areaTtl(p.area))}</b> desde ${fCorta(p.mov.desde)}`:"")+`</p>${progH}
+    <label class="field">Mover a<select id="movTo">${areaOpts(p)}</select></label>
+    <label class="field">A partir de<input id="movDesde" type="date" value="${fecha}"></label>
+    <p class="mwarn" id="movAviso" role="status" hidden></p>
+    <p class="merr" id="movErr" role="alert" hidden></p>
+    <div class="macts"><button class="btn primary" id="movGo">Mover</button>${p.mov?`<button class="btn" id="movBack">Regresar a ${esc(areaTtl(p.areaRH))}</button>`:""}</div>`;
+  avisoMov();
+}
 function openMov(nom){
   const p=byNom[nom]; if(!p||READONLY) return;
   movNom=nom; $("#tip").style.display="none";
-  $("#movBody").innerHTML=`<p class="minfo"><b>${p.nom}</b> · ${esc(p.nombre)}<br>${esc(p.puesto||"Sin puesto registrado")}<br>Área de RH: <b>${esc(areaTtl(p.areaRH))}</b>`
-    +(p.mov?`<br>Trabaja en: <b>${esc(areaTtl(p.area))}</b> desde ${fCorta(p.mov.desde)}`:"")+`</p>
-    <label class="field">Mover a<select id="movTo">${areaOpts(p)}</select></label>
-    <label class="field">A partir de<input id="movDesde" type="date" value="${fecha}"></label>
-    <p class="mwarn" id="movAviso" role="status" hidden>Los folios y las faltas desde esa fecha se van a contar en el área nueva.</p>
-    <p class="merr" id="movErr" role="alert" hidden></p>
-    <div class="macts"><button class="btn primary" id="movGo">Mover</button>${p.mov?`<button class="btn" id="movBack">Regresar a ${esc(areaTtl(p.areaRH))}</button>`:""}</div>`;
-  avisoMov(); $("#dlgMov").showModal(); $("#movTo").focus();
+  pintaMov(nom); $("#dlgMov").showModal(); $("#movTo").focus();
 }
-function avisoMov(){ const v=$("#movDesde").value; $("#movAviso").hidden=!(v&&v<hoyISO()); }
+// avisos del diálogo: fecha pasada, fecha futura y movimientos posteriores que se quitan
+function avisoMov(){
+  const v=$("#movDesde").value, m=[];
+  if(v&&v<hoyISO()) m.push("Los folios y las faltas desde esa fecha se van a contar en el área nueva.");
+  if(v&&v>fecha) m.push(`Se verá desde el ${fCorta(v)}. Los días anteriores, incluido el ${fCorta(fecha)}, siguen igual.`);
+  const n=v&&movNom?movProg(movNom,v).length:0;
+  if(n) m.push(`Se ${n>1?"quitan":"quita"} ${n} movimiento${n>1?"s":""} programado${n>1?"s":""} después de esa fecha, porque este manda hasta que lo regreses.`);
+  $("#movAviso").textContent=m.join(" "); $("#movAviso").hidden=!m.length;
+}
+const notaQuit=r=>r&&r.quitados?` Se quitaron ${r.quitados} movimiento${r.quitados>1?"s":""} posterior${r.quitados>1?"es":""}.`:"";
 $("#movBody").addEventListener("change",e=>{ if(e.target.id==="movDesde") avisoMov(); if(e.target.id==="movTo") $("#movErr").hidden=true; });
 $("#movBody").addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b||!movNom) return;
+  const errM=(t,f)=>{ $("#movErr").textContent=t; $("#movErr").hidden=false; f&&f.focus(); };
+  if(b.dataset.vedia){ const d=b.dataset.vedia; $("#dlgMov").close(); $("#fecha").value=d; $("#fecha").dispatchEvent(new Event("change")); return; }
+  if(b.dataset.quedar!==undefined){ $("#dlgMov").close(); return; }
+  if(b.dataset.cprog){ const nom=movNom, n=movProg(nom,b.dataset.cprog).length; // el movimiento y los que dependen de él
+    if(cancelaProg(nom,b.dataset.cprog)){ render(); pintaMov(nom); toast("Movimiento programado cancelado"+(n>1?`, junto con ${n-1} posterior${n>2?"es":""}`:"")); $("#movTo").focus(); } return; }
   const d=$("#movDesde").value;
-  if(!d){ $("#movErr").textContent="Elige la fecha desde la que aplica."; $("#movErr").hidden=false; $("#movDesde").focus(); return; }
-  if(b.id==="movGo"){
-    const k=$("#movTo").value;
-    if(!k){ $("#movErr").textContent="Elige el área a la que va."; $("#movErr").hidden=false; $("#movTo").focus(); return; }
-    const nom=movNom, rh=byNom[nom].areaRH; if(setMov(nom,d,k)){ $("#dlgMov").close(); toast(k===rh?`${nom} regresó a ${areaTtl(k)} desde ${fCorta(d)}`:`${nom} movido a ${areaTtl(k)} desde ${fCorta(d)}`); }
+  if(!d) return errM("Elige la fecha desde la que aplica.",$("#movDesde"));
+  if(b.id!=="movGo"&&b.id!=="movBack") return;
+  const nom=movNom, p=byNom[nom], rh=p.areaRH, back=b.id==="movBack";
+  const k=back?null:$("#movTo").value;
+  if(!back&&!k) return errM("Elige el área a la que va.",$("#movTo"));
+  const vuelve=back||k===rh;
+  // se verifica antes de guardar que el cambio sí modifica el área del día que se está viendo
+  const r0=listaMov(nom,d,back?null:k), antes=p.area, despues=areaEnLista(r0.list,fecha)||rh;
+  if(r0.igual||(back&&d<=fecha&&despues===antes)) return errM(`Ese cambio no modifica el área de ${nom}${d<=fecha?` el ${fCorta(fecha)}`:" en esas fechas"}. Elige otra fecha${back?"":" o otra área"}.`,$("#movDesde"));
+  const r=setMov(nom,d,back?null:k); if(!r) return;
+  const dest=areaTtl(vuelve?rh:k);
+  if(d>fecha){
+    const msg=vuelve?`${nom} regresará a ${dest} desde el ${fCorta(d)}. Se verá desde esa fecha.`:`${nom} irá a ${dest} desde el ${fCorta(d)}. Se verá desde esa fecha.`;
+    $("#movBody").innerHTML=`<p class="mok" role="status">${esc(msg+notaQuit(r))}</p><div class="macts"><button class="btn primary" data-vedia="${d}">Ver ${fCorta(d)}</button><button class="btn" data-quedar>Seguir en ${fCorta(fecha)}</button></div>`;
+    toast(msg); $("#movBody").querySelector("[data-vedia]").focus(); return;
   }
-  if(b.id==="movBack"){ const nom=movNom, rh=byNom[nom].areaRH; if(setMov(nom,d,null)){ $("#dlgMov").close(); toast(`${nom} regresó a ${areaTtl(rh)} desde ${fCorta(d)}`); } }
+  $("#dlgMov").close(); toast((vuelve?`${nom} regresó a ${dest} desde ${fCorta(d)}.`:`${nom} movido a ${dest} desde ${fCorta(d)}.`)+notaQuit(r));
 });
 $("#dlgMov").addEventListener("close",()=>{ const n=movNom; movNom=null; requestAnimationFrame(()=>document.querySelector(`.chip[data-nom="${n}"]`)?.focus()); });
 function pageAction(b){
@@ -1257,7 +1402,8 @@ function pageAction(b){
   if(a==="delvac"){ vacs=vacs.filter(v=>v.id!==b.dataset.id); store.set("pp.vac",vacs); toast("Vacante quitada"); }
   if(a==="addvac"){ const puesto=$("#nvPuesto").value.trim(); if(!puesto){ $("#nvPuesto").focus(); return toast("Escribe el puesto de la vacante"); }
     vacs=(vacs||[]).concat({id:"m"+Date.now().toString(36),area:$("#nvArea").value,puesto,origen:"manual",desde:hoyISO(),nota:$("#nvNota").value.trim()}); store.set("pp.vac",vacs); toast("Vacante agregada"); }
-  if(a==="retmov"){ if(setMov(b.dataset.nom,hoyISO(),null)) toast(`${b.dataset.nom} regresó a su área de RH desde ${fCorta(hoyISO())}`); }
+  if(a==="retmov"){ const r=setMov(b.dataset.nom,hoyISO(),null); if(r) toast(`${b.dataset.nom} regresó a su área de RH desde ${fCorta(hoyISO())}.`+notaQuit(r)); }
+  if(a==="cancprog"){ if(cancelaProg(b.dataset.nom,b.dataset.desde)) toast("Movimiento programado cancelado"); }
   if(a==="delpb"){ delete posB[b.dataset.nom]; store.set("pp.posBaja",posB); toast("Marca quitada"); }
   if(a==="rjpb"){ const n=b.dataset.nom; if(READONLY||!byNom[n]) return;
     const m=store.get("pp.relojMeta",null); posB[n]={motivo:"Sin checadas en el reloj",nota:m&&m.cubre?`Del ${diaMes(m.cubre[0])} al ${diaMes(m.cubre[1])} sin checadas`:"",fecha:hoyISO()};
@@ -1276,13 +1422,23 @@ function showTip(c,e){const t=$("#tip");t.textContent=c.dataset.nom+" · "+c.dat
 $("#checks").addEventListener("click",e=>{const t=e.target.closest("[data-tote]");if(!t)return;
   t.dataset.tote.split(",").forEach(n=>{const a=plan.assign[n]; if(a&&a.m==="TN") a.m="TE";});commit();toast("Pasadas a Tiempo extra")});
 $("#checks").addEventListener("click",e=>{const d=e.target.closest("[data-drop]");if(!d)return;
-  d.dataset.drop.split(",").forEach(n=>delete plan.assign[n]);commit();toast("Bajas quitadas del plan")});
+  d.dataset.drop.split(",").forEach(n=>delete plan.assign[n]);commit();toast("Quitadas del plan")});
 $("#checks").addEventListener("click",e=>{const b=e.target.closest("[data-fix]");if(!b)return;
   const h=dayCfg().unico?brushH:(Object.values(plan.assign).find(a=>a.m==="TE")?.h||brushH);
-  people.filter(p=>p.area===b.dataset.fix).forEach(p=>{const a=plan.assign[p.nom];if(!a||a.m!=="OFF")plan.assign[p.nom]={m:"TE",h}});commit()});
+  // solo pasa a tiempo extra a quien está en tiempo normal o sin marca; permuta y no disponible no se tocan
+  let n=0, per=0;
+  people.filter(p=>p.area===b.dataset.fix&&vigente(p)).forEach(p=>{const a=plan.assign[p.nom];
+    if(!a){plan.assign[p.nom]={m:"TE",h};n++}
+    else if(a.m==="TN"){plan.assign[p.nom]={m:"TE",h:a.h||h};n++}
+    else if(a.m==="PER") per++;});
+  commit(); toast(`${n} pasada(s) a tiempo extra`+(per?`. ${per} en permuta no se ${per>1?"cambiaron":"cambió"}.`:"."))});
 
 [["#fFolio","folio",Number],["#fSemana","semana",String],["#fRutas","rutas",Number],["#fCostoRuta","costoRuta",Number],["#fComedor","comedor",Number]]
- .forEach(([s,k,f])=>$(s).addEventListener("change",e=>{plan[k]=f(e.target.value);savePlan();renderSide()}));
+ .forEach(([s,k,f])=>$(s).addEventListener("change",e=>{
+   let v=f(e.target.value);
+   if(k==="folio") v=Number.isFinite(v)?Math.floor(v):0;                          // vacío o menor de 1: el folio queda inválido y bloquea la descarga
+   if(k==="rutas"||k==="costoRuta"||k==="comedor"){ v=Math.max(0,Number.isFinite(v)?v:0); if(k==="rutas") v=Math.floor(v); e.target.value=v; }   // sin negativos
+   plan[k]=v;savePlan();renderSide()}));
 
 $("#btnClear").addEventListener("click",()=>{
   if(view==="asis"){ const n=Object.keys(asisDay).length; if(!n) return;
@@ -1290,19 +1446,37 @@ $("#btnClear").addEventListener("click",()=>{
   if(!Object.keys(plan.assign).length)return;
   if(confirm(`¿Vaciar el plan del ${fechaLarga().toLowerCase()}? Se quitan ${Object.keys(plan.assign).length} marcas.`)){plan.assign={};commit()}});
 $("#copyFrom").addEventListener("change",e=>{const src=e.target.value;if(!src)return;
-  const p=store.get("pp.plan."+src,null); if(p){plan.assign=structuredClone(p.assign);enforceUnico(true);commit();toast(`Copiado el plan del ${src}`)} e.target.value=""});
+  const p=store.get("pp.plan."+src,null); const n=Object.keys(plan.assign).length;
+  if(p&&n&&!confirm(`Este día ya tiene ${n} marcas y se van a perder al copiar el plan del ${fCorta(src)}. ¿Copiar el plan?`)){ e.target.value=""; return; }
+  if(p){plan.assign=structuredClone(p.assign);enforceUnico(true);commit();toast(`Copiado el plan del ${fCorta(src)}`)} e.target.value=""});
 
 document.querySelectorAll("dialog [data-close]").forEach(b=>b.addEventListener("click",()=>b.closest("dialog").close()));
 $("#btnPaste").addEventListener("click",()=>{$("#pasteMsg").textContent="";$("#dlgPaste").showModal()});
+// nóminas de un texto pegado: se ignoran números que son parte de fechas u horas (25/11, 7:00, 2026-11-25) y se quitan repetidas
+function nominasDeTexto(txt){
+  const out=[], re=/\d+/g; let m;
+  while((m=re.exec(txt))){
+    const a=m.index, b=a+m[0].length, pre=txt.slice(Math.max(0,a-2),a), pos=txt.slice(b,b+2);
+    if(m[0].length>5) continue;
+    if(/\d[\/:\-]$/.test(pre)||/^[\/:\-]\d/.test(pos)) continue;
+    out.push(pad4(m[0]));
+  }
+  return [...new Set(out)];
+}
 $("#pasteGo").addEventListener("click",()=>{
-  const toks=($("#pasteTxt").value.match(/\d{1,5}/g)||[]).map(pad4);
-  const ok=[],bad=[];
+  const toks=nominasDeTexto($("#pasteTxt").value);
+  const ok=[],bad=[],ipps=[],bajas=[],nov=[];
   const asis=view==="asis";
   if(!asis&&brushM==="MOV"){ $("#pasteMsg").textContent="Elige otro modo de marcado (por ejemplo Tiempo extra) para pegar nóminas."; return; }
-  toks.forEach(n=>{if(byNom[n]){ if(asis) paintA(n,brushA==="CLR"?"clear":"set"); else paint(n,brushM==="CLR"?"clear":"set"); ok.push(n)}else bad.push(n)});
+  toks.forEach(n=>{if(byNom[n]){ if(asis) paintA(n,brushA==="CLR"?"clear":"set"); else if(paint(n,brushM==="CLR"?"clear":"set")===false){ nov.push(n); return; } ok.push(n)}
+    else if(ipp.some(x=>x.nom===n)) ipps.push(n); else if(bajasIdx().has(n)) bajas.push(n); else bad.push(n)});
   if(asis) commitA(); else commit();
-  $("#pasteMsg").innerHTML = `${ok.length} marcadas.` + (bad.length?` <strong style="color:var(--err)">No están en la base: ${bad.join(", ")}</strong>`:"");
-  if(!bad.length){$("#dlgPaste").close();$("#pasteTxt").value="";toast(`${ok.length} nóminas marcadas`)}
+  const avs=[]; if(nov.length) avs.push(`Aún no ingresan ese día y no se marcaron: ${nov.map(n=>n+" (ingresa el "+fCorta(altaDe[n])+")").join(", ")}.`);
+  if(ipps.length) avs.push(`${ipps.join(", ")} ${ipps.length>1?"tienen":"tiene"} IPP y no ${ipps.length>1?"aparecen":"aparece"} en el tablero.`);
+  if(bajas.length) avs.push(`${bajas.join(", ")} ${bajas.length>1?"son bajas":"es baja"} y ya no ${bajas.length>1?"están":"está"} en la plantilla.`);
+  if(bad.length) avs.push(`No están en la base: ${bad.join(", ")}.`);
+  $("#pasteMsg").innerHTML = `${ok.length} marcadas.` + (avs.length?` <strong style="color:var(--err)">${avs.map(esc).join(" ")}</strong>`:"");
+  if(!avs.length){$("#dlgPaste").close();$("#pasteTxt").value="";toast(`${ok.length} nóminas marcadas`)}
 });
 
 /* ---------- reloj checador ---------- */
@@ -1311,9 +1485,10 @@ const tolRet=()=>{const v=Number(cfg.tolRetardo);return Number.isFinite(v)&&v>=0
 const hmMin=s=>{const m=String(s||"").match(/^(\d{1,2}):(\d{2})/);return m?+m[1]*60+ +m[2]:null};
 const minHM=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
 const diaMes=iso=>`${+iso.slice(8,10)} ${MES_C[+iso.slice(5,7)-1]}`;
-const relojValido=()=>!!relojMeta && Object.keys(relojDay).length>0;
+const relojValido=()=>!!relojMeta && Object.keys(relojDay).some(n=>byNom[n]);   // el día tiene checadas de la plantilla (relojDay guarda todas las nóminas del archivo)
 // ausencias de checada solo se concluyen en días completos y, sin plan, en días ordinarios
-function relojAusOk(prog){ const pr=prog||programados(); return relojMeta.incompleto!==fecha && !(!pr.conPlan && dayCfg().tipo!=="ordinario"); }
+const relojDudoso=()=>!!relojMeta && Array.isArray(relojMeta.dudosos) && relojMeta.dudosos.includes(fecha);
+function relojAusOk(prog){ const pr=prog||programados(); return relojMeta.incompleto!==fecha && !relojDudoso() && !(!pr.conPlan && dayCfg().tipo!=="ordinario"); }
 function csvRows(txt){
   if(txt.charCodeAt(0)===0xFEFF) txt=txt.slice(1);
   const l1=txt.split(/\r?\n/,1)[0]||"";
@@ -1343,7 +1518,7 @@ const absDia=a=>new Date(a*6e4).toISOString().slice(0,10);
 const absMin=a=>a-Math.floor(a/1440)*1440;
 const absTxt=a=>absDia(a)+" "+minHM(absMin(a));
 const diaSig=d=>new Date(Date.parse(d+"T12:00:00Z")+864e5).toISOString().slice(0,10);
-// lee el CSV del reloj: {porNom: Map nómina → minutos absolutos, fuera: Set, desde, hasta, filas}
+// lee el CSV del reloj: {porNom: Map nómina → minutos absolutos (todas las nóminas del archivo), fuera: Set de las que hoy no son de la plantilla, desde, hasta, filas}
 function relojLeer(txt){
   const rows=csvRows(txt); let hi=-1, iD=-1, iU=-1;
   for(let i=0;i<Math.min(rows.length,10)&&hi<0;i++){
@@ -1359,7 +1534,7 @@ function relojLeer(txt){
     const nom=pad4(String(+dig)); filas++;
     if(desde===null||a<desde) desde=a;
     if(hasta===null||a>hasta) hasta=a;
-    if(!byNom[nom]){ fuera.add(nom); continue; }
+    if(!byNom[nom]) fuera.add(nom);   // se guardan todas: si la nómina entra a la plantilla después, ya tiene sus checadas
     (porNom.get(nom)||porNom.set(nom,[]).get(nom)).push(a);
   }
   if(!filas) return {err:"No reconocí el archivo del reloj. Necesito las columnas Date y User ID."};
@@ -1367,12 +1542,12 @@ function relojLeer(txt){
 }
 // turnos por día: {día:{nómina:[entrada,salida|"",noc]}} y total de checadas usadas
 function relojTurnos(porNom,desde){
-  const out={}; let usadas=0;
+  const out={}, cuenta={}; let usadas=0;
   const primerDia=absDia(desde);
   for(const [nom,arr] of porNom){
     arr.sort((x,y)=>x-y);
     const lim=[]; for(const a of arr){ if(!lim.length||a-lim[lim.length-1]>=2) lim.push(a); }
-    usadas+=lim.length;
+    usadas+=lim.length; cuenta[nom]=lim.length;
     const byDay=new Map(); for(const a of lim){ const d=absDia(a); (byDay.get(d)||byDay.set(d,[]).get(d)).push(absMin(a)); }
     const res=[];
     for(const d of [...byDay.keys()].sort()){
@@ -1388,10 +1563,27 @@ function relojTurnos(porNom,desde){
     if(res.some(x=>x.noc) && res.length && res[0].d===primerDia && !res[0].noc && res[0].sal===null && res[0].ent<600) res.shift();
     for(const x of res) (out[x.d] ||= {})[nom]=[minHM(x.ent),x.sal===null?"":minHM(x.sal),x.noc?1:0];
   }
-  return {out,usadas};
+  return {out,usadas,cuenta};
+}
+// datos del reloj contra la plantilla de ahora: nóminas ajenas, personas con checada y días con pocas checadas
+function relojRefrescar(m){
+  if(!m) return m;
+  const antes=JSON.stringify(m);
+  if(m.pn){ let ch=0, pe=0, fu=0;
+    for(const [n,c] of Object.entries(m.pn)){ if(byNom[n]){ ch+=c; pe++; } else fu++; }
+    m.checadas=ch; m.personas=pe; m.fuera=fu; }
+  // día hábil (lun a vie) con menos del 60% de la mediana de personas con checada: puede venir incompleto
+  const hab=[];
+  for(const d of store.get("pp.relojDates",[])){ const w=new Date(d+"T12:00:00Z").getUTCDay(); if(w<1||w>5||d===m.incompleto) continue;
+    hab.push([d,Object.keys(store.get("pp.reloj."+d,{})).filter(n=>byNom[n]).length]); }
+  m.dudosos=[]; m.mediana=0;
+  if(hab.length>=3){ const v=hab.map(x=>x[1]).sort((a,b)=>a-b), k=v.length>>1;
+    m.mediana=v.length%2?v[k]:(v[k-1]+v[k])/2; m.dudosos=hab.filter(([d,n])=>n<0.6*m.mediana).map(x=>x[0]); }
+  if(JSON.stringify(m)!==antes) store.set("pp.relojMeta",m);
+  return m;
 }
 function relojGuardar(L,archivo){
-  const {out,usadas}=relojTurnos(L.porNom,L.desde);
+  const {out,usadas,cuenta}=relojTurnos(L.porNom,L.desde);
   const prev=store.get("pp.relojMeta",null), fechas=new Set(store.get("pp.relojDates",[]));
   const ultimo=absDia(L.hasta), incompleto=absMin(L.hasta)<1200;
   // un día completo ya cargado no se sustituye por el mismo día a medias
@@ -1405,9 +1597,9 @@ function relojGuardar(L,archivo){
   else if(prev&&prev.incompleto&&(prev.incompleto<absDia(L.desde)||prev.incompleto>ultimo)) inc=prev.incompleto;
   const ini=absDia(L.desde), fin=absTxt(L.hasta);
   const cubre=[prev&&prev.cubre&&prev.cubre[0]<ini?prev.cubre[0]:ini, prev&&prev.cubre&&prev.cubre[1]>fin?prev.cubre[1]:fin];
-  const meta={archivo,cargado:new Date().toISOString(),desde:absTxt(L.desde),hasta:fin,fuera:L.fuera.size,checadas:usadas,personas:L.porNom.size,incompleto:inc,cubre};
+  const meta={archivo,cargado:new Date().toISOString(),desde:absTxt(L.desde),hasta:fin,fuera:L.fuera.size,checadas:usadas,personas:L.porNom.size,pn:cuenta,incompleto:inc,cubre};
   store.set("pp.relojDates",[...fechas].sort()); store.set("pp.relojMeta",meta);
-  return meta;
+  return relojRefrescar(meta);
 }
 function relojResumenTxt(m){
   const a=m.desde, b=m.hasta, da=+a.slice(8,10), db=+b.slice(8,10), ma=+a.slice(5,7)-1, mb=+b.slice(5,7)-1;
@@ -1440,12 +1632,16 @@ function horRef(nom,noc,ent){
 }
 function relojContraste(){
   const pr=programados(), {set}=pr, inc=relojMeta.incompleto===fecha, ausOk=relojAusOk(pr), tol=tolRet();
-  const R={inc,ausOk,sin:[],ausCheco:[],ret:[],temp:[],solo:[]};
+  const R={inc,ausOk,dud:relojDudoso(),sin:[],ausCheco:[],ret:[],temp:[],solo:[]};
+  // el primer día que cubre el reloj: una sola checada antes de las 10:00 puede ser la salida de un turno nocturno anterior
+  const primero=!!relojMeta.cubre && fecha===relojMeta.cubre[0];
   for(const n of [...set].sort()){
+    if(!byNom[n]) continue;   // el contraste solo compara a la plantilla actual
     const ac=asisDay[n], r=relojDay[n];
     if(!r){ if(!ac&&ausOk) R.sin.push(n); continue; }
     const e=hmMin(r[0]);
     if(ac){ R.ausCheco.push({n,ac,ent:r[0]}); continue; }
+    if(!r[1]&&primero&&e<600) continue;
     const hr=horRef(n,r[2],e), dif=e-hr.ini;
     if(dif>tol&&dif<=360) R.ret.push({n,ent:r[0],min:dif});
     if(!r[1]){ if(!inc) R.solo.push({n,ent:r[0]}); continue; }
@@ -1464,7 +1660,9 @@ function renderRelojAsis(){
   sum.textContent = m? relojResumenTxt(m)+` Archivo: ${m.archivo}.` : "Aún no hay checadas cargadas.";
   if(!relojValido()){ card.hidden=true; $("#rjBody").innerHTML=""; return; }
   const R=relojContraste(); let h="";
-  if(R.inc) h+=`<p class="warnbox" style="margin-top:0">Día incompleto: el reloj trae checadas hasta las ${esc(relojMeta.hasta.slice(11))}. Por ahora solo se muestran retardos.</p>`;
+  if(R.inc) h+=`<p class="warnbox" style="margin-top:0">Día incompleto: el reloj trae checadas hasta las ${esc(relojMeta.hasta.slice(11))}. Por ahora solo se muestran retardos y ausencias con checada; no se sugieren faltas.</p>`;
+  else if(R.dud){ const nd=Object.keys(relojDay).filter(n=>byNom[n]).length;
+    h+=`<p class="warnbox" style="margin-top:0">El reloj trae pocas checadas este día (${nd} de ~${fNum(relojMeta.mediana)} personas). Puede estar incompleto o no se trabajó en todas las áreas; no se sugieren faltas.</p>`; }
   else if(!R.ausOk) h+=`<p class="hint" style="margin-top:0">Este día no tiene plan y no es ordinario: no se compara quién no checó.</p>`;
   const edit=!READONLY;
   h+=rjSec("Sin checada y sin marca",R.sin.length,R.sin.map(n=>{const p=byNom[n]; return rjFila(n,`${esc(nomCorto(p))} · ${esc(titleCase(p.area))}`, edit?`<button class="btn small rjb editonly" data-rjf="${n}">Marcar falta</button>`:"")}).join(""),
@@ -1473,7 +1671,9 @@ function renderRelojAsis(){
   h+=rjSec("Retardos",R.ret.length,R.ret.map(x=>rjFila(x.n,`entrada ${x.ent} · ${x.min} min`)).join(""));
   h+=rjSec("Salida temprana",R.temp.length,R.temp.map(x=>rjFila(x.n,`salida ${x.sal}`)).join(""));
   h+=rjSec("Una sola checada",R.solo.length,R.solo.map(x=>rjFila(x.n,`solo ${x.ent}`)).join(""));
-  if(!R.sin.length&&!R.ausCheco.length&&!R.ret.length&&!R.temp.length&&!R.solo.length) h+=R.inc?`<p class="rjok">Sin retardos hasta las ${esc(relojMeta.hasta.slice(11))}.</p>`:`<p class="rjok">El reloj coincide con la captura del día.</p>`;
+  if(!R.sin.length&&!R.ausCheco.length&&!R.ret.length&&!R.temp.length&&!R.solo.length){
+    if(R.inc) h+=`<p class="rjok">Sin retardos hasta las ${esc(relojMeta.hasta.slice(11))}.</p>`;
+    else if(R.ausOk) h+=`<p class="rjok">El reloj coincide con la captura del día.</p>`; }   // sin comparar quién no checó, no se afirma que coincide
   $("#rjBody").innerHTML=h; card.hidden=false;
 }
 function marcarFaltasReloj(noms){
@@ -1496,6 +1696,8 @@ function renderRelojPlan(){
   let h="";
   if(relojMeta.incompleto===fecha){
     h=`<p class="warnbox" style="margin-top:0">Día incompleto: el reloj trae checadas hasta las ${esc(relojMeta.hasta.slice(11))}. Todavía no se puede comparar con el folio.</p>`;
+  } else if(relojDudoso()){
+    h=`<p class="warnbox" style="margin-top:0">El reloj trae pocas checadas este día (${Object.keys(relojDay).filter(n=>byNom[n]).length} de ~${fNum(relojMeta.mediana)} personas). Puede estar incompleto: no se compara con el folio.</p>`;
   } else {
     const sin=[], bajo=[];
     for(const [n,a] of ents.sort((x,y)=>x[0]<y[0]?-1:1)){
@@ -1531,6 +1733,7 @@ function relojSinChecadas(){
 
 /* ---------- configuración ---------- */
 function renderCfg(){
+  $("#cfgHorMsg").hidden=true;
   const order=[1,2,3,4,5,6,0];
   $("#cfgWeek").innerHTML=`<tr><th>Día</th><th>Tipo</th><th>Horarios permitidos</th><th>Horario único</th></tr>`+order.map(d=>{
     const s=cfg.semana[d];
@@ -1572,7 +1775,7 @@ $("#bkFile").addEventListener("change",async e=>{
     Object.keys(localStorage).filter(k=>k.startsWith("pp.")).forEach(k=>localStorage.removeItem(k));
     Object.entries(b.data).forEach(([k,v])=>localStorage.setItem(k,v));
     location.reload();
-  }catch(err){$("#bkMsg").textContent="Ese archivo no es un respaldo del plan de personal."}
+  }catch(err){$("#bkMsg").textContent=err&&err.srvmsg||"Ese archivo no es un respaldo del plan de personal."}
   finally{e.target.value=""}
 });
 function renderMovs(){
@@ -1592,14 +1795,25 @@ $("#dlgCfg").addEventListener("change",e=>{
     else if(t.dataset.k==="unico") s.unico=t.checked;
     else if(t.dataset.hor){ s.hor = t.checked? [...new Set([...s.hor,t.dataset.hor])] : s.hor.filter(x=>x!==t.dataset.hor); }
   }
-  if(t.dataset.hid){const h=horById(t.dataset.hid); if(t.dataset.k==="horas") h.horas=Number(t.value)||0; else h.label=t.value; renderCfg()}
+  if(t.dataset.hid){const h=horById(t.dataset.hid); if(t.dataset.k==="horas") h.horas=Number(t.value)||0; else h.label=t.value; setTimeout(renderCfg,0)}   // fuera del evento: repintar durante el blur causaba un error
   if(t.id==="cfgCompleto") cfg.completo=t.value;
   if(t.id==="cfgTol"){ let v=Math.round(Number(t.value)); if(!Number.isFinite(v)) v=10; cfg.tolRetardo=Math.min(60,Math.max(0,v)); t.value=cfg.tolRetardo; }
   saveCfg();
 });
+// días con plan guardado que usan un horario (con marcas distintas de "no disponible")
+function diasConHorario(id){
+  const out=new Set();
+  try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(!k||!k.startsWith("pp.plan.")) continue;
+    const pl=store.get(k,null); if(pl&&pl.assign&&Object.values(pl.assign).some(a=>a.m!=="OFF"&&a.h===id)) out.add(k.slice(8)); } }catch(e){}
+  if(plan&&Object.values(plan.assign).some(a=>a.m!=="OFF"&&a.h===id)) out.add(fecha);
+  return [...out].sort();
+}
 $("#dlgCfg").addEventListener("click",e=>{
   const d=e.target.closest("[data-delh]"); if(!d) return;
-  if(cfg.horarios.length<=1) return toast("Debe quedar al menos un horario");
+  const msg=$("#cfgHorMsg"); msg.hidden=true;
+  if(cfg.horarios.length<=1){ msg.textContent="Debe quedar al menos un horario."; msg.hidden=false; return; }
+  const dias=diasConHorario(d.dataset.delh);
+  if(dias.length){ msg.textContent=`Ese horario se usa en ${dias.length} día${dias.length>1?"s":""} (${dias.slice(0,8).map(fCorta).join(", ")}${dias.length>8?", …":""}). Cámbialo en esos planes antes de quitarlo.`; msg.hidden=false; return; }
   cfg.horarios=cfg.horarios.filter(h=>h.id!==d.dataset.delh);
   Object.values(cfg.semana).forEach(s=>s.hor=s.hor.filter(x=>x!==d.dataset.delh));
   saveCfg(); renderCfg();
@@ -1726,7 +1940,7 @@ function parseTabular(rows,hi){
   if(raros.size) avisos.push(`Marcas de asistencia que no reconocí y se ignoraron: ${[...raros].join(", ")}. Reconozco F, I, V y P.`);
   if(iPue<0) avisos.push("El archivo no trae columna de puesto.");
   if(!dcols.length) avisos.push("El archivo no trae columnas de fechas: no se importa asistencia.");
-  return {out,vac,asis,avisos,fechas:dcols.length,tabla:true,hasta:hasta&&hasta>hastaPrev?hasta:(hasta?hastaPrev:""),hastaPrev,cambMarcas,sinCol,difs,soloF:codes.size===1&&codes.has("F")};
+  return {out,vac,asis,avisos,fechas:dcols.length,tabla:true,hastaArch:hasta,hasta:hasta&&hasta>hastaPrev?hasta:(hasta?hastaPrev:""),hastaPrev,cambMarcas,sinCol,difs,soloF:codes.size===1&&codes.has("F")};
 }
 $("#rosterFile").addEventListener("change",async e=>{
   const f=e.target.files[0]; if(!f) return; const msg=$("#rosterMsg");
@@ -1742,7 +1956,7 @@ $("#rosterFile").addEventListener("change",async e=>{
       // un día que ya se capturó en la app está completo (sin marca = asistió): el archivo no lo toca, solo se comparan
       const capt=new Set(store.get("pp.asisDates",[]).filter(d=>Object.keys(store.get("pp.asis."+d,{})).length));
       const omit=Object.keys(t.asis).filter(d=>capt.has(d)); omit.forEach(d=>delete t.asis[d]); t.omitidos=omit;
-      showDiff(t.out,{archivo:f.name,hoja:hojaMeta,...(t.hasta?{hasta:t.hasta}:{})},{dup,sinLinea,avisos:[],avTabla:t.avisos,vac:t.vac,asis:t.asis,fechas:t.fechas,hastaPrev:t.hastaPrev,cambMarcas:t.cambMarcas,sinCol:t.sinCol,difs:t.difs,soloF:t.soloF,omitidos:t.omitidos});
+      showDiff(t.out,{archivo:f.name,hoja:hojaMeta,...(t.hasta?{hasta:t.hasta}:{})},{dup,sinLinea,avisos:[],avTabla:t.avisos,vac:t.vac,asis:t.asis,fechas:t.fechas,hastaPrev:t.hastaPrev,cambMarcas:t.cambMarcas,sinCol:t.sinCol,difs:t.difs,soloF:t.soloF,omitidos:t.omitidos,hastaArch:t.hastaArch,sinFechas:!t.fechas});
       msg.textContent=""; e.target.value=""; return;
     }
     const out=[]; const avisos=[]; let area=null, cnt=0;
@@ -1764,7 +1978,7 @@ $("#rosterFile").addEventListener("change",async e=>{
     if(out.length<10) throw new Error("formato");
     const dup=[...new Set(out.map(r=>r[0]).filter((n,i,arr)=>arr.indexOf(n)!==i))];
     const sinLinea=[...new Set(out.map(r=>norm(r[2])).filter(k=>!AREA_MAP[k]))];
-    showDiff(out,{archivo:f.name,hoja:hojaMeta},{dup,sinLinea,avisos});
+    showDiff(out,{archivo:f.name,hoja:hojaMeta},{dup,sinLinea,avisos,sinFechas:true});
     msg.textContent="";
   }catch(err){msg.textContent="No reconocí el formato. Necesito una tabla con columnas de nómina y nombre (como el Detalle de asistencia) o la base de planta de RH (nombre de área en una fila y debajo nómina y nombre)."}
   e.target.value="";
@@ -1777,7 +1991,12 @@ function showDiff(newR,meta,q){
   const li=(arr,fn)=>arr.length?`<ul>${arr.map(fn).join("")}</ul>`:`<p class="hint">Ninguna.</p>`;
   const nada=!diff.altas.length&&!diff.bajas.length&&!diff.cambios.length;
   const mc=movCierres(newR);
+  // un archivo más viejo que la base vigente revierte altas y bajas recientes
+  const vig=String((store.get("pp.rosterMeta",{})||{}).hasta||""), viejo=!!(vig&&q.hastaArch&&q.hastaArch<vig);
+  const sinF=!!(vig&&q.sinFechas&&!viejo); pending.bloq=viejo;
   $("#rosterDiff").innerHTML=`<div class="diff">
+    ${viejo?`<div class="warnbox rojo" role="alert"><strong>Este archivo llega al ${fC(q.hastaArch)} y la base vigente al ${fC(vig)}. Si lo aplicas, se revierten altas y bajas más recientes.</strong><label class="okold"><input type="checkbox" id="diffOk"> Entiendo, aplicar de todos modos</label></div>`:""}
+    ${sinF?`<div class="warnbox">Este archivo no trae columnas de fecha, así que no se puede saber a qué día corresponde. Si es más viejo que la base vigente (al ${fC(vig)}), se revierten altas y bajas más recientes.</div>`:""}
     <h6>${esc(meta.archivo)} · ${newR.filter(r=>r[6]!=="IPP").length} activas${newR.some(r=>r[6]==="IPP")?` · ${newR.filter(r=>r[6]==="IPP").length} con IPP`:""}${q.vac?` · ${q.vac.length} vacantes`:""} (antes ${people.length} activas)</h6>
     ${meta.hoja?`<p class="hint">Hoja leída: "${esc(meta.hoja)}"</p>`:""}
     ${q.asis?`<p class="hint">Asistencia: ${Object.values(q.asis).reduce((s,m)=>s+Object.keys(m).length,0)} marcas en ${Object.keys(q.asis).length} días con datos (${q.fechas} columnas de fecha). Se importan solo los días posteriores al ${q.hastaPrev?fC(q.hastaPrev):"corte anterior"}. ${q.omitidos&&q.omitidos.length?`Días que ya están capturados en la app no se importan (${q.omitidos.map(fC).join(", ")}): solo se comparan abajo. `:""}Solo se llenan días sin captura.${q.soloF?" El archivo solo trae faltas (F); no trae incapacidades, vacaciones ni permisos.":""}</p>`:""}
@@ -1800,14 +2019,17 @@ function showDiff(newR,meta,q){
     ${q.sinLinea.length?`<div class="warnbox"><strong>Áreas nuevas sin línea asignada:</strong> ${q.sinLinea.map(k=>esc(titleCase(k))).join(", ")}. Saldrán en "Sin línea asignada" y en el folio con ese nombre.</div>`:""}
     ${q.avTabla&&q.avTabla.length?`<div class="warnbox"><strong>Revisar con quien arma el archivo:</strong><br>${q.avTabla.map(esc).join("<br>")}</div>`:""}
     ${q.avisos.length?`<div class="warnbox"><strong>Revisar con RH, los totales del archivo no cuadran:</strong><br>${q.avisos.map(esc).join("<br>")}<br>El plan usa las personas listadas, no esos totales.</div>`:""}
-    <div class="acts"><button class="btn primary" id="diffApply">${nada?"Marcar base como vigente":"Aplicar cambios"}</button><button class="btn" id="diffCancel">Cancelar</button></div>
+    <div class="acts"><button class="btn primary" id="diffApply"${viejo?" disabled":""}>${nada?"Marcar base como vigente":"Aplicar cambios"}</button><button class="btn" id="diffCancel">Cancelar</button></div>
   </div>`;
 }
+$("#rosterDiff").addEventListener("change",e=>{ if(e.target.id==="diffOk") $("#diffApply").disabled=!e.target.checked; });
 $("#rosterDiff").addEventListener("click",e=>{
   if(e.target.id==="diffCancel"){pending=null;$("#rosterDiff").innerHTML="";return}
   if(e.target.id!=="diffApply"||!pending) return;
+  if(pending.bloq&&!$("#diffOk")?.checked) return;
   const seen=new Set(); const newR=pending.newR.filter(r=>!seen.has(r[0])&&seen.add(r[0]));
   const {diff,meta}=pending; const extra=pending.q||{};
+  if(pending.bloq&&extra.hastaArch) meta.hasta=extra.hastaArch;   // aplicó un archivo más viejo a propósito: la base vuelve a ese corte
   if(!meta.incluida&&!meta.hasta){ const h=(store.get("pp.rosterMeta",{})||{}).hasta; if(h) meta.hasta=h; } // sin columnas de fecha: se conserva el corte
   { const ks=[...(extra.cambMarcas||[]).flatMap(m=>m.keys),...(extra.difs||[]).flatMap(x=>[...x.b.map(r=>`${pad4(r.nom)}|${x.d}|q`),...((extra.omitidos||[]).includes(x.d)?(x.a||[]).map(r=>`${pad4(r.nom)}|${x.d}|n`):[])])]; // ya avisadas: no se repiten en la próxima carga
     if(ks.length) store.set("pp.marcasVistas",[...new Set([...store.get("pp.marcasVistas",[]),...ks])]); }
@@ -1818,7 +2040,7 @@ $("#rosterDiff").addEventListener("click",e=>{
   $("#rosterDiff").innerHTML=""; renderCfg();
   $("#rosterMsg").textContent=`Base aplicada: ${diff.altas.length} altas, ${diff.bajas.length} bajas, ${diff.cambios.length} cambios de área o a IPP.`+(q?` Se quitaron ${q} marcas de bajas en planes próximos.`:"")+(applyRoster.cierres?` Se cerraron ${applyRoster.cierres} movimientos de área porque RH ya los tiene ahí.`:"")+txt;
 });
-$("#rosterReset").addEventListener("click",()=>{showDiff(BASE_ROSTER,{archivo:"Base incluida ("+BASE_VER+")",incluida:true},{dup:[],sinLinea:[],avisos:[],vac:BASE_VAC,asis:asisFromBase(),fechas:Object.keys(BASE_ASIS).length})});
+$("#rosterReset").addEventListener("click",()=>{showDiff(BASE_ROSTER,{archivo:"Base incluida ("+BASE_VER+")",incluida:true},{dup:[],sinLinea:[],avisos:[],vac:BASE_VAC,asis:asisFromBase(),fechas:Object.keys(BASE_ASIS).length,hastaArch:/^\d{4}-\d{2}-\d{2}$/.test(String(BASE_VER))?BASE_VER:""})});
 
 /* ---------- exportación ---------- */
 async function buildWorkbook(){
@@ -1855,7 +2077,9 @@ async function buildWorkbook(){
   ws.getCell(`L${r0}`).value=(plan.rutas||0)*(plan.costoRuta||0); if(rows.length>1) ws.mergeCells(`L${r0}:L${r1}`);
   ws.getCell(`M${r0}`).value=plan.comedor||0; if(rows.length>1) ws.mergeCells(`M${r0}:M${r1}`);
   const T=ws.getRow(r1+1); T.height=34.5;
-  T.getCell(4).value={formula:`SUM(D${r0}:D${r1})`,result:rows.reduce((s,r)=>s+r.total,0)};
+  // el total de plantilla de un área se suma una sola vez, aunque tenga varios renglones (TE y permuta)
+  const primeros=rows.map((r,i)=>i).filter(i=>rows.findIndex(x=>x.folio===rows[i].folio)===i);
+  T.getCell(4).value={formula:`SUM(${primeros.map(i=>"D"+(r0+i)).join(",")})`,result:primeros.reduce((s,i)=>s+rows[i].total,0)};
   T.getCell(5).value={formula:`SUM(E${r0}:E${r1})`,result:rows.reduce((s,r)=>s+r.reales,0)};
   T.getCell(7).value={formula:`SUM(G${r0}:G${r1})`,result:rows.reduce((s,r)=>s+r.reales*r.horas,0)};
   T.getCell(12).value={formula:`SUM(L${r0}:L${r1})`,result:(plan.rutas||0)*(plan.costoRuta||0)};
@@ -1866,7 +2090,7 @@ async function buildWorkbook(){
   // hojas de firma: una por línea y modalidad
   const d=new Date(fecha+"T12:00"); const fTxt=`${d.getDate()} DE ${MESES[d.getMonth()]} ${d.getFullYear()}`;
   const groups={};
-  for(const [nom,a] of Object.entries(plan.assign)){ if(a.m==="OFF"||a.m==="TN"||!byNom[nom]) continue;
+  for(const [nom,a] of Object.entries(plan.assign)){ if(a.m==="OFF"||a.m==="TN"||!byNom[nom]||!vigente(byNom[nom])) continue;
     const p=byNom[nom]; (groups[a.m+"|"+p.linea] ||= []).push({p,a}); }
   const used=new Set();
   for(const key of Object.keys(groups).sort((x,y)=>LINE_ORDER.indexOf(x.split("|")[1])-LINE_ORDER.indexOf(y.split("|")[1])||x.localeCompare(y))){
@@ -1881,8 +2105,8 @@ async function buildWorkbook(){
     const H=["","N°","NOMINA","NOMBRE","AREA","TURNO","HORARIO","HRS","ACTIVIDAD","FIRMA"];
     H.forEach((h,i)=>{if(!i)return;const c=s.getRow(3).getCell(i+1);c.value=h;c.font={name:"Arial",size:10,bold:true};c.border={top:{style:"thin"},left:{style:"thin"},bottom:{style:"thin"},right:{style:"thin"}};c.alignment=C});
     list.forEach(({p,a},i)=>{const R=s.getRow(4+i);R.height=24;
-      [i+1,p.nom,p.nombre,p.folio,1,horById(a.h)?.label||"",horById(a.h)?.horas||0,"",""].forEach((v,j)=>{const c=R.getCell(j+2);c.value=v;c.font={name:"Arial",size:10};c.border={top:{style:"thin"},left:{style:"thin"},bottom:{style:"thin"},right:{style:"thin"}};c.alignment={vertical:"middle",horizontal:j===2?"left":"center"}})});
-    const tr=s.getRow(4+list.length); tr.getCell(7).value="SUMA"; tr.getCell(8).value={formula:`SUM(H4:H${3+list.length})`,result:list.reduce((x,{a})=>x+(horById(a.h)?.horas||0),0)};
+      [i+1,p.nom,p.nombre,p.folio,1,horPlan(a.h)?.label||"",horPlan(a.h)?.horas||0,"",""].forEach((v,j)=>{const c=R.getCell(j+2);c.value=v;c.font={name:"Arial",size:10};c.border={top:{style:"thin"},left:{style:"thin"},bottom:{style:"thin"},right:{style:"thin"}};c.alignment={vertical:"middle",horizontal:j===2?"left":"center"}})});
+    const tr=s.getRow(4+list.length); tr.getCell(7).value="SUMA"; tr.getCell(8).value={formula:`SUM(H4:H${3+list.length})`,result:list.reduce((x,{a})=>x+(horPlan(a.h)?.horas||0),0)};
     s.pageSetup={orientation:"portrait",fitToPage:true,fitToWidth:1,fitToHeight:0};
   }
   return wb.xlsx.writeBuffer();
@@ -1893,8 +2117,11 @@ const browserDownloads={save:async({filename,data})=>{const u=URL.createObjectUR
 (async()=>{try{if(window.claude?.use) downloads=await window.claude.use("downloads")}catch(e){} if(!downloads) downloads=browserDownloads;})();
 async function buildAsisWb(){
   const ini=new Date(new Date(fecha+"T12:00")-30*864e5).toISOString().slice(0,10);
-  const ds=store.get("pp.asisDates",[]).filter(d=>d>=ini&&d<=fecha);
-  if(!ds.includes(fecha)) ds.push(fecha); ds.sort();
+  // columnas: todos los días de la ventana que son de trabajo según la semana tipo, o que tienen plan, marcas o reloj
+  const conMarcas=new Set(store.get("pp.asisDates",[])), conReloj=new Set(store.get("pp.relojDates",[])), conPlan=new Set(store.get("pp.dates",[]));
+  const ds=[]; for(let d=ini; d<=fecha; d=isoMinus(d,-1)){
+    const lab=cfg.semana[dowDe(d)].tipo!=="descanso";
+    if(lab||conMarcas.has(d)||conReloj.has(d)||conPlan.has(d)||d===fecha) ds.push(d); }
   const A=Object.fromEntries(ds.map(d=>[d,store.get("pp.asis."+d,{})]));
   const wb=new ExcelJS.Workbook(); const ws=wb.addWorksheet("Detalle de asistencia");
   const hdr=["AREA","DEPARTAMENTO","SUPERVISOR","PUESTO","NOMINA","OPERADOR","FECHA DE INGRESO",...ds.map(d=>new Date(d+"T12:00")),"FALTAS","INCAPACIDAD","VACACION","PERMISO"];
@@ -1908,20 +2135,22 @@ async function buildAsisWb(){
     r.font={name:"Arial",size:10}; if(p.ingreso) r.getCell(7).numFmt="dd/mm/yyyy";
     cods.forEach((x,i)=>{ if(x==="F") r.getCell(8+i).fill=red; r.getCell(8+i).alignment={horizontal:"center"}; }); };
   lista.forEach(fila);
+  // bajas con marcas dentro de la ventana: su fila se conserva con el área que tenían
+  const bj=new Set(); ds.forEach(d=>Object.keys(A[d]).forEach(n=>{ if(!byNom[n]&&bajasIdx().has(n)) bj.add(n); }));
+  [...bj].sort().forEach(n=>fila(personaEn(n)));
   (vacs||[]).forEach(v=>{const r=ws.addRow(["",areaTtl(norm(v.area)).toUpperCase(),"",v.puesto,"","VACANTE"]); r.font={name:"Arial",size:10,italic:true,color:{argb:"FF777777"}};});
   ipp.forEach(fila);
   ws.views=[{state:"frozen",xSplit:6,ySplit:1}]; ws.autoFilter={from:{row:1,column:1},to:{row:1,column:hdr.length}};
   const rs=wb.addWorksheet("Resumen por día");
-  rs.addRow(["FECHA","PROGRAMADOS","FALTAS","INCAPACIDAD","VACACION","PERMISO","% AUSENCIA","% FALTAS"]); rs.getRow(1).font={name:"Arial",bold:true,size:10};
-  rs.columns=[12,13,9,12,10,9,12,10].map(w=>({width:w}));
+  rs.addRow(["FECHA","PROGRAMADOS","FALTAS","INCAPACIDAD","VACACION","PERMISO","% AUSENCIA","% FALTAS","CAPTURA"]); rs.getRow(1).font={name:"Arial",bold:true,size:10};
+  rs.columns=[12,13,9,12,10,9,12,10,13].map(w=>({width:w}));
   for(const d of ds){
-    const pl=store.get("pp.plan."+d,null); const m=pl?Object.entries(pl.assign).filter(([n,a])=>a.m!=="OFF"&&byNom[n]).map(([n])=>n):[];
-    const set=new Set(m.length?m:people.filter(p=>!(altaDe[p.nom]&&altaDe[p.nom]>d)).map(p=>p.nom));
+    const {set}=progDe(d);
     const c={F:0,I:0,V:0,P:0}; set.forEach(n=>{const k=A[d][n]; if(k) c[k]++;}); const N=set.size, aus=c.F+c.I+c.V+c.P;
-    const r=rs.addRow([new Date(d+"T12:00"),N,c.F,c.I,c.V,c.P,N?aus/N:0,N?c.F/N:0]); r.font={name:"Arial",size:10};
+    const r=rs.addRow([new Date(d+"T12:00"),N,c.F,c.I,c.V,c.P,N?aus/N:0,N?c.F/N:0,Object.keys(A[d]).length?"Con marcas":"Sin marcas"]); r.font={name:"Arial",size:10};
     r.getCell(1).numFmt="dd/mm/yyyy"; r.getCell(7).numFmt="0.0%"; r.getCell(8).numFmt="0.0%";
   }
-  rs.addRow([]); rs.addRow(["Programados = personas del plan de ese día; si no hubo plan, toda la plantilla activa."]).font={name:"Arial",italic:true,size:9};
+  rs.addRow([]); rs.addRow(["Programados = personas del plan de ese día; si no hubo plan, toda la plantilla de ese día (con las bajas posteriores). Captura: \"Sin marcas\" es un día sin asistencia capturada, no un día sin faltas."]).font={name:"Arial",italic:true,size:9};
   return wb.xlsx.writeBuffer();
 }
 $("#btnAsisXls").addEventListener("click",async()=>{
@@ -1948,10 +2177,31 @@ const isoMinus=(iso,n)=>{const d=new Date(iso+"T00:00:00Z");d.setUTCDate(d.getUT
 const fmtDia=d=>`${d.slice(8,10)}/${d.slice(5,7)}`;
 const fCorta=d=>`${+d.slice(8,10)} ${MES3[+d.slice(5,7)-1]}`;
 const fNum=n=>Math.round(n).toLocaleString("es-MX");
-function progDe(d){
-  const pl=store.get("pp.plan."+d,null);
-  const m=pl?Object.entries(pl.assign).filter(([n,a])=>a.m!=="OFF"&&byNom[n]).map(([n])=>n):[];
-  return {set:new Set(m.length?m:people.filter(p=>!(altaDe[p.nom]&&altaDe[p.nom]>d)).map(p=>p.nom)),conPlan:m.length>0};
+// bajas registradas en los movimientos: {nómina → movimiento más reciente} (para ver faltas de gente que ya no está en la plantilla)
+let _bj={raw:null,map:new Map()};
+function bajasIdx(){
+  let raw=null; try{ raw=localStorage.getItem("pp.movs"); }catch(e){}
+  if(raw!==_bj.raw){ _bj={raw,map:new Map()};
+    for(const m of store.get("pp.movs",[])) if(m&&m.tipo==="baja"&&!_bj.map.has(m.nom)) _bj.map.set(m.nom,m); }   // los movimientos van del más nuevo al más viejo
+  return _bj.map;
+}
+// la persona tal como está hoy; si ya no está en la plantilla, un objeto mínimo con lo guardado en su baja
+function personaEn(nom,d){
+  if(byNom[nom]) return byNom[nom];
+  const ip=ipp.find(x=>x.nom===nom), b=bajasIdx().get(nom);
+  const area=b?norm(b.area):(ip?ip.areaRH:"SIN AREA"), mp=AREA_MAP[area];
+  return {nom,nombre:b?b.nombre:(ip?ip.nombre:"(ya no activo)"),area,areaRH:area,mov:null,folio:mp?mp.folio:area,linea:mp?mp.linea:"Sin línea asignada",puesto:ip?ip.puesto:"",sup:"",ingreso:"",estado:ip?"IPP":"",macro:"",rol:"",baja:!!b};
+}
+// programados de un día: los del plan (aunque ya no estén en la plantilla); sin plan, la plantilla de ese día más las bajas posteriores a él
+function progDe(d,pl){
+  if(pl===undefined) pl=store.get("pp.plan."+d,null);
+  const m=pl?Object.entries(pl.assign).filter(([n,a])=>a.m!=="OFF").map(([n])=>n):[];
+  if(m.length) return {set:new Set(m),conPlan:true};
+  const set=new Set(people.filter(p=>!(altaDe[p.nom]&&altaDe[p.nom]>d)).map(p=>p.nom));
+  // la fecha guardada de una baja es cuando se cargó el archivo, no la real: solo cuenta si ese día tiene una marca suya
+  const A=store.get("pp.asis."+d,{});
+  for(const [n,b] of bajasIdx()) if(!byNom[n]&&A[n]&&b.fecha>d&&!(altaDe[n]&&altaDe[n]>d)) set.add(n);
+  return {set,conPlan:false};
 }
 const DS3=["dom","lun","mar","mié","jue","vie","sáb"], DSL=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
 const MESL=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
@@ -1967,7 +2217,7 @@ let repPer=(()=>{ try{ const v=localStorage.getItem("ppx.repPer"); return ["1","
 let repDia=null;
 function diaRep(d){
   const A=store.get("pp.asis."+d,{}); const {set,conPlan}=progDe(d); const c={F:0,I:0,V:0,P:0}; const porArea={}; const conFalta=[];
-  set.forEach(n=>{ const p=byNom[n]; const k=A[n]; const a=p?areaDe(p,d).area:"?";
+  set.forEach(n=>{ const p=personaEn(n,d); const k=A[n]; const a=areaDe(p,d).area;
     const x=(porArea[a] ||= {N:0,F:0,fal:[],otr:[]}); x.N++;
     if(k){ c[k]++; if(k==="F"){ x.F++; x.fal.push(puestoDe(p)); conFalta.push(n); } else x.otr.push(`${puestoDe(p)} · ${MOTIVO[k]}`); } });
   return {d,N:set.size,...c,aus:c.F+c.I+c.P,conPlan,porArea,conFalta};
@@ -2038,7 +2288,8 @@ const SER=[{k:"F",n:"Faltas injustificadas",c:"var(--s1)"},{k:"I",n:"Incapacidad
 function chartDias(cur,W,selD){
   if(!cur.length) return `<p class="empty">Sin asistencia capturada en este periodo. Se llena desde la pestaña Asistencia o al cargar el Detalle de asistencia.</p>`;
   const H=W<600?240:300,L=44,Rm=16,T=24,Bm=32, iw=W-L-Rm, ih=H-T-Bm;
-  const tot=x=>x.N?(x.F+x.I+x.P+x.V)/x.N:0;
+  const tot=x=>x.N?(x.F+x.I+x.P+x.V)/x.N:0;          // altura de la barra: incluye vacaciones como segmento
+  const aus=x=>x.N?(x.F+x.I+x.P)/x.N:0;               // ausentismo: sin vacaciones, igual que el recuadro
   const max=niceMax(Math.max(...cur.map(tot))); const y=v=>T+ih-(v/max)*ih;
   const band=iw/cur.length, bw=Math.min(24,band*0.62);
   let g="";
@@ -2052,14 +2303,14 @@ function chartDias(cur,W,selD){
       bars+= top? `<path d="${barTop(x0,y1,bw,hh,4)}" fill="${o.s.c}"/>` : `<rect x="${x0}" y="${y1}" width="${bw}" height="${hh}" fill="${o.s.c}"/>`;
       acc+=o.v; });
     if(esSel||i%every===0||i===cur.length-1) bars+=`<text x="${cx}" y="${H-10}" text-anchor="middle"${esSel?' class="selt"':""}>${fmtDia(x.d)}</text>`;
-    const lbl=`${fDiaC(x.d)}: ${pct(tot(x))} de ausencia, ${x.N} programados. `+SER.map(s=>`${s.n} ${x[s.k]}`).join(", ")+(esSel?". Día mostrado en faltas por área":". Elegir este día para faltas por área");
+    const lbl=`${fDiaC(x.d)}: ${pct(aus(x))} de ausencia, ${x.N} programados. `+SER.map(s=>`${s.n} ${x[s.k]}`).join(", ")+(esSel?". Día mostrado en faltas por área":". Elegir este día para faltas por área");
     hits+=`<rect class="hit" data-tip="dias" data-i="${i}" x="${L+band*i}" y="${T}" width="${band}" height="${ih}" tabindex="0" role="button" aria-pressed="${esSel}" aria-label="${esc(lbl)}"/>`;
   });
-  const iMax=cur.reduce((m,x,i)=>tot(x)>tot(cur[m])?i:m,0), xm=L+band*iMax+band/2, ym=y(tot(cur[iMax]));
-  bars+=`<text class="vl" x="${Math.min(Math.max(xm,L+70),W-Rm-70)}" y="${ym-8}" text-anchor="middle">${pct(tot(cur[iMax]))} · ${fDiaC(cur[iMax].d)}</text>`;
-  const avg=cur.reduce((s,x)=>s+tot(x),0)/cur.length, ya=y(avg);
+  const iMax=cur.reduce((m,x,i)=>aus(x)>aus(cur[m])?i:m,0), xm=L+band*iMax+band/2, ym=y(tot(cur[iMax]));
+  bars+=`<text class="vl" x="${Math.min(Math.max(xm,L+70),W-Rm-70)}" y="${ym-8}" text-anchor="middle">${pct(aus(cur[iMax]))} · ${fDiaC(cur[iMax].d)}</text>`;
+  const sN=cur.reduce((t,x)=>t+x.N,0), avg=sN?cur.reduce((t,x)=>t+x.F+x.I+x.P,0)/sN:0, ya=y(avg);   // ponderado: suma de ausencias entre suma de programados
   const avgL=`<line x1="${L}" x2="${W-Rm}" y1="${ya}" y2="${ya}" stroke="var(--ink)" stroke-width="1" opacity=".55"/>`;
-  return `<div class="legend" aria-hidden="true">${SER.map(s=>`<span><i style="background:${s.c}"></i>${s.n}</span>`).join("")}<span><i style="height:2px;border-radius:0;background:var(--ink);opacity:.55"></i>Promedio diario ${pct(avg)}</span></div>
+  return `<div class="legend" aria-hidden="true">${SER.map(s=>`<span><i style="background:${s.c}"></i>${s.n}</span>`).join("")}<span><i style="height:2px;border-radius:0;background:var(--ink);opacity:.55"></i>Promedio del periodo ${pct(avg)}</span><span>Las vacaciones se muestran aparte y no cuentan en el ausentismo</span></div>
     <svg class="vz" viewBox="0 0 ${W} ${H}" role="group" aria-label="Ausencias por día como porcentaje de los programados">${sel}${g}${bars}${avgL}<g class="hov-layer"></g>${hits}</svg>`;
 }
 // faltas por área de UN día, con los puestos que faltaron
@@ -2110,7 +2361,7 @@ function renderReporte(){
      sub:sinDatos?"Sin asistencia capturada":dia?`${R.A.F} ${s(R.A.F,"falta")} de ${R.A.N} programados`:`${R.A.F} ${s(R.A.F,"falta")} · ${R.conF.size} ${s(R.conF.size,"persona")} · ${R.A.dias} ${s(R.A.dias,"día")} con captura`,
      dl:sinDatos?"":deltaPts(R.A.pF,R.B.pF,R.cmp)},
     {lbl:"Ausentismo total",val:sinDatos?"—":pct(R.A.pAus),sub:dia&&!sinDatos?`${R.A.aus} de ${R.A.N} · faltas, incapacidades y permisos`:"Faltas, incapacidades y permisos",dl:sinDatos?"":deltaPts(R.A.pAus,R.B.pAus,R.cmp)},
-    {lbl:"Cobertura de puestos",val:pct(cob),sub:`${R.occ} de ${R.P} puestos · ${R.nv} ${s(R.nv,"vacante")}`,dl:R.pb?`<span class="dl bad">${R.pb} ${s(R.pb,"posible")} ${s(R.pb,"baja")} en revisión</span>`:`<span class="dl flat">Sin posibles bajas marcadas</span>`},
+    {lbl:"Cobertura de puestos",val:pct(cob),sub:`${R.occ} de ${R.P} puestos · ${R.nv} ${s(R.nv,"vacante")}${R.pb?` · Sin descontar ${R.pb} ${s(R.pb,"posible")} ${s(R.pb,"baja")}`:""}`,dl:R.pb?`<span class="dl bad">${R.pb} ${s(R.pb,"posible")} ${s(R.pb,"baja")} en revisión</span>`:`<span class="dl flat">Sin posibles bajas marcadas</span>`},
     {lbl:"Tiempo extra",val:`${fNum(R.te.h)}<small>h</small>`,sub:dia?`${R.te.t} ${s(R.te.t,"turno")} en el folio del día`:`${R.te.t} ${s(R.te.t,"turno")} en ${R.te.dias} ${s(R.te.dias,"día")} con folio`,dl:deltaRel(R.te.h,R.teP&&R.teP.h,R.cmp)},
     {lbl:"Movimientos de plantilla",val:`+${R.altas.length} <small>/</small> −${R.bajas.length}`,sub:`Altas y bajas ${dia?"del día":"del periodo"} · rotación ${pct(R.occ?R.bajas.length/R.occ:0)}`,dl:`<span class="dl flat">${R.altas.length} ${s(R.altas.length,"alta")}, ${R.bajas.length} ${s(R.bajas.length,"baja")}</span>`}
   ];
@@ -2122,7 +2373,7 @@ function renderReporte(){
   const diasSel = (dia?R.fs.slice(-60):R.cur.map(x=>x.d)).slice().reverse();
   const selDia = diasSel.length?`<label class="rep-dia noprint"><span>${dia?"Día":"Día de las faltas por área"}</span><select id="repDiaSel">${diasSel.map(d=>`<option value="${d}"${d===repDia?" selected":""}>${fDiaC(d)}${d===R.hoy?" · hoy":""}</option>`).join("")}</select></label>`:"";
   let aviso="";
-  if(dia&&R.D&&R.D.d<R.hoy&&R.D.d===R.fs[R.fs.length-1]) aviso=`<div class="rep-cov" role="note"><span aria-hidden="true">⚠</span><span><b>Hoy, ${fCorta(R.hoy)}, todavía no tiene asistencia capturada.</b> Se muestra el último día capturado.</span></div>`;
+  if(dia&&R.D&&R.D.d<R.hoy&&R.D.d===R.fs[R.fs.length-1]&&cfg.semana[new Date(R.hoy+"T12:00").getDay()]?.tipo!=="descanso") aviso=`<div class="rep-cov" role="note"><span aria-hidden="true">⚠</span><span><b>Hoy, ${fCorta(R.hoy)}, todavía no tiene asistencia capturada.</b> Se muestra el último día capturado.</span></div>`;
   else if(!dia&&R.cur.length&&R.cur.length/Math.max(R.hab,1)<0.8) aviso=`<div class="rep-cov" role="note"><span aria-hidden="true">⚠</span><span><b>Asistencia capturada en ${R.cur.length} de ${R.hab} días hábiles.</b> Los porcentajes de faltas y ausentismo solo cubren esos días.</span></div>`;
   $("#board").innerHTML=`<div class="rep">
     <div class="rep-head"><div style="flex:1;min-width:240px"><h2>Reporte de personal</h2><p>${desc}</p></div>
@@ -2132,7 +2383,7 @@ function renderReporte(){
     <section class="kpi5" aria-label="Indicadores principales">${tiles.map(t=>`<div class="tile"><div class="lbl">${t.lbl}</div><div class="val">${t.val}</div><div class="sub">${t.sub}</div>${t.dl}</div>`).join("")}</section>
     ${dia?"":`<section class="panel"><h3>Ausencias por día</h3><p class="ps">Porcentaje de los programados de cada día que no asistió, por motivo. Da clic en un día para ver sus faltas por área.</p>
       ${chartDias(R.cur,wFull,repDia)}
-      ${R.cur.length?`<details class="vdata"><summary>Ver datos</summary><div class="tblwrap"><table><tr><th>Día</th><th class="r">Programados</th>${SER.map(x=>`<th class="r">${x.n}</th>`).join("")}<th class="r">Ausencia</th></tr>${R.cur.map(x=>`<tr><td>${fDiaC(x.d)}</td><td class="r">${x.N}</td>${SER.map(z=>`<td class="r">${x[z.k]}</td>`).join("")}<td class="r">${pct(x.N?(x.F+x.I+x.P+x.V)/x.N:0)}</td></tr>`).join("")}</table></div></details>`:""}
+      ${R.cur.length?`<details class="vdata"><summary>Ver datos</summary><div class="tblwrap"><table><tr><th>Día</th><th class="r">Programados</th>${SER.map(x=>`<th class="r">${x.n}</th>`).join("")}<th class="r">Ausencia</th></tr>${R.cur.map(x=>`<tr><td>${fDiaC(x.d)}</td><td class="r">${x.N}</td>${SER.map(z=>`<td class="r">${x[z.k]}</td>`).join("")}<td class="r">${pct(x.N?(x.F+x.I+x.P)/x.N:0)}</td></tr>`).join("")}</table></div></details>`:""}
     </section>`}
     <div class="grid2">
       <section class="panel"><h3>Faltas injustificadas por área</h3>
@@ -2142,7 +2393,7 @@ function renderReporte(){
         ${fa.sin.length?`<p class="rep-sin"><b>Sin faltas:</b> ${fa.sin.map(esc).join(", ")}.</p>`:""}
         ${fa.rows.length?`<details class="vdata"><summary>Ver datos</summary><div class="tblwrap"><table><tr><th>Área</th><th class="r">Faltas</th><th class="r">Programados</th><th class="r">%</th><th>Puestos que faltaron</th></tr>${fa.rows.map(r=>`<tr><td>${esc(areaTtl(r.a))}</td><td class="r">${r.F}</td><td class="r">${r.N}</td><td class="r">${pct(r.p)}</td><td>${esc(resumenPuestos(r.fal))}</td></tr>`).join("")}</table></div></details>`:""}</section>
       <section class="panel"><h3>Cobertura de puestos por línea</h3><p class="ps">Puestos ocupados y vacantes registradas hoy.</p>${cl.svg}
-        <details class="vdata"><summary>Ver datos</summary><table><tr><th>Línea</th><th class="r">Puestos</th><th class="r">Ocupados</th><th class="r">Vacantes</th><th class="r">Cobertura</th></tr>${cl.rows.map(r=>`<tr><td>${esc(r.l)}</td><td class="r">${r.P}</td><td class="r">${r.o}</td><td class="r">${r.v}</td><td class="r">${pct(r.o/r.P)}</td></tr>`).join("")}</table></details></section>
+        <details class="vdata"><summary>Ver datos</summary><div class="tblwrap"><table><tr><th>Línea</th><th class="r">Puestos</th><th class="r">Ocupados</th><th class="r">Vacantes</th><th class="r">Cobertura</th></tr>${cl.rows.map(r=>`<tr><td>${esc(r.l)}</td><td class="r">${r.P}</td><td class="r">${r.o}</td><td class="r">${r.v}</td><td class="r">${pct(r.o/r.P)}</td></tr>`).join("")}</table></div></details></section>
     </div>
     <div class="grid2">
       <section class="panel"><h3>Requiere atención</h3><p class="ps">Personas con 3 o más faltas en los últimos 30 días o marcadas como posible baja.</p>
@@ -2177,7 +2428,7 @@ $("#board").addEventListener("keydown",e=>{ const h=e.target.closest('.hit[data-
 // tooltips de las gráficas (pasar el cursor o enfocar con teclado)
 function tipHTML(kind,i){
   if(!REP) return "";
-  if(kind==="dias"){ const x=REP.cur[+i]; return `<b>${fDiaC(x.d)}</b> · ${x.N} programados${x.conPlan?"":" (sin plan)"}`+SER.map(s=>`<div class="r"><span><i style="background:${s.c}"></i>${s.n}</span><span>${x[s.k]}</span></div>`).join("")+`<div class="r"><span>Ausencia</span><b>${pct(x.N?(x.F+x.I+x.P+x.V)/x.N:0)}</b></div>${REP.n>1&&x.d!==repDia?`<div class="tsec">Clic para ver sus faltas por área</div>`:""}`; }
+  if(kind==="dias"){ const x=REP.cur[+i]; return `<b>${fDiaC(x.d)}</b> · ${x.N} programados${x.conPlan?"":" (sin plan)"}`+SER.map(s=>`<div class="r"><span><i style="background:${s.c}"></i>${s.n}</span><span>${x[s.k]}</span></div>`).join("")+`<div class="r"><span>Ausencia (sin vacaciones)</span><b>${pct(x.N?(x.F+x.I+x.P)/x.N:0)}</b></div>${REP.n>1&&x.d!==repDia?`<div class="tsec">Clic para ver sus faltas por área</div>`:""}`; }
   if(kind==="area"){ const r=REP.ca[+i];
     return `<b>${esc(areaTtl(r.a))}</b> · ${fDiaC(REP.D.d)}<div class="r"><span>Faltas</span><b>${r.F} de ${r.N} · ${pct(r.p)}</b></div>`
       +`<div class="tsec">Puestos que faltaron</div>`+contar(r.fal).map(([p,c])=>`<div class="r"><span>${esc(p)}</span><span>${c}</span></div>`).join("")
@@ -2213,42 +2464,103 @@ function renderVacio(){
 }
 
 /* ---------- sincronización con el servidor (solo versión Netlify) ---------- */
-const SYNC={v:SRV?SRV.v:0, at:SRV?SRV.at:null, pending:{}, timer:null, busy:false, fail:0, poll:null};
+const SYNC={v:SRV?SRV.v:0, at:SRV?SRV.at:null, pending:{}, inflight:null, timer:null, busy:false, fail:0, poll:null};
 function syncState(kind,msg){
   const el=$("#syncState"); if(!el) return; el.hidden=false; el.className="sync noprint"+(kind?" "+kind:"");
   el.querySelector("span").textContent=msg;
 }
+function syncPersist(){
+  try{ if(Object.keys(SYNC.pending).length) localStorage.setItem("pp-pending",JSON.stringify(SYNC.pending)); else localStorage.removeItem("pp-pending"); }catch(e){}
+}
 function syncQueue(k,s){
   if(!SRV||READONLY) return;
-  SYNC.pending[k]=s; try{localStorage.setItem("pp-pending",JSON.stringify(SYNC.pending))}catch(e){}
+  SYNC.pending[k]=s; try{localStorage.setItem("pp-pending",JSON.stringify({...(SYNC.inflight||{}),...SYNC.pending}))}catch(e){}
   syncState("busy","Guardando…"); clearTimeout(SYNC.timer); SYNC.timer=setTimeout(syncFlush,700);
+}
+// la sesión terminó: los pendientes ya están en pp-pending; al recargar aparece la pantalla de acceso
+function sesionTerminada(){
+  const msg="Tu sesión terminó. Vuelve a entrar; los cambios pendientes se conservan.";
+  syncState("err",msg);
+  if(SYNC.saliendo||SYNC.reiniciando) return;
+  SYNC.reiniciando=true; clearTimeout(SYNC.timer);
+  syncPersist(); toast(msg);
+  setTimeout(()=>{ SYNC.pending={}; location.reload(); },2500);
 }
 async function api(path,opt={}){
   const r=await fetch(path,{...opt,headers:{"content-type":"application/json","authorization":"Bearer "+SRV.token,...(opt.headers||{})}});
-  if(r.status===401){ syncState("err","Tu sesión terminó. Vuelve a entrar; los cambios pendientes se conservan."); throw Object.assign(new Error("401"),{code:401}); }
+  if(r.status===401){ sesionTerminada(); throw Object.assign(new Error("401"),{code:401,srvmsg:"Tu sesión terminó. Vuelve a entrar; los cambios pendientes se conservan."}); }
   return r;
+}
+const HTTP_ERR=(r,j)=>Object.assign(new Error(String(r.status)),{code:r.status,srv:j&&j.error||""});
+async function syncPost(set){
+  const r=await api("/api/state",{method:"POST",body:JSON.stringify({set,v:SYNC.v})});
+  let j=null; try{ j=await r.json(); }catch(e){}
+  return {r,j};
+}
+// respuesta correcta del servidor: devuelve true si la versión no era la inmediata siguiente (otra persona guardó antes)
+function syncResp(j){
+  const stale=!!(j&&(j.stale||j.v!==SYNC.v+1));
+  if(!stale){ SYNC.v=j.v; SYNC.at=j.at; }
+  // el servidor recalcula las listas de días; se copian aquí si no hay cambios locales por subir
+  if(j&&j.idx&&!stale&&!Object.keys(SYNC.pending).length) Object.entries(j.idx).forEach(([k,v])=>{ if(k.startsWith("pp.")&&!LOCAL_KEYS.has(k)) try{localStorage.setItem(k,v)}catch(e){} });
+  return stale;
+}
+// descarga el estado completo y lo aplica por la misma ruta que el sondeo
+async function syncRefrescar(){
+  if(document.querySelector("dialog[open]")) return;   // el sondeo lo aplica al cerrar el diálogo
+  try{ const r=await api("/api/state"); if(!r.ok) return; aplicarEstado(await r.json()); syncState("","Actualizado"); }catch(e){}
 }
 async function syncFlush(){
   if(SYNC.busy||!Object.keys(SYNC.pending).length) return;
-  SYNC.busy=true; const batch=SYNC.pending; SYNC.pending={};
+  SYNC.busy=true; const batch=SYNC.pending; SYNC.pending={}; SYNC.inflight=batch;
+  let quedan={...batch}, stale=false, grandes=[], noReintentar=null;
   try{
-    const r=await api("/api/state",{method:"POST",body:JSON.stringify({set:batch})});
-    if(!r.ok) throw new Error(String(r.status));
-    const j=await r.json(); SYNC.v=j.v; SYNC.at=j.at; SYNC.fail=0;
-    if(!Object.keys(SYNC.pending).length){ try{localStorage.removeItem("pp-pending")}catch(e){} syncState("","Guardado"); }
+    const x=await syncPost(batch);
+    if(x.r.status===413){
+      // una carga demasiado grande no debe bloquear el resto: se envía clave por clave y solo esa se descarta
+      const ks=Object.keys(batch);
+      if(ks.length===1){ grandes=ks; delete quedan[ks[0]]; }
+      else for(const k of ks){
+        const y=await syncPost({[k]:batch[k]});
+        if(y.r.status===413){ grandes.push(k); delete quedan[k]; }
+        else if(!y.r.ok) throw HTTP_ERR(y.r,y.j);
+        else { stale=syncResp(y.j)||stale; delete quedan[k]; }
+      }
+    }else if(!x.r.ok) throw HTTP_ERR(x.r,x.j);
+    else { stale=syncResp(x.j); quedan={}; }
+    SYNC.fail=0; SYNC.inflight=null;
+    syncPersist();
+    if(grandes.length){
+      syncState("err","Datos demasiado grandes: no se guardaron en el servidor");
+      toast(`Un cambio es demasiado grande para el servidor (${grandes.join(", ")}) y no se guardó. Los demás cambios sí se guardaron.`);
+    }else if(!Object.keys(SYNC.pending).length) syncState("","Guardado");
+    if(stale) await syncRefrescar();
   }catch(e){
-    SYNC.pending={...batch,...SYNC.pending}; SYNC.fail++;
-    if(e.code!==401){ syncState("err","Sin conexión: cambios pendientes"); setTimeout(syncFlush,Math.min(30000,3000*SYNC.fail)); }
-  }finally{ SYNC.busy=false; if(Object.keys(SYNC.pending).length&&!SYNC.fail) syncFlush(); }
+    SYNC.pending={...quedan,...SYNC.pending}; SYNC.inflight=null; SYNC.fail++; syncPersist();
+    if(e.code===401){ /* api() ya avisó y recarga hacia la pantalla de acceso */ }
+    else if(e.code===403){ noReintentar=1; syncState("err","Sin permiso para guardar cambios"); toast(e.srv||"Tu acceso no permite guardar cambios."); }
+    else if(e.code>=400&&e.code<500){ noReintentar=1; syncState("err",`El servidor no aceptó el cambio (${e.code})`); toast(e.srv||`El servidor no aceptó el cambio (código ${e.code}).`); }
+    else{
+      syncState("err",e.code?"El servidor no respondió bien: cambios pendientes":"Sin conexión: cambios pendientes");
+      setTimeout(syncFlush,Math.min(30000,3000*SYNC.fail));
+    }
+  }finally{ SYNC.busy=false; if(Object.keys(SYNC.pending).length&&!SYNC.fail&&!noReintentar) syncFlush(); }
 }
 async function syncReplace(data){
-  const r=await api("/api/state",{method:"POST",body:JSON.stringify({replace:data})});
-  if(!r.ok) throw new Error("No se pudo reemplazar en el servidor");
-  const j=await r.json(); SYNC.v=j.v; SYNC.at=j.at; SYNC.pending={}; try{localStorage.removeItem("pp-pending")}catch(e){}
+  let r,j=null;
+  try{ r=await api("/api/state",{method:"POST",body:JSON.stringify({replace:data})}); }
+  catch(e){ if(e.srvmsg) throw e; throw Object.assign(e,{srvmsg:"Sin conexión con el servidor. El respaldo no se restauró."}); }
+  try{ j=await r.json(); }catch(e){}
+  if(!r.ok) throw Object.assign(new Error(String(r.status)),{code:r.status,srvmsg:
+    r.status===413?"El respaldo es demasiado grande para el servidor (máximo 8 MB). No se restauró."
+    :r.status===403?"Tu acceso es de consulta y no puede restaurar respaldos."
+    :`El servidor no aceptó el respaldo${j&&j.error?`: ${j.error}`:` (código ${r.status})`}.`});
+  SYNC.v=j.v; SYNC.at=j.at; SYNC.pending={}; SYNC.inflight=null; try{localStorage.removeItem("pp-pending")}catch(e){}
 }
 function aplicarEstado(st){
   Object.keys(localStorage).filter(k=>k.startsWith("pp.")&&!LOCAL_KEYS.has(k)).forEach(k=>localStorage.removeItem(k));
   Object.entries(st.data||{}).forEach(([k,v])=>{ if(!LOCAL_KEYS.has(k)) localStorage.setItem(k,v); });
+  Object.entries(SYNC.pending).forEach(([k,v])=>{ try{localStorage.setItem(k,v)}catch(e){} });   // cambios locales que aún no se suben
   SYNC.v=st.v; SYNC.at=st.at;
   cfg=Object.assign(structuredClone(DEFAULT_CFG),store.get("pp.cfg",{}));
   roster=store.get("pp.roster",null)||BASE_ROSTER; vacs=store.get("pp.vac",null); posB=store.get("pp.posBaja",{});
@@ -2265,10 +2577,22 @@ async function syncPoll(){
 }
 function syncStart(){
   syncState("", READONLY?"Solo consulta":"Guardado");
+  $("#bkHint").textContent="Los datos se guardan en el servidor y se respaldan cada día. Descarga un respaldo si quieres una copia propia.";
   $("#btnLogout").hidden=false;
-  $("#btnLogout").addEventListener("click",()=>{
-    if(Object.keys(SYNC.pending).length&&!confirm("Hay cambios que aún no se guardan en el servidor. ¿Salir de todos modos?")) return;
-    try{localStorage.removeItem("pp-auth")}catch(e){} location.reload(); });
+  $("#btnLogout").addEventListener("click",async()=>{
+    const b=$("#btnLogout"); b.disabled=true; SYNC.saliendo=true;
+    const esperar=async()=>{ for(let i=0;i<75&&SYNC.busy;i++) await new Promise(r=>setTimeout(r,200)); };
+    if(Object.keys(SYNC.pending).length){   // primero se intenta subir lo pendiente
+      clearTimeout(SYNC.timer); syncState("busy","Guardando…"); await esperar(); await syncFlush(); await esperar();
+    }
+    if(Object.keys(SYNC.pending).length&&!confirm("Hay cambios sin guardar en el servidor. Si sales se pierden.")){ b.disabled=false; SYNC.saliendo=false; return; }
+    SYNC.pending={}; clearTimeout(SYNC.timer);
+    // la base de personal no se queda en este navegador: se borran los datos compartidos, los pendientes y la sesión
+    try{
+      Object.keys(localStorage).filter(k=>k.startsWith("pp.")&&!LOCAL_KEYS.has(k)).forEach(k=>localStorage.removeItem(k));
+      localStorage.removeItem("pp-pending"); localStorage.removeItem("pp-auth");
+    }catch(e){}
+    location.reload(); });
   window.addEventListener("beforeunload",e=>{ if(Object.keys(SYNC.pending).length){ e.preventDefault(); e.returnValue=""; } });
   SYNC.poll=setInterval(syncPoll,45000);
   document.addEventListener("visibilitychange",()=>{ if(!document.hidden) syncPoll(); });
